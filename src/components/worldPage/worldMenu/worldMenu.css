@@ -1,0 +1,12 @@
+.menu-obj {
+    background-color: aqua;
+}
+
+.menu-obj-name {
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.menu-obj:hover {
+    background-color: rgb(179, 129, 64);
+}
