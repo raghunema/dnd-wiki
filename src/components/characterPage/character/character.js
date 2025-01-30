@@ -3,14 +3,18 @@ import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import './character.css'
 
-const Character = () => {
+const Character = ({character}) => {
     const canvasRef = useRef(null);
 
     useEffect(() => {
         // Initialize Three.js scene
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer({ antialias: true, canvas: canvasRef.current });
+        const renderer = new THREE.WebGLRenderer({ 
+          antialias: true, 
+          alpha: true,
+          canvas: canvasRef.current 
+        });
         renderer.setSize(500, 500); // Adjust canvas size as needed
 
         // Add lighting
@@ -28,13 +32,13 @@ const Character = () => {
         //   scene.add(gltf.scene);
         // });
 
-        camera.position.z = 3;
+        camera.position.z = 2;
 
         // Animation loop
         const animate = () => {
             requestAnimationFrame(animate);
             // cube.rotation.x += 0.01;
-            cube.rotation.y += 0.01;
+            cube.rotation.y += 0.005;
             renderer.render(scene, camera);
         };
 
@@ -49,8 +53,8 @@ const Character = () => {
   return (
     <div style={{ textAlign: "center", margin: "20px" }}>
       <canvas ref={canvasRef}></canvas>
-      <h3>Darius</h3>
-      <p>Human HexBlade Warlock</p>
+      <h1>{character.name}</h1>
+      <h2>{character.information}</h2>
     </div>
   );
 };

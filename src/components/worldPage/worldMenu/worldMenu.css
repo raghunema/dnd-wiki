@@ -1,12 +1,18 @@
 .menu-obj {
-    background-color: aqua;
+    align-items: left;
+}
+
+.menu-header {
+    padding-left: 8px;
+    text-align: left;
+    font-weight: 300;
 }
 
 .menu-obj-name {
-    font-size: 1.2em;
-    font-weight: bold;
+    text-align: left;
+    padding-left: 8px;
 }
 
-.menu-obj:hover {
-    background-color: rgb(179, 129, 64);
+.menu-obj-name:hover {
+    text-decoration: underline;
 }
