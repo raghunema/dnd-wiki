@@ -8,6 +8,10 @@
     font-weight: 300;
 }
 
+.world-menu-norm {
+    background-color: rgb(240, 224, 193);
+}
+
 .menu-obj-name {
     text-align: left;
     padding-left: 8px;

@@ -6,8 +6,8 @@ const Place = ({ name, type, info, children }) => {
     return (
         <div className="place">
             <div className="place-info">
-                <h1 id={name} className={`place-${type}`}>{name} ({type})</h1>
-                <h3>{info}</h3>
+                <h1 id={name} className={`place-${type}`}>{name}</h1>
+                <h2>{info}</h2>
             </div>
             {children && (
                 <div className="children">

@@ -1,3 +1,102 @@
+@import url('https://fonts.googleapis.com/css2?family=Almendra+SC&family=Germania+One&family=Grenze+Gotisch:wght@100..900&family=Roboto+Flex:opsz,wght@8..144,100..1000&display=swap');
 .world-lore {
-    color: black;
+    color: rgb(0, 0, 0);
+    background-color: rgb(240, 224, 193);
+    padding-right: 5px;
+    padding-top: 5px;
+    padding-left: 5px;
+    
 }
+
+
+.place-info {
+    padding-bottom: 10px;
+}
+
+.place-Planet {
+    font-size: 60px;
+    color: rgb(24, 24, 24);
+    font-weight: 700;
+    margin: 0px;
+}
+
+.place-Continent {
+    font-size: 50px;
+    color: rgb(24, 24, 24);
+    font-weight: 600;
+    margin: 0px
+}
+
+.place-Country {
+    font-size: 40px;
+    color: rgb(24, 24, 24);
+    margin: 0px
+}
+
+.place-City {
+    font-size: 40px;
+    color: rgb(24, 24, 24);
+    margin: 0px
+}
+
+.place-Island {
+    font-size: 40px;
+    color: rgb(24, 24, 24);
+    margin: 0px
+}
+
+.place-Tribe {
+    font-size: 33px;
+    color: rgb(24, 24, 24);
+    margin: 0px
+}
+
+h1, h2, h3 {
+  font-family: "Grenze Gotisch", serif;
+  font-optical-sizing: auto;
+  font-weight: 300;
+  font-style: normal;
+}
+
+h1 {
+    font-weight: 500;
+}
+
+
+/* // <uniquifier>: Use a unique and descriptive class name
+// <weight>: Use a value from 100 to 900
+
+.grenze-gotisch-<uniquifier> {
+  font-family: "Grenze Gotisch", serif;
+  font-optical-sizing: auto;
+  font-weight: <weight>;
+  font-style: normal;
+} */
+
+/* // <uniquifier>: Use a unique and descriptive class name
+// <weight>: Use a value from 100 to 1000 */
+/* .roboto-flex-<uniquifier> {
+  font-family: "Roboto Flex", serif;
+  font-optical-sizing: auto;
+  font-weight: <weight>;
+  font-style: normal;
+  font-variation-settings:
+    "slnt" 0,
+    "wdth" 100,
+    "GRAD" 0,
+    "XOPQ" 96,
+    "XTRA" 468,
+    "YOPQ" 79,
+    "YTAS" 750,
+    "YTDE" -203,
+    "YTFI" 738,
+    "YTLC" 514,
+    "YTUC" 712;
+} */
+
+/* .almendra-sc-regular {
+    font-family: "Almendra SC", serif;
+    font-weight: 400;
+    font-style: normal;
+  } */
+  
