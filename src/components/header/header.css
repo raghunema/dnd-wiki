@@ -2,6 +2,9 @@
     background-color: rgb(240, 224, 193);
     padding: 10px;
     padding-bottom: 25px;
+    position: static;
+    top: 0;
+    z-index: 1000;
 }
 
 nav a {
