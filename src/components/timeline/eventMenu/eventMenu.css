@@ -1,0 +1,7 @@
+.timeline-menu {
+    text-align: start;
+}
+
+.event-menu-obj:hover {
+    text-decoration: underline;
+}

@@ -43,18 +43,22 @@ const worldData = {
                     info: "Porsithi is the mountain range that cuts the southern continent in half, littered with many different cities and settlements that dwell within. Though it is one of the most inhabited places in the world, it does not mean it is well explored or safe for travelers, but quite the opposite. The harsh conditions and beasts that lurk the land have caused the people to carve out fortresses within the mountains. Dwarves, Halflings, and Humans are the most common type of people, but there are a variety of other races that can be found wandering the halls. The major resource is Loturim, a rare mineral that has a unique glint and a resonance with magic, but it has always been dangerous to mine and needs to be handled with care."
                 },
                 "City of Petr": {
-                    type: "City",
+                    type: "Country",
                     info: "Petr is the major city in Amai, the center of all trade that occurs in Kalith. It is a melting pot of all races and cultures (this is where the party will be starting). Due to the huge population and economic boom, as well as the inability of the local government to keep up with the times, has unfortunately left many innocents behind to be swallowed by the wave of change, and sprouted many ‘businesses’ that take advantage of such innocents. Politically, Petr is considered a neutral city state with the monarchy acting with absolute authority, however they do not take significant action within the city unless significant harm towards the status quo and business relations… The monarchy has always held a position of neutrality in foreign affairs and as such often acts as arbitrators. No significant military action has ever been taken against Petr, as such the military power of Petr is significantly weaker than what would be expected, though it makes up its geopolitical power easily in terms of trade and spending power. "
                 },
                 "Island of Ventosa": {
-                    type: "Island",
+                    type: "Country",
                     info: "A large coral reef that lies close to the surface, as big as an island. Some parts of it jut out of the water, but the tritons that inhibit this ecosystem mostly stay underneath the water. They farm the reefs and fishes and use the intricate underground tunnels as homes. Inside the tunnels bio-luminescent fauna lights up their tunnels. They’re culture consists of people having long expeditions out to sea or along the coast line for exotic fish. They also shepard many sea creatures as they migrate from north to south and vice versa. This is a time for celebration and great harvest. They worship large aquatic creatures such as leviathans and krakens physical aspects of sea gods."
                 }
             }, 
             info: "Kalith is the sister southern continent, filled with dwarves, gnomes, and humans. Many of the people that make their homes in cities that scale the mountains of the mountain range of Porsithi, however there are tribes of people scattered throughout the swamp of Ellistauge Bay and some even dwell further down in the land of dinosaurs."
         },
-        "Continent 3": {},
-        "Continent 4": {},
+        "Continent 3": {
+            type: "Continent"
+        },
+        "Continent 4": {
+            type: "Continent"
+        },
     } 
 }
 

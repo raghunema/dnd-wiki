@@ -1,0 +1,8 @@
+.timeline {
+    width: 100%;
+    align-items: center;
+    margin: 0 auto;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: row;
+}

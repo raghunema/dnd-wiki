@@ -1,11 +1,29 @@
 .menu-obj {
     align-items: left;
+    text-align: left;
+    margin-left: 8px;
+    padding-right: 5px;
 }
 
 .menu-header {
     padding-left: 8px;
     text-align: left;
     font-weight: 300;
+}
+
+.menu-obj-name-Planet {
+    font-weight: 600;
+    margin-left: 0;
+}
+
+.menu-obj-name-Continent {
+    font-weight: 400;
+    margin-left: 6px;
+}
+
+.menu-obj-name-Country {
+    font-weight: 300;
+    margin-left: 6px;
 }
 
 .world-menu-norm {
@@ -17,6 +35,9 @@
     padding-left: 8px;
 }
 
-.menu-obj-name:hover {
+.menu-obj-name-Country:hover, .menu-obj-name-Continent:hover, .menu-obj-name-Continent:hover, 
+.menu-obj-name-Planet:hover, .menu-obj-name-Tribe:hover
+{
     text-decoration: underline;
+
 }

@@ -1,0 +1,23 @@
+.header {
+    background-color: rgb(240, 224, 193);
+    padding: 10px;
+    padding-bottom: 25px;
+}
+
+nav a {
+    font-family: "Almendra SC", serif;
+    font-weight: 400;
+    font-style: normal;
+    margin-right: 5px;
+    margin-left: 5px;
+    font-size: 25px;
+    border-bottom: 2px;
+    text-decoration: none;
+    color: black;
+    margin: 10px;
+    padding-bottom: 25px;
+}
+
+nav a:hover {
+    font-weight: 600;
+}
