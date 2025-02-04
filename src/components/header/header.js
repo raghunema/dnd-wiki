@@ -12,7 +12,8 @@ const Header = () => {
                 <Link to="/">Home</Link> | 
                 <Link to="/characters">Characters</Link> | 
                 <Link to="/world-page">World Lore</Link> | 
-                <Link to="/timeline"> Timeline </Link>
+                <Link to="/timeline"> Timeline </Link> |
+                <Link to="/npcs">NPCs</Link>
             </nav>
         </div>
     )
