@@ -1,0 +1,19 @@
+Currently things to implement:
+-Fixing data formatting
+    -Correcting how the world, character, and lore information is stored
+-Make a change log for file
+    -Keep track of changes - like a git file
+
+    How to implement this???
+    ->So you have a function that takes in the file that it has stored - a base file
+        -it traverses the json file object by object
+        -compares it has it in its json file
+            records the log as such
+    ->then it compares the your file, and the file you have stored
+    ->then it saves the changes in a secondary change log
+
+-implement parsing 
+    -tags
+    -go into information and then check to change things into a tag
+        this should happen so that when i update the lore, i dont need to manually add tags
+    

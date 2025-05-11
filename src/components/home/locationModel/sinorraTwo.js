@@ -82,7 +82,7 @@ const SinorraTwo = ({ modelPath }) => {
         window.addEventListener("mousemove", onMouseMovement);
 
         let lastMoveTime = 0;
-        const throttleTime = 200;
+        const throttleTime = 50;
         let lastSelectedObj = null;
 
         function onMouseMovement(event) {
@@ -91,11 +91,11 @@ const SinorraTwo = ({ modelPath }) => {
             lastMoveTime = currTime;
 
             const coords = new THREE.Vector2(
-                (event.clientX / window.innerWidth) * 2 - 1,
-                -((event.clientY / window.innerWidth) * 2 - 1)
+                ((event.clientX / window.innerWidth) * 2) - 1,
+                -(((event.clientY / window.innerHeight) * 2) - 1)
             );
 
-            raycaster.setFromCamera(coords, camera)
+            raycaster.setFromCamera(coords, camera);
 
             const intersections = raycaster.intersectObjects(scene.children, true);
 

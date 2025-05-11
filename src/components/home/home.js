@@ -9,7 +9,7 @@ const Home = () => {
         <div className="home">
             <div className="terrain-showcase">
                 {/* <Sinorra modelPath={"/model1/onlyLow.glb"} normalMapPath={"/model1/normalMapOne.png"} /> */}
-                <SinorraTwo modelPath={"/multiObject.glb"} />
+                <SinorraTwo modelPath={"/terrainTestingOneV2.glb"} />
             </div>
         </div>
     )
