@@ -13,18 +13,53 @@ function traverse(obj, path = []) {
     }
 }
 
-function compare(newData, oldData, changeLog) {
+function compare_controller(newData, oldData, changeLog) {
+    var changes =  {};
+    changes.version = 1;
+
+    for (const key in newData) {
+        changes[key] = compare(key, newData, oldData, 1)
+    } 
+
+    console.log(changes)
+    return changes;
+}
+
+function compare(key, newData, oldData, direction) {
     var changes = {};
 
-    //Check for additions and updates
-    for (const key in newData) {
-        if (!(key in oldData)) {
-            changes[key] = {"Operation": 'Add', "data": newData[key]};
+    console.log(`New Keys: ${Object.keys(newData)}`);
+    console.log(`Old Keys: ${Object.keys(oldData)}`);
+
+    console.log(`Updating key: ${key}`);
+    // console.log('New Data:', newData);
+    // console.log('Old Data:', oldData);
+
+    if (!(key in oldData)) {
+        changes[`${key}.Add`] = {'data': newData[key]};
+    } else if (key in oldData) {
+        if (newData[key] != oldData[key]) {
+
+            if (typeof newData[key] != 'object') {
+                changes[`${key}.Update`] = {'data': newData[key]}
+            } else {
+                changes[`${key}.Update`] = {};
+                for (const childKey in newData[key]) {
+                    changes[`${key}.Update`][childKey] = compare(childKey, newData[key],  oldData[key], 1)
+                    //console.log(Object.keys(changes[`${key}.Update`][childKey]).length)
+                    if (Object.keys(changes[`${key}.Update`][childKey]).length === 0) {
+                        //console.log('deleting')
+                        delete changes[`${key}.Update`][childKey]
+                    }
+                } 
+            }
+
+            
+
         }
     }
 
-    console.log(changes);
-    fs.writeFileSync(changeLog, JSON.stringify(changes, null, 2));
+    return changes;
 }
 
 function load(...args) {
@@ -44,9 +79,11 @@ function load(...args) {
 
             const newData = JSON.parse(fs.readFileSync(newFile, 'utf8'));
             const oldData = JSON.parse(fs.readFileSync(oldFile, 'utf8'));
+            const changeData = JSON.parse(fs.readFileSync(changeLog, 'utf8'));
 
             console.log(`Comparing new file: ${args[1]} against old file: ${args[2]}, writing to ${args[3]}`);
-            compare(newData, oldData, changeLog);
+            changes = compare_controller(newData, oldData, changeData);
+            fs.writeFileSync(changeLog, JSON.stringify(changes, null, 2));
             break;
         default:
             console.log('Invalid arguements');

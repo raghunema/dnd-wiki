@@ -1,1 +1,11 @@
-{}
+{
+    "events": [
+        {
+            "id": "the-great-awakening",
+            "name": "The Great Awakening",
+            "date": 0,
+            "type": "historical",
+            "Information": "When the cosmos first lit the sky"
+        }
+    ]
+}

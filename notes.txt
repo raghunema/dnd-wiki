@@ -16,4 +16,12 @@ Currently things to implement:
     -tags
     -go into information and then check to change things into a tag
         this should happen so that when i update the lore, i dont need to manually add tags
-    
+-----------------------------------------------------------------------------------------------
+
+
+compare function: 
+    needs to be recursive
+    should have a parent function that calls the compare function
+parent compare: 
+    initializes a new json object
+    compare function should write into this object

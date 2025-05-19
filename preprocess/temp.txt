@@ -5,7 +5,7 @@
             "name": "The Great Awakening",
             "date": 0,
             "type": "historical",
-            "Information": "When the cosmos first lit the sky and the stars sing"
+            "Information": "When the cosmos first lit the sky"
         }
     ],
     "npcs": {
