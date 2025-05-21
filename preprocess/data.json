@@ -12,10 +12,6 @@
         "illmindel": {
             "name": "Illmindel",
             "race": "elf-human"
-        },
-        "zoral": {
-            "name": "Zoral",
-            "race": "elf"
         }
     },
     "world": [

@@ -14,59 +14,13 @@
     }
   },
   "npcs": {
-    "npcs.Add": {
-      "data": {
-        "illmindel": {
-          "name": "Illmindel",
-          "race": "elf-human"
-        },
-        "zoral": {
-          "name": "Zoral",
-          "race": "elf"
-        }
+    "npcs.Update": {
+      "zoral": {
+        "zoral.Delete": {}
       }
     }
   },
-  "world": {
-    "world.Add": {
-      "data": [
-        {
-          "id": "mathura",
-          "slug": "mathura",
-          "name": "Mathura",
-          "parent": "NULL",
-          "path": [
-            ""
-          ],
-          "type": "planet",
-          "children": [
-            "kiresth",
-            "kalith"
-          ]
-        },
-        {
-          "id": "kiresth",
-          "slug": "kiresth",
-          "name": "Kiresth",
-          "parent": "mathura",
-          "path": [
-            "mathura"
-          ],
-          "type": "continent",
-          "children": []
-        },
-        {
-          "id": "3",
-          "slug": "3",
-          "name": "3",
-          "parent": "mathura",
-          "path": [
-            "mathura"
-          ],
-          "type": "continent",
-          "children": []
-        }
-      ]
-    }
+  "places": {
+    "places.Delete": {}
   }
 }
