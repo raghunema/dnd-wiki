@@ -94,6 +94,40 @@ function compare_controller(newData, oldData, changeLog) {
     return changes;
 }
 
+//make dictionary for data visualization
+function getDictionary(data, dictionary = {}) {
+    // dictionary = {};
+
+    for (const key in data) {
+        //console.log(`Key: ${key}, ${key.id}, ${typeof data[key]}`)
+        if (typeof data[key] == 'object' && data[key] != null && data[key].id) {
+            dictionary[data[key].id] = {};
+        }
+       
+        if (typeof data[key] == 'object' && key != null) {
+            getDictionary(data[key], dictionary);
+        }
+    }
+
+    //console.log(`${JSON.stringify(dictionary, null, 2)}`)
+    return dictionary;
+}
+
+function getDictionary_controller(data, output_file) {
+    var items = getDictionary(data);
+    var dictionary = {};
+    for (const key in items) {
+        dictionary[key] = JSON.parse(JSON.stringify(items));
+    }
+
+    for (const key in dictionary) {
+        delete dictionary[key][key]
+    }
+
+    console.log(`${JSON.stringify(dictionary, null, 2)}`)
+    fs.writeFileSync(output_file, JSON.stringify(dictionary, null, 2))
+}
+
 function load(...args) {
     const operation = args[0];
 
@@ -117,6 +151,12 @@ function load(...args) {
             changes = compare_controller(newData, oldData, changeData);
             fs.writeFileSync(changeLog, JSON.stringify(changes, null, 2));
             break;
+        case 'getDict':
+            const data_file = path.resolve(__dirname, args[1]);
+            const data_obj = JSON.parse(fs.readFileSync(data_file, 'utf8'));
+            console.log(`Getting Dict for file ${data_file}`);
+            getDictionary_controller(data_obj, output_file = args[2] || 'dicitionary.json');
+            break;
         default:
             console.log('Invalid arguements');
             console.log(`Arguements: ${args}`)
@@ -128,6 +168,7 @@ function load(...args) {
 
 //node diffEngine.js OPERATION [PARAMATERS]
 if (require.main == module) {
+    // console.log(`Process: ${process.argv[2]}`)
     switch(process.argv[2]) {
         case 'traverse':
             if (process.argv.length < 3) {
@@ -138,12 +179,20 @@ if (require.main == module) {
             load(process.argv[2], process.argv[3]);
             break;
         case 'compare':
-            if (process.argv.length < 4) {
-                console.log('2 files required to compare');
+            if (process.argv.length < 5) {
+                console.log('2 files required to compare, output file required');
                 process.exitCode = 1;
                 process.exit();
             }
             load(process.argv[2], process.argv[3], process.argv[4], process.argv[5]);
+            break;
+        case 'getDict':
+            if (process.argv.length < 3) {
+                console.log("File path expected");
+                process.exitCode = 1;
+                process.exit();
+            }
+            load(process.argv[2], process.argv[3]);
             break;
         default: 
             console.log("Invalid command")

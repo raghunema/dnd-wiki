@@ -8,12 +8,20 @@
             "Information": "When the cosmos first lit the sky and the stars sing"
         }
     ],
-    "npcs": {
-        "illmindel": {
+    "npcs": [
+        {
+            "id": "illmindel",
             "name": "Illmindel",
-            "race": "elf-human"
+            "race": "elf-human",
+            "origin": "kiresth"
+        }, 
+        {
+            "id": "zoral",
+            "name": "zoral",
+            "race": "elf",
+            "origin": "kiresth"
         }
-    },
+    ],
     "world": [
         {
             "id": "mathura",
@@ -35,7 +43,7 @@
             "children": []
         },
         {
-            "id":"3",
+            "id":"continent-3",
             "slug": "3",
             "name": "3",
             "parent": "mathura",

@@ -15,6 +15,29 @@
   },
   "npcs": {
     "npcs.Update": {
+      "0": {
+        "0.Add": {
+          "data": {
+            "id": "illmindel",
+            "name": "Illmindel",
+            "race": "elf-human",
+            "origin": "kiresth"
+          }
+        }
+      },
+      "1": {
+        "1.Add": {
+          "data": {
+            "id": "zoral",
+            "name": "zoral",
+            "race": "elf",
+            "origin": "kiresth"
+          }
+        }
+      },
+      "illmindel": {
+        "illmindel.Delete": {}
+      },
       "zoral": {
         "zoral.Delete": {}
       }
