@@ -1,6 +1,5 @@
 {
   "the-great-awakening": {
-    "the-great-awakening": 0,
     "illmindel": 0,
     "zoral": 0,
     "mathura": 0,
@@ -9,7 +8,6 @@
   },
   "illmindel": {
     "the-great-awakening": 0,
-    "illmindel": 0,
     "zoral": 0,
     "mathura": 0,
     "kiresth": 0,
@@ -18,7 +16,6 @@
   "zoral": {
     "the-great-awakening": 0,
     "illmindel": 0,
-    "zoral": 0,
     "mathura": 0,
     "kiresth": 0,
     "continent-3": 0
@@ -27,7 +24,6 @@
     "the-great-awakening": 0,
     "illmindel": 0,
     "zoral": 0,
-    "mathura": 0,
     "kiresth": 0,
     "continent-3": 0
   },
@@ -36,7 +32,6 @@
     "illmindel": 0,
     "zoral": 0,
     "mathura": 0,
-    "kiresth": 0,
     "continent-3": 0
   },
   "continent-3": {
@@ -44,7 +39,6 @@
     "illmindel": 0,
     "zoral": 0,
     "mathura": 0,
-    "kiresth": 0,
-    "continent-3": 0
+    "kiresth": 0
   }
 }

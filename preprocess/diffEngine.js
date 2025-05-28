@@ -125,12 +125,13 @@ function getDictionary_controller(data, output_file) {
     for (const key in items) {
         dictionary[key] = {};
         for (const keyTwo in items) {
+            if (keyTwo == key) continue;
             //console.log(typeof childkey)
             dictionary[key][keyTwo] = 0;
         }
         //dictionary[key] = JSON.parse(JSON.stringify(items));
     }
-    //delete what a duplicated child key, i.e. "zoral" : {"zoral": {}}
+    //delete a duplicated child key, i.e. "zoral" : {"zoral": {}}
     // for (const key in dictionary) {
     //     delete dictionary[key][key]
     // }
