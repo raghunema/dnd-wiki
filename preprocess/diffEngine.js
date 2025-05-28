@@ -26,6 +26,7 @@ function generateKeys(newData, oldData) {
     return allKeys;
 }
 
+//clean up function for the changes function
 function cleanup(changes) {
     for (const key in changes) {
         if (typeof changes[key] == 'object' && changes[key] !== null) {
@@ -81,6 +82,7 @@ function compare_controller(newData, oldData, changeLog) {
     var changes =  {};
     changes.version = 1;
 
+    //gets all keys - to accounted for deleted information when going from old to new
     const allKeys = generateKeys(newData, oldData);
     console.log(allKeys)
 
@@ -89,7 +91,7 @@ function compare_controller(newData, oldData, changeLog) {
         changes[key] = compare(key, newData, oldData, 1)
     } 
 
-    cleanup(changes);
+    cleanup(changes); //removes any empty objects
     //console.log(changes)
     return changes;
 }
@@ -104,6 +106,7 @@ function getDictionary(data, dictionary = {}) {
             dictionary[data[key].id] = {};
         }
        
+        //recursive call to get objects in objects
         if (typeof data[key] == 'object' && key != null) {
             getDictionary(data[key], dictionary);
         }
@@ -113,16 +116,25 @@ function getDictionary(data, dictionary = {}) {
     return dictionary;
 }
 
+//controller for the dictionary
 function getDictionary_controller(data, output_file) {
     var items = getDictionary(data);
+
+    //makes a dictionary of dictionaries
     var dictionary = {};
     for (const key in items) {
-        dictionary[key] = JSON.parse(JSON.stringify(items));
+        dictionary[key] = {};
+        for (const keyTwo in items) {
+            //console.log(typeof childkey)
+            dictionary[key][keyTwo] = 0;
+        }
+        //dictionary[key] = JSON.parse(JSON.stringify(items));
     }
+    //delete what a duplicated child key, i.e. "zoral" : {"zoral": {}}
+    // for (const key in dictionary) {
+    //     delete dictionary[key][key]
+    // }
 
-    for (const key in dictionary) {
-        delete dictionary[key][key]
-    }
 
     console.log(`${JSON.stringify(dictionary, null, 2)}`)
     fs.writeFileSync(output_file, JSON.stringify(dictionary, null, 2))

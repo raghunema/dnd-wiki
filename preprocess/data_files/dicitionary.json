@@ -1,0 +1,44 @@
+{
+  "the-great-awakening": {
+    "illmindel": {},
+    "zoral": {},
+    "mathura": {},
+    "kiresth": {},
+    "continent-3": {}
+  },
+  "illmindel": {
+    "the-great-awakening": {},
+    "zoral": {},
+    "mathura": {},
+    "kiresth": {},
+    "continent-3": {}
+  },
+  "zoral": {
+    "the-great-awakening": {},
+    "illmindel": {},
+    "mathura": {},
+    "kiresth": {},
+    "continent-3": {}
+  },
+  "mathura": {
+    "the-great-awakening": {},
+    "illmindel": {},
+    "zoral": {},
+    "kiresth": {},
+    "continent-3": {}
+  },
+  "kiresth": {
+    "the-great-awakening": {},
+    "illmindel": {},
+    "zoral": {},
+    "mathura": {},
+    "continent-3": {}
+  },
+  "continent-3": {
+    "the-great-awakening": {},
+    "illmindel": {},
+    "zoral": {},
+    "mathura": {},
+    "kiresth": {}
+  }
+}
