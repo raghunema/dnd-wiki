@@ -1,5 +1,5 @@
 const fs = require('fs');
-const { type } = require('os');
+//const { type } = require('os');
 const path = require('path');
 
 
@@ -47,7 +47,7 @@ function compare(key, newData, oldData, direction) {
     if (!oldData.hasOwnProperty(key)) { //inserts
         changes[`${key}.Add`] = {'data': newData[key]};
     } else if (!newData.hasOwnProperty(key)) { //deletes
-        changes[`${key}.Delete`] = {'data': newData[key]};
+        changes[`${key}.Delete`] = {'data': oldData[key]};
     } else { //updates
         if (newData[key] != oldData[key]) {
 
@@ -59,11 +59,9 @@ function compare(key, newData, oldData, direction) {
                 console.log(childKeys)
 
                 for (const childKey of childKeys) {
-
                     console.log(`Child Key: ${childKey}`)
                     changes[`${key}.Update`][childKey] = compare(childKey, newData[key],  oldData[key], 1)
                     console.log(`Checking length of [${key}.Update][${childKey}]: ${Object.keys(changes[`${key}.Update`][childKey]).length}`)
-
 
                     if (Object.keys(changes[`${key}.Update`][childKey]).length === 0) {
                         console.log(`Deleting: [${key}.Update][${childKey}]`)
@@ -116,8 +114,44 @@ function getDictionary(data, dictionary = {}) {
     return dictionary;
 }
 
+//populat the dictionary with data
+function populate_dictionary(data, references, dict) {
+    const id = data.id
+    //console.log(id)
+
+    var dataString = "";
+    for (const item in data) {
+       dataString = dataString.concat(data[item] + " ").toLowerCase();
+    }
+
+
+    // const dataInfoArr = dataString.split(/[" ", ,]/);
+    // console.log(dataInfoArr)
+
+    for (const ref in references) {
+        if (!references.hasOwnProperty(ref) || references[ref] == id) continue;
+
+        const tempArr = dataString.split(ref.toLowerCase())
+        console.log(`testing: ${tempArr}: ${tempArr.length}`)
+
+        dict[id][references[ref]] += (tempArr.length - 1)
+
+        // for (const i in dataInfoArr) {
+        //     if (dataInfoArr[i] == ref) {
+        //         console.log(dataInfoArr[i])
+
+        //         dict[id][references[ref]] += 1
+
+        //     }
+        // }
+        
+    }
+
+}
+
+
 //controller for the dictionary
-function getDictionary_controller(data, output_file) {
+function getDictionary_controller(data, references, output_file) {
     var items = getDictionary(data);
 
     //makes a dictionary of dictionaries
@@ -129,15 +163,26 @@ function getDictionary_controller(data, output_file) {
             //console.log(typeof childkey)
             dictionary[key][keyTwo] = 0;
         }
-        //dictionary[key] = JSON.parse(JSON.stringify(items));
     }
-    //delete a duplicated child key, i.e. "zoral" : {"zoral": {}}
-    // for (const key in dictionary) {
-    //     delete dictionary[key][key]
-    // }
 
+    //Object.entries(data).forEach(())
 
-    console.log(`${JSON.stringify(dictionary, null, 2)}`)
+    for (const category in data) {
+        if (!data.hasOwnProperty(category)) continue;
+
+        const categoryObj = data[category];
+        for (const item in categoryObj) {
+            if (!categoryObj.hasOwnProperty(item)) continue;
+
+            const itemObj = categoryObj[item];
+            //console.log(`Caregory: ${categoryObj}.${itemObj.id}; Type of: ${typeof categoryObj}.${typeof itemObj}`)
+            //console.log(data[category][obj])
+            populate_dictionary(itemObj, references, dictionary)
+        }
+    
+    }
+
+    //console.log(`${JSON.stringify(dictionary, null, 2)}`)
     fs.writeFileSync(output_file, JSON.stringify(dictionary, null, 2))
 }
 
@@ -166,9 +211,13 @@ function load(...args) {
             break;
         case 'getDict':
             const data_file = path.resolve(__dirname, args[1]);
+            const references_file = path.resolve(__dirname, args[2])
+
             const data_obj = JSON.parse(fs.readFileSync(data_file, 'utf8'));
+            const refrences_obj = JSON.parse(fs.readFileSync(references_file, 'utf8'));
+
             console.log(`Getting Dict for file ${data_file}`);
-            getDictionary_controller(data_obj, output_file = args[2] || 'dicitionary.json');
+            getDictionary_controller(data_obj, refrences_obj, output_file = args[3] || 'dicitionary.json');
             break;
         default:
             console.log('Invalid arguements');
@@ -200,12 +249,12 @@ if (require.main == module) {
             load(process.argv[2], process.argv[3], process.argv[4], process.argv[5]);
             break;
         case 'getDict':
-            if (process.argv.length < 3) {
-                console.log("File path expected");
+            if (process.argv.length < 4) {
+                console.log("Data file and references path expected");
                 process.exitCode = 1;
                 process.exit();
             }
-            load(process.argv[2], process.argv[3]);
+            load(process.argv[2], process.argv[3], process.argv[4]);
             break;
         default: 
             console.log("Invalid command")

@@ -1,0 +1,14 @@
+Commands:
+
+diffEngine.js
+1- Compare
+    Takes in two files and compares their json values, and outputs in an output file
+
+    node diffEngine.js compare fileOne fileTwo  outputFile
+
+2- Get Dictionary
+    Takes in a data file, and a references file, makes a dictionary out of them
+
+    node diffEngine.js compare dataFile refFile  outputFile(optional)
+
+

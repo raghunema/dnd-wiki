@@ -13,13 +13,15 @@
             "id": "illmindel",
             "name": "Illmindel",
             "race": "elf-human",
-            "origin": "kiresth"
+            "origin": "kiresth",
+            "information": "Aliases: Protector of Surtr"
         }, 
         {
             "id": "zoral",
             "name": "zoral",
             "race": "elf",
-            "origin": "kiresth"
+            "origin": "kiresth, illmindel",
+            "information": "friend of illmindel, also kinda hates illmindel"
         }
     ],
     "world": [
@@ -40,7 +42,8 @@
             "parent": "mathura",
             "path": ["mathura"],
             "type": "continent",
-            "children": []
+            "children": [],
+            "information": "Home of the Protector of Surtr"
         },
         {
             "id":"continent-3",
