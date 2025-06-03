@@ -3,12 +3,39 @@ Commands:
 diffEngine.js
 1- Compare
     Takes in two files and compares their json values, and outputs in an output file
-
-    node diffEngine.js compare fileOne fileTwo  outputFile
-
+    node diffEngine.js compare newOne oldTwo  outputFile
 2- Get Dictionary
     Takes in a data file, and a references file, makes a dictionary out of them
-
     node diffEngine.js compare dataFile refFile  outputFile(optional)
 
+need to make a meta data file
+    -Needs to know the version of the current data file
+    -Needs to control the older version of the files, 
 
+    Update data file function
+        -> Has a version
+        -> Creates an update data object, saves it in a file, with a version
+        -> 
+    Maybe just an update function 
+        -Takes in a category
+        -Takes in information 
+        -Validates via category and information
+            Validates ID: 
+                For update and delete
+            Validates Category: 
+                For an add
+        -You can make an update file straight from the update function  
+
+
+New Function: Rollback
+    Read changes from the change log -> then make them to the current data file to remake a version of it
+
+I should be able to sort the arrays to make it easier to find when searching for it
+
+--------------------------------------------------------------------------------------------------------
+
+What is the scope of this project?
+
+a- To keep some sense of versioing
+b- To get some visualization on the connections between people
+c- 

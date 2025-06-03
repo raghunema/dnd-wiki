@@ -1,0 +1,53 @@
+{
+    "version": "1.0",
+    "events": [
+        {
+            "id": "the-great-awakening",
+            "name": "The Great Awakening",
+            "date": 0,
+            "type": "historical",
+            "Information": "When the cosmos first lit the sky"
+        }
+    ], 
+    "npcs": {
+        "illmindel": {
+            "name": "Illmindel",
+            "race": "elf-human"
+        },
+        "zoral": {
+            "name": "Zoral",
+            "race": "elf"
+        }
+    },
+    "world": [
+        {
+            "id": "mathura",
+            "slug": "mathura",
+            "name": "Mathura",
+            "parent": "NULL",
+            "path": [""],
+            "type": "planet",
+            "children": ["kiresth", "kalith"]
+
+        }, 
+        {
+            "id":"kiresth",
+            "slug": "kiresth",
+            "name": "Kiresth",
+            "parent": "mathura",
+            "path": ["mathura"],
+            "type": "continent",
+            "children": []
+        },
+        {
+            "id":"3",
+            "slug": "3",
+            "name": "3",
+            "parent": "mathura",
+            "path": ["mathura"],
+            "type": "continent",
+            "children": []
+        }
+    ],
+    "places": {}
+}

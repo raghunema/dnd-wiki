@@ -39,34 +39,34 @@ function cleanup(changes) {
 }
 
 //main compare function
-function compare(key, newData, oldData, direction) {
+function compare(key, newData, oldData) {
     var changes = {};
 
-    console.log(`Comparing Key: ${key}`)
+    //console.log(`Comparing Key: ${key}`)
 
     if (!oldData.hasOwnProperty(key)) { //inserts
-        changes[`${key}.Add`] = {'data': newData[key]};
+        changes[`${key}.Add`] = newData[key];
     } else if (!newData.hasOwnProperty(key)) { //deletes
-        changes[`${key}.Delete`] = {'data': oldData[key]};
+        changes[`${key}.Delete`] = oldData[key];
     } else { //updates
         if (newData[key] != oldData[key]) {
 
             if (typeof newData[key] != 'object') {
-                changes[`${key}.Update`] = {'data': newData[key]}
+                changes[`${key}.Update`] = newData[key];
             } else {
                 changes[`${key}.Update`] = {};
                 childKeys = generateKeys(newData[key], oldData[key])
-                console.log(childKeys)
+                //console.log(childKeys)
 
                 for (const childKey of childKeys) {
-                    console.log(`Child Key: ${childKey}`)
-                    changes[`${key}.Update`][childKey] = compare(childKey, newData[key],  oldData[key], 1)
-                    console.log(`Checking length of [${key}.Update][${childKey}]: ${Object.keys(changes[`${key}.Update`][childKey]).length}`)
+                    //console.log(`Child Key: ${childKey}`)
+                    changes[`${key}.Update`][childKey] = compare(childKey, newData[key],  oldData[key])
+                    // console.log(`Checking length of [${key}.Update][${childKey}]: ${Object.keys(changes[`${key}.Update`][childKey]).length}`)
 
-                    if (Object.keys(changes[`${key}.Update`][childKey]).length === 0) {
-                        console.log(`Deleting: [${key}.Update][${childKey}]`)
-                        delete changes[`${key}.Update`][childKey]
-                    }
+                    // if (Object.keys(changes[`${key}.Update`][childKey]).length === 0) {
+                    //     console.log(`Deleting: [${key}.Update][${childKey}]`)
+                    //     delete changes[`${key}.Update`][childKey]
+                    // }
                 } 
             }   
         }
@@ -76,13 +76,12 @@ function compare(key, newData, oldData, direction) {
 }
 
 //parent function to get all the keys for the differences
-function compare_controller(newData, oldData, changeLog) {
+function compare_controller(newData, oldData) {
     var changes =  {};
-    changes.version = 1;
 
     //gets all keys - to accounted for deleted information when going from old to new
     const allKeys = generateKeys(newData, oldData);
-    console.log(allKeys)
+    //console.log(allKeys)
 
     for (const key of allKeys) {
         //console.log(`comparing key: ${key}`)
@@ -93,6 +92,45 @@ function compare_controller(newData, oldData, changeLog) {
     //console.log(changes)
     return changes;
 }
+
+//Metadata tracker for the data -> Call function when you want to update the data file
+function updateData(newData) {
+    const metaDataPath = path.resolve(__dirname, './metadata/metadata.json');
+    const metaData = JSON.parse(fs.readFileSync(metaDataPath, 'utf8'));
+    var version = metaData.version;
+
+    // console.log("Here")
+    // console.log(metaData.currFile)
+
+    //check if the new data is the same as the old data
+    const currData = JSON.parse(fs.readFileSync(path.resolve(__dirname, './metadata/', metaData.currFile), 'utf8'))
+    const changes = compare_controller(newData, currData)
+
+    if (Object.keys(changes).length == 0) {
+        console.log("Your file has not changes, no need to update");
+        return;
+    }
+
+    const oldFile = path.resolve(__dirname, './metadata/', metaData.OldFile)
+
+    //if the version number is divisible by 10, make a snapshot, and start a new changeLog file
+    if ((version - 1) % 10 == 0) {
+        const snapshotPath = path.resolve(__dirname, `./metadata/snapshots/dataSnapshot_${version - 1}.json`)
+        fs.writeFileSync(snapshotPath, ))
+
+        const changeLogPath = path.resolve(__dirname, `./metadata/changeLogs/changeLog_${version}.json)`)
+        metaData.changeLog = changeLogPath;
+    }
+
+    //update version
+    version += 1;
+    metaData.version = version;
+
+    //write the current file to a new file
+    
+
+}
+
 
 //make dictionary for data visualization
 function getDictionary(data, dictionary = {}) {
@@ -149,7 +187,6 @@ function populate_dictionary(data, references, dict) {
 
 }
 
-
 //controller for the dictionary
 function getDictionary_controller(data, references, output_file) {
     var items = getDictionary(data);
@@ -203,10 +240,9 @@ function load(...args) {
 
             const newData = JSON.parse(fs.readFileSync(newFile, 'utf8'));
             const oldData = JSON.parse(fs.readFileSync(oldFile, 'utf8'));
-            const changeData = JSON.parse(fs.readFileSync(changeLog, 'utf8'));
 
             console.log(`Comparing new file: ${args[1]} against old file: ${args[2]}, writing to ${args[3]}`);
-            changes = compare_controller(newData, oldData, changeData);
+            changes = compare_controller(newData, oldData);
             fs.writeFileSync(changeLog, JSON.stringify(changes, null, 2));
             break;
         case 'getDict':
@@ -218,6 +254,13 @@ function load(...args) {
 
             console.log(`Getting Dict for file ${data_file}`);
             getDictionary_controller(data_obj, refrences_obj, output_file = args[3] || 'dicitionary.json');
+            break;
+        case 'updateData':
+            const dataFile = path.resolve(__dirname, args[1]);
+            const dataToUpdate = JSON.parse(fs.readFileSync(dataFile, 'utf8'));
+
+            console.log(`Updating data file: ${dataFile}`);
+            updateData(dataToUpdate);
             break;
         default:
             console.log('Invalid arguements');
@@ -255,6 +298,14 @@ if (require.main == module) {
                 process.exit();
             }
             load(process.argv[2], process.argv[3], process.argv[4]);
+            break;
+        case 'updateData':
+            if (process.argv.length < 2) {
+                console.log("Need a data file to update");
+                process.exitCode = 1;
+                process.exit();
+            }
+            load(process.argv[2], process.argv[3]);
             break;
         default: 
             console.log("Invalid command")

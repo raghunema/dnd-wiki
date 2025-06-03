@@ -1,0 +1,65 @@
+{
+  "events": {
+    "events.Update": {
+      "0": {
+        "0.Update": {
+          "Information": {
+            "Information.Update": "When the cosmos first lit the sky and the stars sing"
+          }
+        }
+      }
+    }
+  },
+  "npcs": {
+    "npcs.Update": {
+      "0": {
+        "0.Add": {
+          "id": "illmindel",
+          "name": "Illmindel",
+          "race": "elf-human",
+          "origin": "kiresth",
+          "information": "Aliases: Protector of Surtr"
+        }
+      },
+      "1": {
+        "1.Add": {
+          "id": "zoral",
+          "name": "zoral",
+          "race": "elf",
+          "origin": "kiresth, illmindel",
+          "information": "friend of illmindel, also kinda hates illmindel"
+        }
+      },
+      "illmindel": {
+        "illmindel.Delete": {
+          "name": "Illmindel",
+          "race": "elf-human"
+        }
+      },
+      "zoral": {
+        "zoral.Delete": {
+          "name": "Zoral",
+          "race": "elf"
+        }
+      }
+    }
+  },
+  "world": {
+    "world.Update": {
+      "1": {
+        "1.Update": {
+          "information": {
+            "information.Add": "Home of the Protector of Surtr"
+          }
+        }
+      },
+      "2": {
+        "2.Update": {
+          "id": {
+            "id.Update": "continent-3"
+          }
+        }
+      }
+    }
+  }
+}
