@@ -1,5 +1,6 @@
 {
-    "version": 0,
-    "currFile": "data_1.json",
-    "oldFile": "oldFile.json"
+  "version": 5,
+  "currFile": "./metadata/currData.json",
+  "oldFile": "./metadata/oldData.json",
+  "changeLog": "/Users/raghunema/dndWikiProject/dnd-wiki/preprocess/metadata/changeLogs/changeLog_1.json"
 }

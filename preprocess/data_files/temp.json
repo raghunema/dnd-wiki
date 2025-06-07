@@ -5,17 +5,30 @@
             "name": "The Great Awakening",
             "date": 0,
             "type": "historical",
-            "Information": "When the cosmos first lit the sky"
+            "Information": "When the cosmos first lit the sky and the stars sing"
         }
-    ], 
+    ],
     "npcs": {
-        "illmindel": {
-            "name": "Illmindel",
-            "race": "elf-human"
-        },
         "zoral": {
-            "name": "Zoral",
-            "race": "elf"
+            "id": "zoral",
+            "name": "zoral",
+            "race": "elf",
+            "origin": "kiresth, illmindel",
+            "information": "friend of illmindel, also kinda hates illmindel"
+        },
+        "illmindel": {
+            "id": "illmindel",
+            "name": "Illmindel",
+            "race": "elf-human",
+            "origin": "kiresth",
+            "information": "Aliases: Protector of Surtr"
+        },
+        "npc-3":{
+            "id": "three",
+            "name": "3",
+            "race": "human",
+            "origin": "kalish",
+            "information": "npc 3"
         }
     },
     "world": [
@@ -36,10 +49,11 @@
             "parent": "mathura",
             "path": ["mathura"],
             "type": "continent",
-            "children": []
+            "children": [],
+            "information": "Home of the Protector of Surtr"
         },
         {
-            "id":"3",
+            "id":"continent-3",
             "slug": "3",
             "name": "3",
             "parent": "mathura",
@@ -47,6 +61,5 @@
             "type": "continent",
             "children": []
         }
-    ],
-    "places": {}
+    ]
 }

@@ -1,53 +1,73 @@
 {
-    "version": "1.0",
-    "events": [
-        {
-            "id": "the-great-awakening",
-            "name": "The Great Awakening",
-            "date": 0,
-            "type": "historical",
-            "Information": "When the cosmos first lit the sky"
-        }
-    ], 
-    "npcs": {
-        "illmindel": {
-            "name": "Illmindel",
-            "race": "elf-human"
-        },
-        "zoral": {
-            "name": "Zoral",
-            "race": "elf"
-        }
+  "events": [
+    {
+      "id": "the-great-awakening",
+      "name": "The Great Awakening",
+      "date": 0,
+      "type": "historical",
+      "Information": "When the cosmos first lit the sky and the stars sing"
+    }
+  ],
+  "npcs": {
+    "illmindel": {
+      "id": "illmindel",
+      "name": "Illmindel",
+      "race": "elf-human",
+      "origin": "kiresth",
+      "information": "Aliases: Protector of Surtr"
     },
-    "world": [
-        {
-            "id": "mathura",
-            "slug": "mathura",
-            "name": "Mathura",
-            "parent": "NULL",
-            "path": [""],
-            "type": "planet",
-            "children": ["kiresth", "kalith"]
-
-        }, 
-        {
-            "id":"kiresth",
-            "slug": "kiresth",
-            "name": "Kiresth",
-            "parent": "mathura",
-            "path": ["mathura"],
-            "type": "continent",
-            "children": []
-        },
-        {
-            "id":"3",
-            "slug": "3",
-            "name": "3",
-            "parent": "mathura",
-            "path": ["mathura"],
-            "type": "continent",
-            "children": []
-        }
-    ],
-    "places": {}
+    "zoral": {
+      "id": "zoral",
+      "name": "zoral",
+      "race": "elf",
+      "origin": "kiresth, illmindel",
+      "information": "friend of illmindel, also kinda hates illmindel"
+    },
+    "npc-3": {
+      "id": "three",
+      "name": "3",
+      "race": "human",
+      "origin": "kalish",
+      "information": "npc 3, temp 1, temp 2, temp 3, temp 4"
+    }
+  },
+  "world": [
+    {
+      "id": "mathura",
+      "slug": "mathura",
+      "name": "Mathura",
+      "parent": "NULL",
+      "path": [
+        ""
+      ],
+      "type": "planet",
+      "children": [
+        "kiresth",
+        "kalith"
+      ]
+    },
+    {
+      "id": "kiresth",
+      "slug": "kiresth",
+      "name": "Kiresth",
+      "parent": "mathura",
+      "path": [
+        "mathura"
+      ],
+      "type": "continent",
+      "children": [],
+      "information": "Home of the Protector of Surtr"
+    },
+    {
+      "id": "continent-3",
+      "slug": "3",
+      "name": "3",
+      "parent": "mathura",
+      "path": [
+        "mathura"
+      ],
+      "type": "continent",
+      "children": []
+    }
+  ]
 }

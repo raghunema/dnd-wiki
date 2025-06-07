@@ -1,12 +1,12 @@
 Commands:
 
 diffEngine.js
-1- Compare
+1- Compare : node diffEngine.js compare newOne oldTwo  outputFile
     Takes in two files and compares their json values, and outputs in an output file
-    node diffEngine.js compare newOne oldTwo  outputFile
-2- Get Dictionary
+   
+2- Get Dictionary :  node diffEngine.js compare dataFile refFile  outputFile(optional)
     Takes in a data file, and a references file, makes a dictionary out of them
-    node diffEngine.js compare dataFile refFile  outputFile(optional)
+3- Update Data: node diffEngine.js updateData newData   
 
 need to make a meta data file
     -Needs to know the version of the current data file

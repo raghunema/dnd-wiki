@@ -2,7 +2,6 @@ const fs = require('fs');
 //const { type } = require('os');
 const path = require('path');
 
-
 //takes in a json object and traverses it
 function traverse(obj, path = []) {
     if (typeof obj == 'object' && obj != null) {
@@ -100,34 +99,64 @@ function updateData(newData) {
     var version = metaData.version;
 
     // console.log("Here")
-    // console.log(metaData.currFile)
+    console.log(`curr file: ${metaData.currFile}`)
+
 
     //check if the new data is the same as the old data
-    const currData = JSON.parse(fs.readFileSync(path.resolve(__dirname, './metadata/', metaData.currFile), 'utf8'))
+    const currData = JSON.parse(fs.readFileSync(path.resolve(__dirname, metaData.currFile), 'utf8'))
     const changes = compare_controller(newData, currData)
 
+    //Do nothing
     if (Object.keys(changes).length == 0) {
         console.log("Your file has not changes, no need to update");
         return;
     }
 
-    const oldFile = path.resolve(__dirname, './metadata/', metaData.OldFile)
+    console.log(`old data: ${metaData.oldFile}`)
+    const oldFile = path.resolve(__dirname, metaData.oldFile)
 
-    //if the version number is divisible by 10, make a snapshot, and start a new changeLog file
+    var newChangeLog = 0;
+    //if the old version number is divisible by 10, make a snapshot, and start a new changeLog file
     if ((version - 1) % 10 == 0) {
         const snapshotPath = path.resolve(__dirname, `./metadata/snapshots/dataSnapshot_${version - 1}.json`)
-        fs.writeFileSync(snapshotPath, ))
+        const oldData = fs.readFileSync(oldFile, 'utf8');
+        fs.writeFileSync(snapshotPath, oldData)
 
-        const changeLogPath = path.resolve(__dirname, `./metadata/changeLogs/changeLog_${version}.json)`)
+        //update the change log we are writing to
+        const changeLogPath = path.resolve(__dirname, `./metadata/changeLogs/changeLog_${version}.json`)
         metaData.changeLog = changeLogPath;
-    }
+        newChangeLog = 1;
+    } 
+
+    //copy current to old
+    fs.writeFileSync(oldFile, JSON.stringify(currData, null, 2))
+    //copy new data to current
+    fs.writeFileSync(path.resolve(__dirname, metaData.currFile), JSON.stringify(newData, null, 2))
 
     //update version
     version += 1;
     metaData.version = version;
 
     //write the current file to a new file
-    
+    const changeLogPath = path.resolve(__dirname, metaData.changeLog);
+
+    var changeLogChanges = {};
+    changeLogChanges.version = version;
+    changeLogChanges.changes = changes;
+
+    if (newChangeLog) {
+        fs.writeFileSync(changeLogPath, JSON.stringify([changeLogChanges], null, 2));
+    } else {
+        let log = [];
+        log = JSON.parse(fs.readFileSync(changeLogPath, 'utf8'));
+        log.push(changeLogChanges);
+
+        fs.writeFileSync(changeLogPath, JSON.stringify(log, null, 2))
+    }
+
+    console.log(metaData)
+    //update metadata file
+    fs.writeFileSync(metaDataPath, JSON.stringify(metaData, null, 2))
 
 }
 

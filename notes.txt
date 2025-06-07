@@ -17,8 +17,26 @@ Currently things to implement:
     -go into information and then check to change things into a tag
         this should happen so that when i update the lore, i dont need to manually add tags
 -----------------------------------------------------------------------------------------------
+data visualization
+
+basically takes the data framework and makes a dictionary - each item should have a subdictionary
+    it should store what other components mention it
+    could be a directional graph
+
+    Maybe just npcs?
+
+    ex: Illmindel: {"Place of Birth": "Isortar"}
+
+    then: 
+        Dict: {"isortar": {"Illmindel" = {1}}}
+
+    No, I think you save where you point towards, 
+        {
+            "Illmindel" = { "Isortar" = 1}}
+        }
 
 
+-----------------------------------------------------------------------------------------------
 compare function: 
     needs to be recursive
     should have a parent function that calls the compare function
