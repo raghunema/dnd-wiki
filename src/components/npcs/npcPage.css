@@ -1,0 +1,76 @@
+.main-content {
+   justify-content: center;
+}
+
+.npc-page {
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    font-family: "Almendra SC", serif;
+    width: 80%;
+    margin: 0 auto;
+}
+
+.npc-description {
+    display: grid;
+    margin: 5px 5px 20px 5px;
+    grid-template-columns: 1fr 1fr;
+    justify-content: center;
+    align-items: flex-start;
+
+}
+
+.npc-nav {
+    border: solid;
+    border-width: 2px 1px 1px 1px;
+    border-color: rgb(228, 154, 8);
+    width: 70%;
+    margin: 0 auto;
+}
+
+.npc-nav-obj {
+    border: solid;
+    border-width: 1px 0.0px 0.5px 0.0px;
+    border-color: rgb(228, 154, 8);
+}
+
+.npc-nav-obj ul {
+    margin: 5px;
+    padding: 0px;
+    font-size: 20px; 
+}
+
+.npc-base-info {
+    margin: 0 auto;
+    align-items: center;
+}
+
+.base-info-grid {
+    border: solid;
+    border-width: 1px;
+    border-radius: 1px;
+    border-color: rgb(228, 154, 8);
+    margin: 0 auto;
+}
+
+.base-info-grid .label{
+    padding: 10px 20px 10px 20px;
+    background-color:rgb(238, 184, 74);
+    border-right: solid;
+    border-width: 1px;
+    border-color: rgb(228, 154, 8);
+    font-size: 20px;
+}
+
+.base-info-grid .value {
+    padding: 10px 20px 10px 20px;
+    font-size: 20px;
+    font-weight: 600;
+    border-left: solid;
+    border-width: 1px;
+    border-color: rgb(228, 154, 8);
+    background-color: rgb(238, 184, 74);
+
+}
+
+

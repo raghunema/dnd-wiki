@@ -1,5 +1,35 @@
 [
   {
+    "2": {
+      "npcs": {
+        "npcs.Update": {
+          "npc-3": {
+            "npc-3.Update": {
+              "information": {
+                "information.Update": "npc 3, temp 1,"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "3": {
+      "npcs": {
+        "npcs.Update": {
+          "npc-3": {
+            "npc-3.Update": {
+              "information": {
+                "information.Update": "npc 3, temp 1, temp 2"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
     "version": 4,
     "changes": {
       "npcs": {
@@ -23,7 +53,66 @@
           "npc-3": {
             "npc-3.Update": {
               "information": {
-                "information.Update": "npc 3, temp 1, temp 2, temp 3, temp 4"
+                "information.Update": "npc 3, temp 1"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "version": 6,
+    "changes": {
+      "npcs": {
+        "npcs.Update": {
+          "npc-3": {
+            "npc-3.Update": {
+              "information": {
+                "information.Update": "npc 3, temp 1"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "version": 7,
+    "changes": {
+      "world": {
+        "world.Update": {
+          "1": {
+            "1.Update": {
+              "information": {
+                "information.Update": "Home of the Protector of Surtr, someething "
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "version": 8,
+    "changes": {
+      "npcs": {
+        "npcs.Update": {
+          "npc-3": {
+            "npc-3.Update": {
+              "information": {
+                "information.Update": "npc 3, temp 1, temp 2"
+              }
+            }
+          }
+        }
+      },
+      "world": {
+        "world.Update": {
+          "1": {
+            "1.Update": {
+              "information": {
+                "information.Update": "Home of the Protector of Surtr, something 1"
               }
             }
           }

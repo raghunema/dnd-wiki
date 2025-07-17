@@ -7,7 +7,9 @@ import CharacterPage from '/Users/raghunema/dndWikiProject/dnd-wiki/src/componen
 import Home from '/Users/raghunema/dndWikiProject/dnd-wiki/src/components/home/home.js';
 import WorldPage from '/Users/raghunema/dndWikiProject/dnd-wiki/src/components/worldPage/worldPage';
 import Timeline from '/Users/raghunema/dndWikiProject/dnd-wiki/src/components/timeline/timeline';
+import NpcMainPage from './components/npcs/npcMainPage';
 import NpcPage from './components/npcs/npcPage';
+import AdminPage from './components/admin/adminPage';
 
 function App() {
   return (
@@ -20,7 +22,9 @@ function App() {
                 <Route path="/characters" element={<CharacterPage />} />
                 <Route path="/world-page" element={<WorldPage />} />
                 <Route path="/timeline" element={<Timeline />} />
-                <Route path="/npcs" element={<NpcPage />} />
+                <Route path="/npcs/" element={<NpcMainPage />}/> 
+                <Route path="/npcs/:npcSlug" element={<NpcPage />} />
+                <Route path="/admin" element={<AdminPage/> }/>
             </Routes>
           </div>
         </Router>

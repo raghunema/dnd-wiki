@@ -1,0 +1,29 @@
+.npc-main-page {
+    display: flex;
+    flex-wrap: wrap;
+    justify-self: center;
+    padding: 5px;
+}
+
+.npc-card {
+    text-align: center;
+    border-style: 1px solid #2d2929;
+    border-radius: 10px;
+    width: 300px;
+    height: 145px;
+    margin: 15px;
+    padding: 15px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+    display: inline-block;
+    vertical-align: top;
+    transition: box-shadow 0.2s;
+}
+
+.npc-card:hover {
+    box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+    border-color: #888;
+}
+
+.p {
+    padding: 15px;
+}

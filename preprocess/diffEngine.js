@@ -98,9 +98,7 @@ function updateData(newData) {
     const metaData = JSON.parse(fs.readFileSync(metaDataPath, 'utf8'));
     var version = metaData.version;
 
-    // console.log("Here")
-    console.log(`curr file: ${metaData.currFile}`)
-
+    //console.log(`curr file: ${metaData.currFile}`)
 
     //check if the new data is the same as the old data
     const currData = JSON.parse(fs.readFileSync(path.resolve(__dirname, metaData.currFile), 'utf8'))
@@ -112,7 +110,7 @@ function updateData(newData) {
         return;
     }
 
-    console.log(`old data: ${metaData.oldFile}`)
+    //console.log(`old data: ${metaData.oldFile}`)
     const oldFile = path.resolve(__dirname, metaData.oldFile)
 
     var newChangeLog = 0;
@@ -158,8 +156,9 @@ function updateData(newData) {
     //update metadata file
     fs.writeFileSync(metaDataPath, JSON.stringify(metaData, null, 2))
 
-}
+    updateDictionary(metaData, changes)
 
+}
 
 //make dictionary for data visualization
 function getDictionary(data, dictionary = {}) {
@@ -252,6 +251,25 @@ function getDictionary_controller(data, references, output_file) {
     fs.writeFileSync(output_file, JSON.stringify(dictionary, null, 2))
 }
 
+function updateDictionary(metaData, changes) {
+    //the dictionary to update
+    const pathToDict = path.resolve(__dirname, metaData.dictFile)
+    const dict = JSON.parse(fs.readFileSync(pathToDict, 'utf8'));
+
+    console.log(changes)
+
+    //what if i add a new item -> need to update all objects in the dictionary
+    //if i delete an item -> reduce the refernces
+    //update -> remove, and then add?
+    for (const category in changes) {
+        for (const change in category.Update) {
+            
+        }
+
+    }
+    
+}
+
 function load(...args) {
     const operation = args[0];
 
@@ -282,7 +300,7 @@ function load(...args) {
             const refrences_obj = JSON.parse(fs.readFileSync(references_file, 'utf8'));
 
             console.log(`Getting Dict for file ${data_file}`);
-            getDictionary_controller(data_obj, refrences_obj, output_file = args[3] || 'dicitionary.json');
+            getDictionary_controller(data_obj, refrences_obj, output_file = args[3] || './metadata/dictionary.json');
             break;
         case 'updateData':
             const dataFile = path.resolve(__dirname, args[1]);

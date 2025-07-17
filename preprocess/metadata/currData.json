@@ -28,7 +28,7 @@
       "name": "3",
       "race": "human",
       "origin": "kalish",
-      "information": "npc 3, temp 1, temp 2, temp 3, temp 4"
+      "information": "npc 3, temp 1, temp 2"
     }
   },
   "world": [
@@ -56,7 +56,7 @@
       ],
       "type": "continent",
       "children": [],
-      "information": "Home of the Protector of Surtr"
+      "information": "Home of the Protector of Surtr, something 1"
     },
     {
       "id": "continent-3",

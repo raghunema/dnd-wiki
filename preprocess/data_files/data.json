@@ -28,7 +28,7 @@
             "name": "3",
             "race": "human",
             "origin": "kalish",
-            "information": "npc 3, temp 1, temp 2, temp 3, temp 4"
+            "information": "npc 3, temp 1, temp 2"
         }
     },
     "world": [
@@ -39,8 +39,8 @@
             "parent": "NULL",
             "path": [""],
             "type": "planet",
+            "description": "Mathura is a young world, where lands are dominated by large megafauna, mysterious and fascinating creatures, and harsh climates. The road to civilization was riddled with hardship. The devastating climate and dangerous monsters crushed any hopes of extensive exploration for hundreds of years. A history of struggle was used to justify wars over natural resources and land. Slowly out of this turmoil, tribes became villages, and villages became cities, and now from cities emerge empires. Now is the age where one’s ambitions can look beyond their shores, where power and politics lead to inevitable conflict. The single most important event of the millennia was when the explorer Naeth Vaz and his crew, from the Northern Continent of Kiresth, departing from Baraq Peninsula, landed on the Southern Continent Kalith, on the peninsula of Shiraq. That was more than 400 years finally reuniting the two ancient lands. Now the peninsulas of Baraq and Shiraq are forever tied together, sharing a future even though they are spread out by thousands of miles. Trade, interconnectivity, and exploration: Food and spices, arts and music, books and religion are all exported and imported, as well as technological innovations and precious resources that can only be found in their specific and unique niches. Some people see this as an opportunity to explore the world, to leave the small nook of the world where they come from and see the beauty of nature, if they are so lucky to not be taken by its horrors. Others are weary of meeting foreigners, afraid that wars may break out on account of resources, or they are simply afraid of the unknown and different. Some just think that their precious civilization will be eroded away due to the influx of traders and immigrants. Political tensions brew beneath the prosperity of trade, which is bound to fade away sooner than later.",
             "children": ["kiresth", "kalith"]
-
         }, 
         {
             "id":"kiresth",
@@ -50,7 +50,7 @@
             "path": ["mathura"],
             "type": "continent",
             "children": [],
-            "information": "Home of the Protector of Surtr"
+            "information": "Home of the Protector of Surtr, something 1"
         },
         {
             "id":"continent-3",
