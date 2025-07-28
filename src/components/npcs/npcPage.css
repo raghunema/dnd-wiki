@@ -73,4 +73,24 @@
 
 }
 
+.npc-lore {
+    margin: 10px;
+}
 
+.npc-lore-obj {
+    justify-content: start;
+    border: solid;
+    border-width: 1px 1px 1px 1px;
+    border-color: rgb(238, 184, 74);
+    text-align: left;
+    padding: 1rem;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.npc-lore-obj h1 {
+    margin: 2px;
+    border: solid;
+    border-width: 0px 0px 1px 0px;
+    border-color: rgb(238, 184, 74);
+}

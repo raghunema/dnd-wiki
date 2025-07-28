@@ -43,20 +43,78 @@ const NpcNav = ({npcInfo}) => {
     )
 }
 
-const NpcLore = ({npcLore}) => {
-    const entries = Object.keys(npcLore || {});
+// const NpcLore = ({npcLore}) => {
+//     const entries = Object.keys(npcLore || {});
+
+//     const renderObj = (entry) => {
+//         if (typeof entry === 'string') {
+//             return(<p>{String(entry)}</p>)
+//         } else if (typeof entry === 'object') {
+//             return (
+//                 <ul>
+//                     {Object.entries(entry).map(([key, value]) => {
+//                         <div key={key}>
+//                             <h1>{key}</h1>
+//                             {renderObj(value)}
+//                         </div>
+//                     })}
+//                 </ul>   
+//             )
+//         }
+//     }
+
+//     return (
+//         <div className = "npc-lore">
+//             {Object.entries(npcLore).map(([key, value]) => {
+//                 <div id={key} key={key}>
+//                     <h1>{key}</h1>
+//                     {renderObj(value)}
+//                 </div>
+//             })}
+//         </div>
+//     )
+// }
+
+const NpcLore = ({ npcLore }) => {
+    const renderObj = (entry) => {
+        if (typeof entry === 'string' || typeof entry === 'number' || typeof entry === 'boolean') {
+            return <p>{String(entry)}</p>;
+        } else if (Array.isArray(entry)) {
+            return (
+                <ul>
+                    {entry.map((item, i) => (
+                        <li key={i}>{renderObj(item)}</li>
+                    ))}
+                </ul>
+            );
+        } else if (typeof entry === 'object' && entry !== null) {
+            return (
+                <ul>
+                    {Object.entries(entry).map(([key, value]) => (
+                        <li key={key}>
+                            <strong>{key}</strong>
+                            {renderObj(value)}
+                        </li>
+                    ))}
+                </ul>
+            );
+        } else {
+            return <p>{String(entry)}</p>;
+        }
+    };
 
     return (
-        <div className = "npc-lore-obj">
-            {entries.map((obj, index) => (
-                <div id={obj}>
-                    <h1>{obj}</h1>
-                    <p>{npcLore[obj]}</p>
+        <div className="npc-lore">
+            {Object.entries(npcLore || {}).map(([key, value]) => (
+                <div className="npc-lore-obj" id={key} key={key}>
+                    <h2>{key}</h2>
+                    {renderObj(value)}
                 </div>
             ))}
         </div>
-    )
-}
+    );
+};
+
 
 const NpcPage = () => {
 
@@ -93,7 +151,7 @@ const NpcPage = () => {
                     birthDate={npc.dateOfBirth}
                 />
             </div>
-            <div className="npc-lore">
+            <div className="npc-lore-part">
                 <NpcLore npcLore={npc.information}/>
             </div>
         </div>
