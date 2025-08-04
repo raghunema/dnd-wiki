@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
-import { useNavigate, Route, Routes } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { getAllNpcs } from '../../backendCalls/api'
-import  NpcPage from './npcPage'
 import './npcMainPage.css'
 
 

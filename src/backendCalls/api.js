@@ -1,4 +1,4 @@
-//const API_BASE = 'http://localhost:8000/'
+const API_BASE = 'http://localhost:8000/'
 const API_BASE_NPC = 'http://localhost:8000/npcs'
 
 export const getNPCSchema = async () => {
@@ -13,7 +13,7 @@ export const getNPCSchema = async () => {
 }
 
 export const getAllNpcs = async () => {
-    const url = API_BASE_NPC + '/getAll'
+    const url = API_BASE_NPC + '/all'
 
     console.log(url)
     const apiRes = await fetch(url, {
@@ -26,8 +26,26 @@ export const getAllNpcs = async () => {
 
 }
 
+export const login = async ({username, password}) => {
+    const url = API_BASE + 'login'
+
+    console.log(url)
+
+    const apiRes = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({ username, password }),
+    })
+
+    if (!apiRes.ok) throw new Error(`Error Logging in`);
+    return await apiRes
+}
+
 export const getNpc = async (npcSlug) => {
-    const url = API_BASE_NPC + `/${npcSlug}`
+    const url = API_BASE_NPC + `/single/${npcSlug}`
 
     console.log(url)
     const apiRes = await fetch(url, {

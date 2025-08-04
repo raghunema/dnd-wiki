@@ -10,6 +10,7 @@ import Timeline from '/Users/raghunema/dndWikiProject/dnd-wiki/src/components/ti
 import NpcMainPage from './components/npcs/npcMainPage';
 import NpcPage from './components/npcs/npcPage';
 import AdminPage from './components/admin/adminPage';
+import LoginPage from './components/admin/login';
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
                 <Route path="/npcs/" element={<NpcMainPage />}/> 
                 <Route path="/npcs/:npcSlug" element={<NpcPage />} />
                 <Route path="/admin" element={<AdminPage/> }/>
+                <Route path="/login" element={<LoginPage/>}/>
             </Routes>
           </div>
         </Router>

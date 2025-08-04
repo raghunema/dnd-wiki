@@ -1,9 +1,16 @@
+
 .npc-main-page {
     display: flex;
     flex-wrap: wrap;
-    justify-self: center;
+    justify-content: center;
     padding: 5px;
+    width: 75%;
+    margin: 0 auto;
+    align-content: flex-start;
+    height: 100vh;
+    /* padding-bottom: 2rem;  */
 }
+
 
 .npc-card {
     text-align: center;

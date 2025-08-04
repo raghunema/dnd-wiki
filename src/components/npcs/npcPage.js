@@ -43,38 +43,6 @@ const NpcNav = ({npcInfo}) => {
     )
 }
 
-// const NpcLore = ({npcLore}) => {
-//     const entries = Object.keys(npcLore || {});
-
-//     const renderObj = (entry) => {
-//         if (typeof entry === 'string') {
-//             return(<p>{String(entry)}</p>)
-//         } else if (typeof entry === 'object') {
-//             return (
-//                 <ul>
-//                     {Object.entries(entry).map(([key, value]) => {
-//                         <div key={key}>
-//                             <h1>{key}</h1>
-//                             {renderObj(value)}
-//                         </div>
-//                     })}
-//                 </ul>   
-//             )
-//         }
-//     }
-
-//     return (
-//         <div className = "npc-lore">
-//             {Object.entries(npcLore).map(([key, value]) => {
-//                 <div id={key} key={key}>
-//                     <h1>{key}</h1>
-//                     {renderObj(value)}
-//                 </div>
-//             })}
-//         </div>
-//     )
-// }
-
 const NpcLore = ({ npcLore }) => {
     const renderObj = (entry) => {
         if (typeof entry === 'string' || typeof entry === 'number' || typeof entry === 'boolean') {
