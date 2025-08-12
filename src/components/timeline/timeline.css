@@ -1,9 +1,10 @@
 .timeline {
-    width: 100%;
-    align-items: center;
+    width: 80%;
     margin: 0 auto;
     overflow-y: auto;
     display: flex;
     flex-direction: row;
-    width: 98%;
+    height: 100vh;
+    align-content: flex-start;
+    justify-content: flex-start;
 }

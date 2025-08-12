@@ -28,9 +28,8 @@
     width: 700px
 }
 
-
 .submit-button {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: rgba(13, 110, 221, 0.912);
   color: white;
   padding: 15px 40px;
   font-size: 18px;
@@ -41,69 +40,51 @@
   transition: all 0.3s ease;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
   margin-top: 30px;
-  margin-bottom: 40px;
+  margin-bottom: 10px;
   padding: 10px;
   width: 100%;
   max-width: 300px;
 }
 
-.array-field-wrapper {
-  padding: 20px;
-  border: 2px solid #e0e0e0;
-  border-radius: 8px;
-  margin-bottom: 20px;
-  background-color: #f9f9f9;
-}
-
-/* Array field title */
-.array-field-wrapper > .field-array > legend {
-  font-weight: 600;
-  font-size: 1.1rem;
-  color: #333;
-  margin-bottom: 15px;
-  padding: 0 10px;
-  background-color: #f9f9f9;
-}
-
 /* Each array item container */
 .array-item {
-  display: flex;
-  align-items: flex-start;
-  margin-bottom: 15px;
-  padding: 15px;
-  background-color: white;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  gap: 10px;
+    display: flex;
+    align-items: center;
+    margin: 15px;
+    padding: 15px;
+    border: 2px solid;
+    border-color: rgb(224, 154, 14);
+    border-radius: 6px;
+    gap: 10px;
 }
 
-/* Array item content (the actual input/textarea) */
-.array-item .form-field-wrapper {
-  flex: 1;
-  padding: 0; /* Remove padding since parent has it */
-  margin: 0;
+.array-item input {
+    width: 600px;
+    border: none;
+    box-shadow: none;
+    border-color: (228, 154, 8);
+    border: 2px;
 }
 
-/* Array item buttons container */
-.array-item-toolbox {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  min-width: 100px;
+.array-item .field {
+    margin: 0;
+    padding: 0;
 }
 
 /* Style the move up/down/remove buttons */
 .array-item-move-up,
 .array-item-move-down,
 .array-item-remove {
-  padding: 6px 12px;
-  border: 1px solid #ccc;
-  background-color: #f8f9fa;
+  padding: 10px;
+  margin: 10px;
   border-radius: 4px;
   cursor: pointer;
   font-size: 12px;
   text-align: center;
+  width: 40px;
+  height: 20px;
   transition: background-color 0.2s;
+  box-shadow: none;
 }
 
 .array-item-move-up:hover {
@@ -123,32 +104,18 @@
 }
 
 /* Add item button */
-.array-item-add {
-  padding: 10px 20px;
-  background-color: #4caf50;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: 500;
-  margin-top: 10px;
-  transition: background-color 0.2s;
-}
-
-.array-item-add:hover {
-  background-color: #45a049;
+.array-item-add button {
+    padding: 10px 20px;
+    background-color: #34b409;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    width: 60px;
+    transition: background-color 0.2s;
 }
 
 /* Array item index/number */
 .array-item .form-group > .control-label {
   display: none; /* Hide the auto-generated "Item 1", "Item 2" labels */
-}
-
-/* Make array items look more organized */
-.array-item:first-child {
-  border-top: 2px solid #4caf50;
-}
-
-.array-item:last-child {
-  margin-bottom: 10px;
 }

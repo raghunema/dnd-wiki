@@ -3,10 +3,11 @@ import { useEffect, useState } from 'react';
 import { getNpc } from '../../backendCalls/api'
 import './npcPage.css'
 
-const NpcBaseInfo = ({name, race, birthDate}) => {
+const NpcBaseInfo = ({name, race, birthDate, location}) => {
     return(
         <div className="npc-base-info">
             <table className="base-info-grid">
+                <tbody>
                 <tr>
                     <td className="label" >Name</td>
                     <td className="value">{name}</td>
@@ -19,6 +20,13 @@ const NpcBaseInfo = ({name, race, birthDate}) => {
                     <td className="label">DOB</td>
                     <td className="value">{birthDate}</td>
                 </tr>
+                </tbody>
+                {location && 
+                <tr>
+                    <td className="label">Location</td>
+                    <td className="value">{location}</td>
+                </tr>
+                }
             </table>
         </div>
     )
@@ -26,6 +34,7 @@ const NpcBaseInfo = ({name, race, birthDate}) => {
 
 const NpcNav = ({npcInfo}) => {
     const entries = Object.keys(npcInfo || {});
+    entries.push("events")
 
     return(
         <div className="npc-nav">
@@ -88,6 +97,7 @@ const NpcPage = () => {
 
     const { npcSlug } = useParams();
     const [npc, setNpc] = useState(null);
+    const [events, setEvents] = useState(null);
     const [error, setError] = useState(null);
 
     useEffect (() => {
@@ -99,8 +109,10 @@ const NpcPage = () => {
                 setError("No NPC Defined"); 
                 throw new Error("NPC not defined") 
             }
-            setNpc(npc)
-            console.log(npc.information)
+            setNpc(npc.npcInfo)
+            setEvents(npc.npcEvents)
+            
+            console.log(npc.npcEvents)
         }
         getAndSetNPCs()
         
@@ -117,10 +129,26 @@ const NpcPage = () => {
                     name={npc.name} 
                     race={npc.race} 
                     birthDate={npc.dateOfBirth}
+                    location={npc.location}
                 />
             </div>
             <div className="npc-lore-part">
                 <NpcLore npcLore={npc.information}/>
+                <div className="npc-events" id="events">
+                    <h1>Events</h1>
+                    {events && 
+                        events.map(event => {
+                            return (
+                            <div> 
+                                <h2>{event.name}</h2>
+                                <p>{event.description}</p>
+                                <p>{event.location}</p>
+                            </div>
+                            )
+
+                        })
+                    }
+                </div>
             </div>
         </div>
     )

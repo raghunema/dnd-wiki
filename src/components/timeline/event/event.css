@@ -4,6 +4,16 @@
     justify-content: start;
     text-align: start;
     padding-top: 10px;
+    margin: 30px;
+}
+
+.event-timeline {
+    margin-left: 10px;
+    border: solid;
+    border-width: 3px 1px 3px 1px;
+    border-color: rgb(238, 184, 74);
+    padding: auto;
+    flex: 1;
 }
 
 .dot {
@@ -32,7 +42,10 @@
 }
 
 .event-date {
-    font-weight: 400;
+    font-weight: 300;
+    border: solid;
+    border-width: 0px 0px 2px 0px;
+    border-color: rgb(238, 184, 74);
 }
 
 h1 {
@@ -47,4 +60,14 @@ h3 {
     margin-left: 20px;
     font-size: 24px;
     margin-top: 2px;
+}
+
+.event-npcs h2 {
+    border: solid;
+    border-width: 0px 0px 2px 0px;
+    border-color: rgb(238, 184, 74);
+}
+
+.event-npcs li {
+    margin-left: 20px;
 }

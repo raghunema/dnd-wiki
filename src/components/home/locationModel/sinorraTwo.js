@@ -135,7 +135,7 @@ const SinorraTwo = ({ modelPath }) => {
         };
     }, [modelPath]);
 
-    return <div ref={canvasRef} style={{ width: '100%', height: '100%' }}></div>; // The div element that will contain the canvas
+    return <div ref={canvasRef} style={{ width: '70%', height: '70%' }}></div>; // The div element that will contain the canvas
 }
 
 export default SinorraTwo;

@@ -5,12 +5,15 @@ import SinorraTwo from "./locationModel/sinorraTwo";
 import './home.css'
 
 const Home = () => {  
+
     return (
         <div className="home">
-            <div className="terrain-showcase">
+            {/* <div className="terrain-showcase"> */}
                 {/* <Sinorra modelPath={"/model1/onlyLow.glb"} normalMapPath={"/model1/normalMapOne.png"} /> */}
-                <SinorraTwo modelPath={"/terrainTestingOneV2.glb"} />
-            </div>
+                {/* <SinorraTwo modelPath={"/terrainTestingOneV2.glb"} /> */}
+            {/* </div> */}
+
+
         </div>
     )
  }

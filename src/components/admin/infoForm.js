@@ -56,6 +56,7 @@ const uiSchema = {
     },
     "items": {
       "ui:classNames": "array-item",  // Style for each array item
+      "ui:defaultValue": "",
       "ui:title": "Item"
     }
   },

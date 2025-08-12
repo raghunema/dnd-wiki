@@ -1,5 +1,6 @@
 const API_BASE = 'http://localhost:8000/'
 const API_BASE_NPC = 'http://localhost:8000/npcs'
+const API_BASE_Events = 'http://localhost:8000/events'
 
 export const getNPCSchema = async () => {
     const url = API_BASE_NPC + '/schema'
@@ -52,5 +53,36 @@ export const getNpc = async (npcSlug) => {
         method: 'GET'
     })
      if (!apiRes.ok) throw new Error(`Error getting npc ${npcSlug}`);
+    return await apiRes.json()
+}
+
+export const getNpcsForEvents = async (npcFilter) => {
+    const url = API_BASE_NPC + '/events'
+
+    console.log(url)
+        const apiRes = await fetch(url, {
+        method: 'POST',
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(npcFilter)
+    })
+    if (!apiRes.ok) throw new Error(`Error getting events`);
+    return await apiRes.json()
+    
+}
+
+export const getEvents = async (filters) => {
+    const url = API_BASE_Events + `/filtered`
+
+    console.log(url)
+    const apiRes = await fetch(url, {
+        method: 'POST',
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(filters)
+    })
+    if (!apiRes.ok) throw new Error(`Error getting events`);
     return await apiRes.json()
 }

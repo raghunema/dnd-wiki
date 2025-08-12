@@ -17,7 +17,7 @@ const EventMenu = ({ events }) => {
     return (
         <div className='timeline-menu'>
             {events.map((event, idx) => (
-                <MenuObj key={idx} title={event.title}/>
+                <MenuObj key={idx} title={event.name}/>
             ))}
         </div>
     )
