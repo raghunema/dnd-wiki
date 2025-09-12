@@ -1,6 +1,7 @@
 .timeline-menu {
     text-align: start;
     margin: 20px;
+    overflow-y: auto;
 }
 
 .event-menu-obj:hover {

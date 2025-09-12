@@ -9,11 +9,14 @@
 
 .event-timeline {
     margin-left: 10px;
+    margin-bottom: 10px;
     border: solid;
     border-width: 3px 1px 3px 1px;
     border-color: rgb(238, 184, 74);
     padding: auto;
     flex: 1;
+    max-height: 100vh;
+    overflow-y: auto;
 }
 
 .dot {

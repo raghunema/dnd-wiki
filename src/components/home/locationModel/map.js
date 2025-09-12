@@ -2,9 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
-import "./character.css";
 
-const Character = ({setSelectedCharacter}) => {
+const Map = ({setCurrentLocation}) => {
   const canvasRef = useRef(null);
   const [currObject, setCurrentObject] =  useState(null);
 
@@ -13,11 +12,10 @@ const Character = ({setSelectedCharacter}) => {
 
     // Initialize scene
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color("gray");
 
     // Camera
     const camera = new THREE.PerspectiveCamera(60, 2, 0.2, 200);
-    camera.position.set(0, 4, 0);
+    camera.position.set(2,1,0);
 
     // Camera pole (for rotation)
     const cameraPole = new THREE.Object3D();
@@ -31,7 +29,6 @@ const Character = ({setSelectedCharacter}) => {
       canvas: canvasRef.current,
     });
     renderer.shadowMap.enabled = true;
-    renderer.setSize(500, 500);
     renderer.setClearColor(0x000000, 0);
 
     //Controls
@@ -45,24 +42,7 @@ const Character = ({setSelectedCharacter}) => {
     scene.add(light);
     scene.add(new THREE.AmbientLight(0xffffff, 2)); // soft ambient
 
-    // Placeholder cubes
-    // const geometry = new THREE.BoxGeometry();
-    // const cube = new THREE.Mesh(
-    //   geometry,
-    //   new THREE.MeshStandardMaterial({ color: 0x0077ff })
-    // );
-    // cube.position.set(-1, 0, 0);
-    // scene.add(cube);
-
-    // const cubeTwo = new THREE.Mesh(
-    //   geometry,
-    //   new THREE.MeshStandardMaterial({ color: 0xffff77 })
-    // );
-    // cubeTwo.position.set(1, 0, 0);
-    // scene.add(cubeTwo);
-
     const loader = new GLTFLoader();
-
     loader.load('/terrainTestingOneV5.glb', (gltf) => {
       const blenderScene = gltf.scene;
       blenderScene.traverse((child) => {
@@ -72,7 +52,6 @@ const Character = ({setSelectedCharacter}) => {
         }
       });
 
-      // Add to your scene
       scene.add(blenderScene);
     });
 
@@ -129,13 +108,26 @@ const Character = ({setSelectedCharacter}) => {
 
     function setPickObject() {
       
-      if (pickerHelper.pickedObject && setSelectedCharacter) {
+      if (pickerHelper.pickedObject && setCurrentLocation) {
         setCurrentObject(pickerHelper.pickedObject)
-        setSelectedCharacter(pickerHelper.pickedObject.name)
+        setCurrentLocation(pickerHelper.pickedObject.name)
         console.log(currObject)
       }
     }
 
+    function resizeRendererToDisplaySize(renderer, camera) {
+        const canvas = renderer.domElement;
+        const width = canvas.clientWidth;
+        const height = canvas.clientHeight;
+        if (canvas.width !== width || canvas.height !== height) {
+            renderer.setSize(width, height, false);
+            camera.aspect = width / height;
+            camera.updateProjectionMatrix();
+        }
+    }
+
+
+    //window.addEventListener('resize', handleResize);
     window.addEventListener("mousemove", setPickPosition);
     window.addEventListener("mouseout", clearPickPosition);
     window.addEventListener("mouseleave", clearPickPosition);
@@ -145,10 +137,11 @@ const Character = ({setSelectedCharacter}) => {
     function render(time) {
       time *= 0.001;
 
-      cameraPole.rotation.y = time * 0.1;
+        //cameraPole.rotation.y = time * 0.1;
 
       pickerHelper.pick(pickPosition, scene, camera);
 
+      resizeRendererToDisplaySize(renderer, camera)
       renderer.render(scene, camera);
       requestAnimationFrame(render);
     }
@@ -162,14 +155,15 @@ const Character = ({setSelectedCharacter}) => {
       window.removeEventListener("mouseout", clearPickPosition);
       window.removeEventListener("mouseleave", clearPickPosition);
       window.removeEventListener("click", setPickObject)
+      
     };
-  }, [setSelectedCharacter]);
+  }, [setCurrentLocation]);
 
   return (
-    <div style={{ textAlign: "center", margin: "20px" }}>
+    <div>
       <canvas ref={canvasRef}></canvas>
     </div>
   );
 };
 
-export default Character;
+export default Map;

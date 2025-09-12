@@ -14,18 +14,14 @@ const CharacterPage = () => {
 
     return (
         <div className='character-page'>
-            <Character character={selectedCharacter} />
-            <div className="character-picker">
-                {characters.map((character) => (
-                    <button
-                        key = {character.id}
-                        onClick = { () => setSelectedCharacter(character) }
-                        className={`${character.name === selectedCharacter.name ? 'selected' : ''} character-button`}
-                        id = {character.name}
-                    >
-                        {character.name}
-                    </button>
-                ))}
+            <Character setSelectedCharacter={setSelectedCharacter}/>
+            <div style={{ marginTop: "20px" }}>
+                <h2>Selected Object Info:</h2>
+                {selectedCharacter ? (
+                    <pre>{JSON.stringify(selectedCharacter, null, 2)}</pre>
+                    ) : (
+                <p>No object selected</p>
+                )}
             </div>
         </div>  
 
