@@ -1,12 +1,11 @@
 import { useEffect, React, use, useState} from "react";
 import Slider from 'rc-slider'
 import 'rc-slider/assets/index.css';
-import Sinorra from "./locationModel/sinorra";
-import SinorraTwo from "./locationModel/sinorraTwo";
 import Map from "./locationModel/map";
 
 import { getEvents } from '../../backendCalls/api'
 import './home.css'
+import Location from "./location"
 
 
 const Home = () => {  
@@ -52,6 +51,10 @@ const Home = () => {
                 <Map setCurrentLocation={setCurrentLocation}/>
             </div>
 
+            <div>
+                <Location newLocation={currentLocation}/>
+            </div>
+
             <Slider
                 min={0}
                 max={worldEvents.length-1}
@@ -68,13 +71,10 @@ const Home = () => {
                 trackStyle={{ backgroundColor: "transparent" }}   
             />
 
-            <div style={{ marginTop: "80px" }}>
+            <div style={{ marginTop: "60px" }}>
                 {currentEvent.name}
-                <div>
+                <div style={{margin: "20px", marginbottom: "40px"}}>
                     {currentEvent.description}
-                </div>
-                <div>
-                    {currentLocation}
                 </div>
             </div>
 

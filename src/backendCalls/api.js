@@ -86,3 +86,15 @@ export const getEvents = async (filters) => {
     if (!apiRes.ok) throw new Error(`Error getting events`);
     return await apiRes.json()
 }
+
+export const getLocationInfo = async (location) => {
+    const url = API_BASE + 'locations/' + location
+
+    console.log(url)
+    const apiRes = await fetch(url, {
+        method: 'GET'
+    })
+
+    if (!apiRes.ok) throw new Error(`Error getting location`);
+    return await apiRes.json()
+}

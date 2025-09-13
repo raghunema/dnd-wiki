@@ -9,14 +9,11 @@ const Map = ({setCurrentLocation}) => {
 
   useEffect(() => {
     const canvas = canvasRef.current;
-
-    // Initialize scene
     const scene = new THREE.Scene();
 
     // Camera
     const camera = new THREE.PerspectiveCamera(60, 2, 0.2, 200);
-    camera.position.set(2,1,0);
-
+    camera.position.set(3,2,0);
     // Camera pole (for rotation)
     const cameraPole = new THREE.Object3D();
     cameraPole.add(camera);
@@ -29,12 +26,22 @@ const Map = ({setCurrentLocation}) => {
       canvas: canvasRef.current,
     });
     renderer.shadowMap.enabled = true;
+    //renderer.setSize(500, 500);
     renderer.setClearColor(0x000000, 0);
 
     //Controls
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
     controls.dampingFactor = 0.08;
+
+    // Lock vertical rotation between straight-on and slightly above
+    controls.minPolarAngle = Math.PI / 6;   // look down at 45°
+    controls.maxPolarAngle = Math.PI / 2.5;   // stop at flat/horizon
+
+    // Lock horizontal rotation to a 90° slice
+    // controls.minAzimuthAngle = -Math.PI / 4; 
+    // controls.maxAzimuthAngle =  Math.PI / 4; 
+
 
     // Lights
     const light = new THREE.DirectionalLight(0xffffff, 1.2);
@@ -51,6 +58,7 @@ const Map = ({setCurrentLocation}) => {
           child.material.side = THREE.DoubleSide; // optional for visibility
         }
       });
+      blenderScene.position.y = .5
 
       scene.add(blenderScene);
     });
@@ -69,6 +77,7 @@ const Map = ({setCurrentLocation}) => {
           this.pickedObject.material.emissive.setHex(
             this.pickedObjectSavedColor
           );
+          this.pickedObject.material.emissiveIntensity = 0
           this.pickedObject = null;
         }
 
@@ -78,7 +87,8 @@ const Map = ({setCurrentLocation}) => {
         if (intersected.length) {
           this.pickedObject = intersected[0].object;
           this.pickedObjectSavedColor = this.pickedObject.material.emissive.getHex();
-          this.pickedObject.material.emissive.setHex(0xfffff0);
+          this.pickedObject.material.emissive.setHex(0xb0a03c);
+          this.pickedObject.material.emissiveIntensity = 0.6
         }
       }
 
@@ -111,7 +121,7 @@ const Map = ({setCurrentLocation}) => {
       if (pickerHelper.pickedObject && setCurrentLocation) {
         setCurrentObject(pickerHelper.pickedObject)
         setCurrentLocation(pickerHelper.pickedObject.name)
-        console.log(currObject)
+        //console.log(currObject)
       }
     }
 
@@ -126,11 +136,15 @@ const Map = ({setCurrentLocation}) => {
         }
     }
 
+    function printfov() {
+        console.log(camera.zoom)
+    }
 
     //window.addEventListener('resize', handleResize);
     window.addEventListener("mousemove", setPickPosition);
     window.addEventListener("mouseout", clearPickPosition);
     window.addEventListener("mouseleave", clearPickPosition);
+    window.addEventListener("wheel", printfov)
     window.addEventListener("click", setPickObject)
 
     // Animation loop
@@ -138,12 +152,12 @@ const Map = ({setCurrentLocation}) => {
       time *= 0.001;
 
         //cameraPole.rotation.y = time * 0.1;
+        controls.update()
+        pickerHelper.pick(pickPosition, scene, camera);
 
-      pickerHelper.pick(pickPosition, scene, camera);
-
-      resizeRendererToDisplaySize(renderer, camera)
-      renderer.render(scene, camera);
-      requestAnimationFrame(render);
+        resizeRendererToDisplaySize(renderer, camera)
+        renderer.render(scene, camera);
+        requestAnimationFrame(render);
     }
 
     requestAnimationFrame(render);
@@ -154,14 +168,15 @@ const Map = ({setCurrentLocation}) => {
       window.removeEventListener("mousemove", setPickPosition);
       window.removeEventListener("mouseout", clearPickPosition);
       window.removeEventListener("mouseleave", clearPickPosition);
-      window.removeEventListener("click", setPickObject)
+      window.removeEventListener("click", setPickObject);
+      window.removeEventListener("wheel", printfov)
       
     };
   }, [setCurrentLocation]);
 
   return (
-    <div>
-      <canvas ref={canvasRef}></canvas>
+    <div style={{ textAlign: "center", margin: "20px" }}>
+      <canvas ref={canvasRef} style={{ width: '100%', height: '100%' }}></canvas>
     </div>
   );
 };
