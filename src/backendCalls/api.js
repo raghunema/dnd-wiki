@@ -1,6 +1,7 @@
 const API_BASE = 'http://localhost:8000/'
 const API_BASE_NPC = 'http://localhost:8000/npcs'
 const API_BASE_Events = 'http://localhost:8000/events'
+const API_BASE_LOCATION = 'http://localhost:8000/locations'
 
 export const getNPCSchema = async () => {
     const url = API_BASE_NPC + '/schema'
@@ -10,6 +11,28 @@ export const getNPCSchema = async () => {
         method: 'GET'
     });
     if (!apiRes.ok) throw new Error ("Could not fetch npc schema");
+    return await apiRes.json();
+}
+
+export const getEventSchema = async () => {
+    const url = API_BASE_Events + '/schema'
+
+    console.log(url)
+    const apiRes = await fetch(url, {
+        method: 'GET'
+    });
+    if (!apiRes.ok) throw new Error ("Could not fetch event schema");
+    return await apiRes.json();
+}
+
+export const getLocationSchema = async () => {
+    const url = API_BASE_LOCATION+ '/schema'
+
+    console.log(url)
+    const apiRes = await fetch(url, {
+        method: 'GET'
+    });
+    if (!apiRes.ok) throw new Error ("Could not fetch location schema");
     return await apiRes.json();
 }
 
@@ -88,7 +111,7 @@ export const getEvents = async (filters) => {
 }
 
 export const getLocationInfo = async (location) => {
-    const url = API_BASE + 'locations/' + location
+    const url = API_BASE + 'locations/single/' + location
 
     console.log(url)
     const apiRes = await fetch(url, {

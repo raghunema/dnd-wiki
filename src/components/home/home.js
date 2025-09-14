@@ -47,13 +47,17 @@ const Home = () => {
 
     return (
         <div className="home">
-            <div className="terrain-showcase">
-                <Map setCurrentLocation={setCurrentLocation}/>
+
+            <div className="map">
+                <div className="terrain-showcase">
+                    <Map setCurrentLocation={setCurrentLocation}/>
+                </div>
+
+                <div>
+                    <Location newLocation={currentLocation}/>
+                </div>
             </div>
 
-            <div>
-                <Location newLocation={currentLocation}/>
-            </div>
 
             <Slider
                 min={0}

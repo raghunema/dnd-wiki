@@ -1,4 +1,9 @@
 .curr-location-info {
-    margin: 20px;
-    margin-bottom: 40px;
+    margin: 20px 0px 40px 0px;
+    height: 500px;
+    overflow-y: auto;
+    border: solid;
+    padding: 20px;
+    border-width: 2px 1px 2px 1px;
+    border-color: rgb(228, 154, 8);
 }
