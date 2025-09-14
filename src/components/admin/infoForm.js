@@ -1,7 +1,7 @@
 // src/components/EntryForm.jsx
 import { useEffect, useState } from 'react';
 import Form from '@rjsf/core';
-import { getNPCSchema, getEventSchema, getLocationSchema, getEvents} from '../../backendCalls/api'
+import { getNPCSchema, getEventSchema, getLocationSchema, getEvents, getAllNpcs} from '../../backendCalls/api'
 
 import validator from '@rjsf/validator-ajv8';
 
@@ -81,10 +81,25 @@ export default function EntryForm({ onCreated }) {
   const [allEvents, setAllEvents] = useState([])
   const [currEvent, setCurrEvent] = useState(null)
 
+  const [allNpcs, setAllNPCS] = useState([])
+  const [currNpc, setCurrNpc] = useState(null)
+
+  const [allLocations, setAllLocations] = useState([])
+  const [currLocation, setCurrLocation] = useState(null)
+
+  const [formData, setFormData] = useState(null)
+
   //sets the actual form type
   useEffect(() => {
     async function getAndSetSchema () {
-  
+      //gets and sets information for  
+      const events = await getEvents();
+      const npcs = await getAllNpcs()
+
+      setAllEvents(events)
+      setAllNPCS(npcs)
+
+
       switch(type) {
         case "NPC":
           const npcSchema = await getNPCSchema();
@@ -121,28 +136,16 @@ export default function EntryForm({ onCreated }) {
     async function setOptions () {
 
       if (formFunc === 'UPDATE') {
-        //show update button
-        // const selectOptions = document.getElementById("select-options")
-        // selectOptions.style.display = "inline"
-
-        setAllEvents([])
-        //implement reset location and npcs too
-        //setAllNPCS([])
-        //setAllLocations([])
-
         switch (type) {
           case 'EVENT': 
             const events = await getEvents();
             setAllEvents(events)
+            console.log(events)
 
             break
 
         }
       } else {
-        //hide button
-        // const selectOptions = document.getElementById("select-options")
-        // if(selectOptions) selectOptions.style.display = "none";
-
         setAllEvents([])
         //setAllNPCS([])
         //setAllLocations([])
@@ -156,7 +159,17 @@ export default function EntryForm({ onCreated }) {
 
   useEffect(() => {
     console.log(currEvent)
-  }, [currEvent])
+    if (!currEvent){
+      setFormData({});
+      return;
+    }
+
+    const selected = allEvents.find(ev => ev.slug === currEvent);
+    if (selected) {
+      setFormData(selected);
+    }
+
+  }, [currEvent, allEvents])
 
   const handleSubmit = async ({formData}) => {
     console.log('Submitted:', formData);
@@ -189,7 +202,7 @@ export default function EntryForm({ onCreated }) {
               onChange={e => setCurrEvent(e.target.value)}>
               <option value=""></option>
               {allEvents.map((event) => (
-                <option key={event.id} value={event.id}>
+                <option key={event.id} value={event.slug}>
                   {event.name}
                 </option>
               ))}
@@ -198,7 +211,12 @@ export default function EntryForm({ onCreated }) {
         </div>
         
         <div className='info-form'>
-          <Form schema={schema} uiSchema={uiSchema} onSubmit={handleSubmit} validator={validator}/>
+          <Form schema={schema} 
+            uiSchema={uiSchema} 
+            formData={formData}  
+            onChange={({ formData }) => setFormData(formData)} 
+            onSubmit={handleSubmit} 
+            validator={validator}/>
         </div>
      </div>
     );
