@@ -37,12 +37,7 @@ const Map = ({setCurrentLocation}) => {
     // Lock vertical rotation between straight-on and slightly above
     controls.minPolarAngle = Math.PI / 6;   // look down at 45°
     controls.maxPolarAngle = Math.PI / 2.5;   // stop at flat/horizon
-
-    // Lock horizontal rotation to a 90° slice
-    // controls.minAzimuthAngle = -Math.PI / 4; 
-    // controls.maxAzimuthAngle =  Math.PI / 4; 
-
-
+    
     // Lights
     const light = new THREE.DirectionalLight(0xffffff, 1.2);
     light.position.set(5, 5, 5);

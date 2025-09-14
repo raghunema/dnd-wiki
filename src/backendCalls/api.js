@@ -46,7 +46,18 @@ export const getAllNpcs = async () => {
 
     if (!apiRes.ok) throw new Error("Error getting all NPCs");
     return await apiRes.json()
+}
 
+export const getAllNpcsForm = async () => {
+    const url = API_BASE_NPC + '/form'
+
+    console.log(url)
+    const apiRes = await fetch(url, {
+        method: 'GET'
+    })
+
+    if (!apiRes.ok) throw new Error("Error getting all NPCs for from");
+    return await apiRes.json()
 
 }
 
@@ -101,6 +112,21 @@ export const getEvents = async (filters) => {
     console.log(url)
     const apiRes = await fetch(url, {
         method: 'POST',
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(filters)
+    })
+    if (!apiRes.ok) throw new Error(`Error getting events`);
+    return await apiRes.json()
+}
+
+export const getEventsForm = async (filters) => {
+    const url = API_BASE_Events + `/form`
+
+    console.log(url)
+    const apiRes = await fetch(url, {
+        method: 'GET',
         headers: {
           "Content-Type": "application/json",
         },

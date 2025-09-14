@@ -1,7 +1,7 @@
 // src/components/EntryForm.jsx
 import { useEffect, useState } from 'react';
 import Form from '@rjsf/core';
-import { getNPCSchema, getEventSchema, getLocationSchema, getEvents, getAllNpcs} from '../../backendCalls/api'
+import { getNPCSchema, getEventSchema, getLocationSchema, getEventsForm, getNpc, getAllNpcsForm, getEvents} from '../../backendCalls/api'
 
 import validator from '@rjsf/validator-ajv8';
 
@@ -38,7 +38,7 @@ const uiNpcSchema = {
     }
   },
   dateOfDeath: {
-    "ui:title": "Date of Birth:",
+    "ui:title": "Date of Death:",
     "ui:widget": "date", 
     "ui:classNames": "form-field-wrapper",
     "ui:options": {
@@ -46,9 +46,9 @@ const uiNpcSchema = {
         format: 'MDY'
     }
   },
-  related: {
-    "ui:title": "Related",
-    "ui:className": "array-field-wrapper",
+  information: {
+    "ui:title": "Information",
+    //"ui:className": "array-field-wrapper",
     "ui:options": {
       "addable": true,
       "orderable": true, 
@@ -70,49 +70,120 @@ const uiNpcSchema = {
   }
 }
 
+const uiEventSchema = {
+  slug: {
+    "ui:title": "SLUG",
+    "ui:widget": "textarea", 
+    "ui:classNames": "form-field-wrapper"
+  },
+  name: {
+    "ui:title": "NPC Name",
+    "ui:widget": "textarea", 
+    "ui:classNames": "form-field-wrapper"
+  },
+  description: {
+    "ui:title": "Description",
+    "ui:widget": "textarea", 
+    "ui:classNames": "form-field-wrapper"
+  },
+  fromDate: {
+    "ui:title": "From Date:",
+    "ui:widget": "date-time", 
+    "ui:classNames": "form-field-wrapper",
+    "ui:options": {
+        yearsRange: [0, 10000]
+    }
+  },
+  toDate: {
+    "ui:title": "To Date:",
+    "ui:widget": "date-time", 
+    "ui:classNames": "form-field-wrapper",
+    "ui:options": {
+        yearsRange: [0, 100000]
+    }
+  },
+  npcs: {
+    items: {
+      "ui:widget": "select"
+    }
+  }
+};
 //const formFuncs = ['ADD', 'UPDATE', 'DELETE']
 
 export default function EntryForm({ onCreated }) {
   const [type, setType] = useState('NPC'); //I should enumerate this or somethign
   const [schema, setSchema] = useState(null); 
-  const [uiSchema, setUiSchema] = useState(uiNpcSchema)
+  const [uiSchema, setUiSchema] = useState(null)
   const [formFunc, setFormFunc] = useState('ADD') //Same with this
 
+  //information
   const [allEvents, setAllEvents] = useState([])
-  const [currEvent, setCurrEvent] = useState(null)
-
   const [allNpcs, setAllNPCS] = useState([])
-  const [currNpc, setCurrNpc] = useState(null)
-
   const [allLocations, setAllLocations] = useState([])
-  const [currLocation, setCurrLocation] = useState(null)
 
+  //current for object
+  const [currObj, setCurrObj] = useState(null)
   const [formData, setFormData] = useState(null)
 
-  //sets the actual form type
+  //for form ui shit
+  // const [npcOptions, setNpcOptions] = useState(null)
+
+  //on mount
   useEffect(() => {
-    async function getAndSetSchema () {
-      //gets and sets information for  
-      const events = await getEvents();
-      const npcs = await getAllNpcs()
+
+    async function setBaseInfo() {
+      const events = await getEventsForm();
+      const npcs = await getAllNpcsForm()
 
       setAllEvents(events)
       setAllNPCS(npcs)
+    
+    }
 
-
+    setBaseInfo()  
+  }, [])
+  
+  //sets the actual form type when you switch events
+  useEffect(() => {
+    async function getAndSetSchema () {
+      //gets and sets information for  
       switch(type) {
         case "NPC":
           const npcSchema = await getNPCSchema();
-          //console.log(npcSchema)
+
+          if (allEvents) {
+            const eventOptions = allEvents.map(npc => npc._id);
+            const eventLabels = allEvents.map(npc => npc.name);
+
+            npcSchema.properties.events.items = {
+              type: "string",
+              enum: eventOptions,
+              enumNames: eventLabels,
+              uniqueItems: true
+            }
+          }
+
           setSchema(npcSchema)
           setUiSchema(uiNpcSchema)
           break
 
         case 'EVENT': 
           const eventSchema = await getEventSchema();
-          //console.log(eventSchema)
+
+          if (allNpcs) {
+            const npcOptions = allNpcs.map(npc => npc._id);
+            const npcLabels = allNpcs.map(npc => npc.name);
+
+            eventSchema.properties.npcs.items = {
+              type: "string",
+              enum: npcOptions,
+              enumNames: npcLabels,
+              uniqueItems: true
+            }
+          }
+
           setSchema(eventSchema)
-          //setUiSchema(uiEventSchema)
+          setUiSchema(uiEventSchema)
           break
 
         case 'LOCATION': 
@@ -130,46 +201,55 @@ export default function EntryForm({ onCreated }) {
     getAndSetSchema()
     //console.log(schema)
   }, [type]);
-
-  //sets the function type (add, update, or delete)
+  
+  //prepops the current form if you select an existing object
   useEffect(() => {
-    async function setOptions () {
-
-      if (formFunc === 'UPDATE') {
-        switch (type) {
-          case 'EVENT': 
-            const events = await getEvents();
-            setAllEvents(events)
-            console.log(events)
-
-            break
-
-        }
-      } else {
-        setAllEvents([])
-        //setAllNPCS([])
-        //setAllLocations([])
-
-      }
-    }
-
-    setOptions()
-
-  }, [formFunc, type])
-
-  useEffect(() => {
-    console.log(currEvent)
-    if (!currEvent){
+    console.log(`Current object: ${currObj}`)
+    if (!currObj){
       setFormData({});
       return;
+    } else {
+      setObjectPrepop()
     }
 
-    const selected = allEvents.find(ev => ev.slug === currEvent);
-    if (selected) {
-      setFormData(selected);
-    }
+    async function setObjectPrepop () {
+      switch (type) {
+      case "NPC": 
+        const selectedNpc = allNpcs.find(ev => ev._id === currObj);
+        //console.log(`selectedNPC: ${selectedNpc.slug}`)
 
-  }, [currEvent, allEvents])
+        if (selectedNpc) {
+          const npcInfo = await getNpc(selectedNpc.slug)
+          //console.log(npcInfo)
+          if (npcInfo) {
+            setFormData(npcInfo.npcInfo);
+          }
+        }
+        
+        break
+      
+      case "EVENT":
+        const selectedEvent = allEvents.find(ev => ev._id === currObj);
+
+        if (selectedEvent) {
+
+          const eventInfo = await getEvents({"_id": currObj})
+          console.log(eventInfo)
+
+          if (eventInfo) {
+            setFormData(eventInfo[0]);
+          }
+        }
+
+        break
+
+      default:
+        setFormData({})
+      }
+    }
+    
+    
+  }, [currObj, allNpcs, allEvents, type])
 
   const handleSubmit = async ({formData}) => {
     console.log('Submitted:', formData);
@@ -195,17 +275,29 @@ export default function EntryForm({ onCreated }) {
 
             <select 
               id='select-options' 
-              value={currEvent || ""}
+              value={currObj || ""}
               style={{
-                display: formFunc === "UPDATE" ? "inline" : "none"
+                display: formFunc === "UPDATE" || formFunc === "DELETE" ? "inline" : "none"
               }}
-              onChange={e => setCurrEvent(e.target.value)}>
+              onChange={e => setCurrObj(e.target.value)}
+              >
               <option value=""></option>
-              {allEvents.map((event) => (
-                <option key={event.id} value={event.slug}>
-                  {event.name}
-                </option>
-              ))}
+
+              {type === 'EVENT' && 
+                  allEvents.map((event) => (
+                    <option key={event.id} value={event._id}>
+                      {event.name}
+                    </option>
+                  ))
+              }
+
+              {type === 'NPC' && 
+                  allNpcs.map((event) => (
+                    <option key={event.id} value={event._id}>
+                      {event.name}
+                    </option>
+                  ))
+              }
             </select>
             
         </div>
