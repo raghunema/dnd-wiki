@@ -1,7 +1,15 @@
 // src/components/EntryForm.jsx
 import { useEffect, useState } from 'react';
 import Form from '@rjsf/core';
-import { getNPCSchema, getEventSchema, getLocationSchema, getEventsForm, getNpc, getAllNpcsForm, getEvents} from '../../backendCalls/api'
+
+import { getNPCSchema, 
+  getEventSchema, 
+  getLocationSchema,
+  getEventsForm, 
+  getNpc, 
+  getAllNpcsForm, 
+  getEvents, 
+  getLocationsForm} from '../../backendCalls/api'
 
 import validator from '@rjsf/validator-ajv8';
 
@@ -106,6 +114,10 @@ const uiEventSchema = {
     items: {
       "ui:widget": "select"
     }
+  },
+  location: {
+    "ui:title": "Location:",
+    "ui:widget": "select"
   }
 };
 //const formFuncs = ['ADD', 'UPDATE', 'DELETE']
@@ -125,19 +137,17 @@ export default function EntryForm({ onCreated }) {
   const [currObj, setCurrObj] = useState(null)
   const [formData, setFormData] = useState(null)
 
-  //for form ui shit
-  // const [npcOptions, setNpcOptions] = useState(null)
-
   //on mount
   useEffect(() => {
 
     async function setBaseInfo() {
       const events = await getEventsForm();
       const npcs = await getAllNpcsForm()
+      const locations = await getLocationsForm();
 
       setAllEvents(events)
       setAllNPCS(npcs)
-    
+      setAllLocations(locations)
     }
 
     setBaseInfo()  
@@ -182,25 +192,36 @@ export default function EntryForm({ onCreated }) {
             }
           }
 
+          if (allLocations) {
+            const locationOptions = allLocations.map(loc => loc._id);
+            const locationLabels = allLocations.map(loc => loc.name);
+
+            eventSchema.properties.location = {
+              type: "string",
+              enum: locationOptions,
+              enumNames: locationLabels,
+              uniqueItems: true
+            }
+
+          }
+
           setSchema(eventSchema)
           setUiSchema(uiEventSchema)
           break
 
         case 'LOCATION': 
           const locationSchema = await getLocationSchema();
-          //console.log(locationSchema)
           setSchema(locationSchema)
+
           //setUiSchema(uiEventSchema)
           break
 
         default:
           setSchema(null)
-
       }   
     }
     getAndSetSchema()
-    //console.log(schema)
-  }, [type]);
+  }, [type, allEvents, allNpcs, allLocations]);
   
   //prepops the current form if you select an existing object
   useEffect(() => {
@@ -216,7 +237,6 @@ export default function EntryForm({ onCreated }) {
       switch (type) {
       case "NPC": 
         const selectedNpc = allNpcs.find(ev => ev._id === currObj);
-        //console.log(`selectedNPC: ${selectedNpc.slug}`)
 
         if (selectedNpc) {
           const npcInfo = await getNpc(selectedNpc.slug)
@@ -230,7 +250,6 @@ export default function EntryForm({ onCreated }) {
       
       case "EVENT":
         const selectedEvent = allEvents.find(ev => ev._id === currObj);
-
         if (selectedEvent) {
 
           const eventInfo = await getEvents({"_id": currObj})
@@ -240,7 +259,6 @@ export default function EntryForm({ onCreated }) {
             setFormData(eventInfo[0]);
           }
         }
-
         break
 
       default:
@@ -249,8 +267,9 @@ export default function EntryForm({ onCreated }) {
     }
     
     
-  }, [currObj, allNpcs, allEvents, type])
+  }, [currObj, allNpcs, allEvents, allLocations, type])
 
+  //on submit handle what happens
   const handleSubmit = async ({formData}) => {
     console.log('Submitted:', formData);
   }
@@ -285,16 +304,24 @@ export default function EntryForm({ onCreated }) {
 
               {type === 'EVENT' && 
                   allEvents.map((event) => (
-                    <option key={event.id} value={event._id}>
+                    <option key={event._id} value={event._id}>
                       {event.name}
                     </option>
                   ))
               }
 
               {type === 'NPC' && 
-                  allNpcs.map((event) => (
-                    <option key={event.id} value={event._id}>
-                      {event.name}
+                  allNpcs.map((npc) => (
+                    <option key={npc._id} value={npc._id}>
+                      {npc.name}
+                    </option>
+                  ))
+              }
+
+              {type === 'LOCATION' && 
+                  allLocations.map((npc) => (
+                    <option key={npc._id} value={npc._id}>
+                      {npc.name}
                     </option>
                   ))
               }

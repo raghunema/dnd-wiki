@@ -132,7 +132,7 @@ export const getEventsForm = async (filters) => {
         },
         body: JSON.stringify(filters)
     })
-    if (!apiRes.ok) throw new Error(`Error getting events`);
+    if (!apiRes.ok) throw new Error(`Error getting events form`);
     return await apiRes.json()
 }
 
@@ -145,5 +145,19 @@ export const getLocationInfo = async (location) => {
     })
 
     if (!apiRes.ok) throw new Error(`Error getting location`);
+    return await apiRes.json()
+}
+
+export const getLocationsForm = async () => {
+    const url = API_BASE_LOCATION + `/form`
+
+    console.log(url)
+    const apiRes = await fetch(url, {
+        method: 'GET',
+        headers: {
+          "Content-Type": "application/json",
+        }
+    })
+    if (!apiRes.ok) throw new Error(`Error getting location form`);
     return await apiRes.json()
 }
