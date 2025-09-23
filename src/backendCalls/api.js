@@ -161,3 +161,42 @@ export const getLocationsForm = async () => {
     if (!apiRes.ok) throw new Error(`Error getting location form`);
     return await apiRes.json()
 }
+
+//////////////////////////////////////////////////////////////
+//POST FROM FORM//
+//////////////////////////////////////////////////////////////
+
+export const postNPC = async (formInfo, formFunc) => {
+    if (formFunc === 'ADD') {
+        const url = API_BASE_NPC + '/'
+        console.log(url)
+
+        const apiRes = await fetch(url, {
+            method: 'POST', 
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(formInfo)
+        })
+
+        if (!apiRes.ok) throw new Error(`Error posting new NPC`);
+        return await apiRes.json()
+    } else if (formFunc === 'UPDATE') {
+        const url = API_BASE_NPC + '/update'
+        console.log(url)
+
+        console.log(formFunc)
+        const apiRes = await fetch(url, {
+            method: 'POST', 
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body:  JSON.stringify(formInfo)
+        })
+
+        if (!apiRes.ok) throw new Error(`Error posting updating NPC`);
+        return await apiRes.json()
+
+    }
+
+}

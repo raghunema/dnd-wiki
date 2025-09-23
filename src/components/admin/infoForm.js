@@ -1,6 +1,7 @@
 // src/components/EntryForm.jsx
 import { useEffect, useState } from 'react';
 import Form from '@rjsf/core';
+import InformationField from "./informationField";
 
 import { getNPCSchema, 
   getEventSchema, 
@@ -9,13 +10,24 @@ import { getNPCSchema,
   getNpc, 
   getAllNpcsForm, 
   getEvents, 
-  getLocationsForm} from '../../backendCalls/api'
+  getLocationsForm,
+  postNPC
+} from '../../backendCalls/api'
 
 import validator from '@rjsf/validator-ajv8';
 
 import './infoForm.css'
 
 const uiNpcSchema = {
+  _id: {
+    "ui:title": "Id",
+    "ui:widget": "textarea", 
+    "ui:classNames": "form-field-wrapper",
+    "ui:readonly": "true",
+    "ui:options": {
+      "readonly": "true"
+    }
+  },
   slug: {
     "ui:title": "SLUG",
     "ui:widget": "textarea", 
@@ -38,7 +50,7 @@ const uiNpcSchema = {
   },
   dateOfBirth: {
     "ui:title": "Date of Birth:",
-    "ui:widget": "date", 
+    "ui:widget": "date-time", 
     "ui:classNames": "form-field-wrapper",
     "ui:options": {
         yearsRange: [0, 10000],
@@ -47,38 +59,49 @@ const uiNpcSchema = {
   },
   dateOfDeath: {
     "ui:title": "Date of Death:",
-    "ui:widget": "date", 
+    "ui:widget": "date-time", 
     "ui:classNames": "form-field-wrapper",
     "ui:options": {
         yearsRange: [0, 10000],
         format: 'MDY'
     }
   },
+  related: {
+    "ui:title": "Related"
+  },
   information: {
     "ui:title": "Information",
-    //"ui:className": "array-field-wrapper",
-    "ui:options": {
-      "addable": true,
-      "orderable": true, 
-      "removable": true,
-      "addLabel": "Add Related"
-    },
-    "items": {
-      "ui:classNames": "array-item",  // Style for each array item
-      "ui:defaultValue": "",
-      "ui:title": "Item"
-    }
+    "ui:field": InformationField,
   },
-
+  events: {
+    "ui:title": "Events",
+    "ui:options": {
+      orderable: false,
+    },
+  },
   "ui:submitButtonOptions": {
     "submitText": "Submit",
     "props": {
       "className": "submit-button"
     }
-  }
+  },
+  "ui:order": ["_id", "slug", "name", "race", "description", "dateOfBirth", "dateOfDeath", "related", "information", "events"]
 }
 
+const customFields = {
+  "information": InformationField
+};
+
 const uiEventSchema = {
+  _id: {
+    "ui:title": "Id",
+    "ui:widget": "textarea", 
+    "ui:classNames": "form-field-wrapper",
+    "ui:readonly": "true",
+    "ui:options": {
+      "readonly": "true"
+    }
+  },
   slug: {
     "ui:title": "SLUG",
     "ui:widget": "textarea", 
@@ -111,14 +134,25 @@ const uiEventSchema = {
     }
   },
   npcs: {
+    "ui:title": "NPCS",
     items: {
       "ui:widget": "select"
-    }
+    },
+    "ui:options": {
+      orderable: false,
+    },
   },
   location: {
     "ui:title": "Location:",
     "ui:widget": "select"
-  }
+  },
+  "ui:submitButtonOptions": {
+    "submitText": "Submit",
+    "props": {
+      "className": "submit-button"
+    }
+  },
+  "ui:order": ["_id", "slug", "name", "description", "information", "toDate", "fromDate", "npcs", "location"]
 };
 //const formFuncs = ['ADD', 'UPDATE', 'DELETE']
 
@@ -137,20 +171,19 @@ export default function EntryForm({ onCreated }) {
   const [currObj, setCurrObj] = useState(null)
   const [formData, setFormData] = useState(null)
 
+  async function setBaseInfo() {
+    const events = await getEventsForm();
+    const npcs = await getAllNpcsForm()
+    const locations = await getLocationsForm();
+
+    setAllEvents(events)
+    setAllNPCS(npcs)
+    setAllLocations(locations)
+  }
+
   //on mount
   useEffect(() => {
-
-    async function setBaseInfo() {
-      const events = await getEventsForm();
-      const npcs = await getAllNpcsForm()
-      const locations = await getLocationsForm();
-
-      setAllEvents(events)
-      setAllNPCS(npcs)
-      setAllLocations(locations)
-    }
-
-    setBaseInfo()  
+    setBaseInfo();
   }, [])
   
   //sets the actual form type when you switch events
@@ -160,6 +193,7 @@ export default function EntryForm({ onCreated }) {
       switch(type) {
         case "NPC":
           const npcSchema = await getNPCSchema();
+          //console.log(npcSchema)
 
           if (allEvents) {
             const eventOptions = allEvents.map(npc => npc._id);
@@ -226,7 +260,7 @@ export default function EntryForm({ onCreated }) {
   //prepops the current form if you select an existing object
   useEffect(() => {
     console.log(`Current object: ${currObj}`)
-    if (!currObj){
+    if (!currObj || formFunc === "ADD"){
       setFormData({});
       return;
     } else {
@@ -240,6 +274,7 @@ export default function EntryForm({ onCreated }) {
 
         if (selectedNpc) {
           const npcInfo = await getNpc(selectedNpc.slug)
+
           //console.log(npcInfo)
           if (npcInfo) {
             setFormData(npcInfo.npcInfo);
@@ -267,11 +302,33 @@ export default function EntryForm({ onCreated }) {
     }
     
     
-  }, [currObj, allNpcs, allEvents, allLocations, type])
+  }, [currObj, allNpcs, allEvents, allLocations, type, formFunc])
 
   //on submit handle what happens
   const handleSubmit = async ({formData}) => {
-    console.log('Submitted:', formData);
+    //handle add
+    if (formFunc === 'ADD') {
+      switch (type) {
+        case "NPC":
+          console.log('Adding NPC!')
+          console.log(formData)
+
+          await postNPC(formData, formFunc);
+          await setBaseInfo();
+          break
+      }
+    } else if (formFunc === 'UPDATE') {
+      switch (type) {
+        case "NPC":
+          console.log('Updating NPC!')
+          console.log(formData)
+
+          await postNPC(formData, formFunc);
+          await setBaseInfo();
+          break
+      }
+    }
+
   }
 
   if (!schema) return <p>Loading form...</p>;
@@ -319,9 +376,9 @@ export default function EntryForm({ onCreated }) {
               }
 
               {type === 'LOCATION' && 
-                  allLocations.map((npc) => (
-                    <option key={npc._id} value={npc._id}>
-                      {npc.name}
+                  allLocations.map((loc) => (
+                    <option key={loc._id} value={loc._id}>
+                      {loc.name}
                     </option>
                   ))
               }
@@ -334,6 +391,7 @@ export default function EntryForm({ onCreated }) {
             uiSchema={uiSchema} 
             formData={formData}  
             onChange={({ formData }) => setFormData(formData)} 
+            fields={customFields} 
             onSubmit={handleSubmit} 
             validator={validator}/>
         </div>
