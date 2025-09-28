@@ -65,14 +65,16 @@ const Home = () => {
                 step={1}
                 marks={sliderMarks}
                 onChange={handleSliderChange}
-                // dotStyle={{
-                //     backgroundColor: "#eeb74a",
-                //     height: 12,
-                //     width: 12,
-                //     marginTop: -7,
-                // }}
-                railStyle={{ backgroundColor: "transparent" }}
-                trackStyle={{ backgroundColor: "transparent" }}   
+                styles={{
+                    rail:{ backgroundColor: "transparent" },
+                    track: { backgroundColor: "transparent" },
+                    handle: { 
+                        backgroundColor: "#1890ff",
+                        borderColor: "#e4ff18ff",
+                        width: 10,
+                        height: 10
+                    }
+                }}  
             />
 
             <div style={{ marginTop: "60px" }}>

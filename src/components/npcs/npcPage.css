@@ -75,11 +75,24 @@
 
 }
 
+
+.npc-desc-obj {
+    justify-content: start;
+    border: solid;
+    border-width: 2px 2px 2px 2px;
+    border-color: rgb(238, 184, 74);
+    text-align: center;
+    padding: 1rem;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+
 .npc-lore {
     margin: 10px;
 }
 
-.npc-lore-obj{
+.npc-lore-obj {
     justify-content: start;
     border: solid;
     border-width: 2px 1px 1px 1px;

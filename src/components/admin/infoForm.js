@@ -6,12 +6,14 @@ import InformationField from "./informationField";
 import { getNPCSchema, 
   getEventSchema, 
   getLocationSchema,
-  getEventsForm, 
+  getAllEvents, 
   getNpc, 
-  getAllNpcsForm, 
   getEvents, 
   getLocationsForm,
-  postNPC
+  postNPC,
+  postEvent,
+  getLocationInfo,
+  getAllNpcs
 } from '../../backendCalls/api'
 
 import validator from '@rjsf/validator-ajv8';
@@ -85,7 +87,7 @@ const uiNpcSchema = {
       "className": "submit-button"
     }
   },
-  "ui:order": ["_id", "slug", "name", "race", "description", "dateOfBirth", "dateOfDeath", "related", "information", "events"]
+  "ui:order": ["_id", "slug", "name", "race", "description", "dateOfBirth", "dateOfDeath", "information", "related", "events"]
 }
 
 const customFields = {
@@ -108,7 +110,7 @@ const uiEventSchema = {
     "ui:classNames": "form-field-wrapper"
   },
   name: {
-    "ui:title": "NPC Name",
+    "ui:title": "Event Name",
     "ui:widget": "textarea", 
     "ui:classNames": "form-field-wrapper"
   },
@@ -142,6 +144,10 @@ const uiEventSchema = {
       orderable: false,
     },
   },
+  information: {
+    "ui:title": "Information",
+    "ui:field": InformationField,
+  },
   location: {
     "ui:title": "Location:",
     "ui:widget": "select"
@@ -154,6 +160,75 @@ const uiEventSchema = {
   },
   "ui:order": ["_id", "slug", "name", "description", "information", "toDate", "fromDate", "npcs", "location"]
 };
+
+const uiLocationSchema = {
+  _id: {
+    "ui:title": "Id",
+    "ui:widget": "textarea", 
+    "ui:classNames": "form-field-wrapper",
+    "ui:readonly": "true",
+    "ui:options": {
+      "readonly": "true"
+    }
+  },
+  slug: {
+    "ui:title": "SLUG",
+    "ui:widget": "textarea", 
+    "ui:classNames": "form-field-wrapper"
+  },
+  name: {
+    "ui:title": "Event Name",
+    "ui:widget": "textarea", 
+    "ui:classNames": "form-field-wrapper"
+  },
+  description: {
+    "ui:title": "Description",
+    "ui:widget": "textarea", 
+    "ui:classNames": "form-field-wrapper"
+  },
+  fromDate: {
+    "ui:title": "From Date:",
+    "ui:widget": "date-time", 
+    "ui:classNames": "form-field-wrapper",
+    "ui:options": {
+        yearsRange: [0, 10000]
+    }
+  },
+  toDate: {
+    "ui:title": "To Date:",
+    "ui:widget": "date-time", 
+    "ui:classNames": "form-field-wrapper",
+    "ui:options": {
+        yearsRange: [0, 100000]
+    }
+  },
+  events: {
+    "ui:title": "Events",
+    "ui:options": {
+      orderable: false,
+    },
+  },
+  type: {
+    "ui:title": "Type", 
+    "ui:widget": "textarea",
+    "ui:classNames": "form-field-wrapper"
+  },
+  parentId: {
+      "ui:title": "Parent Location:",
+      "ui:widget": "select"
+  },
+  children: {
+    "ui:title": "Sub-Locations"
+  },
+  "ui:submitButtonOptions": {
+    "submitText": "Submit",
+    "props": {
+      "className": "submit-button"
+    }
+  },
+  "ui:order": ["_id", "slug", "name", "type", "description", "parentId", "information", "toDate", "fromDate", "events", "children"]
+}
+
 //const formFuncs = ['ADD', 'UPDATE', 'DELETE']
 
 export default function EntryForm({ onCreated }) {
@@ -172,8 +247,16 @@ export default function EntryForm({ onCreated }) {
   const [formData, setFormData] = useState(null)
 
   async function setBaseInfo() {
-    const events = await getEventsForm();
-    const npcs = await getAllNpcsForm()
+    const events = await getAllEvents( {
+      fields: ['slug', 'name'],
+      expand: []
+    });
+
+    const npcs = await getAllNpcs({
+      fields: ['slug', 'name',],
+      expand: []
+    })
+
     const locations = await getLocationsForm();
 
     setAllEvents(events)
@@ -247,7 +330,7 @@ export default function EntryForm({ onCreated }) {
           const locationSchema = await getLocationSchema();
           setSchema(locationSchema)
 
-          //setUiSchema(uiEventSchema)
+          setUiSchema(uiLocationSchema)
           break
 
         default:
@@ -296,6 +379,15 @@ export default function EntryForm({ onCreated }) {
         }
         break
 
+      case "LOCATION":
+        const selectedLocation = allLocations.find(loc => loc.id === currObj);
+
+        if (selectedLocation) {
+          const locationInfo = await getLocationInfo
+        }
+
+        break 
+
       default:
         setFormData({})
       }
@@ -306,29 +398,25 @@ export default function EntryForm({ onCreated }) {
 
   //on submit handle what happens
   const handleSubmit = async ({formData}) => {
-    //handle add
-    if (formFunc === 'ADD') {
-      switch (type) {
-        case "NPC":
-          console.log('Adding NPC!')
-          console.log(formData)
+    
+    //handleing submit
+    switch (type) {
+      case "NPC":
+        console.log('Adding NPC!')
+        console.log(formData)
 
-          await postNPC(formData, formFunc);
-          await setBaseInfo();
-          break
-      }
-    } else if (formFunc === 'UPDATE') {
-      switch (type) {
-        case "NPC":
-          console.log('Updating NPC!')
-          console.log(formData)
+        await postNPC(formData, formFunc);
+        await setBaseInfo();
+        break
 
-          await postNPC(formData, formFunc);
-          await setBaseInfo();
-          break
-      }
-    }
-
+      case "EVENT":
+        await postEvent(formData, formFunc);
+        await setBaseInfo();
+        break
+      
+      default:
+        console.log('Handling Sumbit')
+    } 
   }
 
   if (!schema) return <p>Loading form...</p>;

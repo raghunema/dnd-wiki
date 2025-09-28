@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { getLocationInfo } from '../../backendCalls/api'
+import { getLocationInfo, getLocationMapInfo } from '../../backendCalls/api'
 import "./location.css"
 
 
@@ -10,7 +10,7 @@ const LocationInfo = ({newLocation}) => {
 
     useEffect(() => {
         const getAndSetLocation = async () => {
-            const locationInfo = await getLocationInfo(newLocation)
+            const locationInfo = await getLocationMapInfo(newLocation)
             console.log(locationInfo.info)
             setLocation(locationInfo.info)
         }

@@ -1,7 +1,29 @@
 const API_BASE = 'http://localhost:8000/'
 const API_BASE_NPC = 'http://localhost:8000/npcs'
-const API_BASE_Events = 'http://localhost:8000/events'
+const API_BASE_EVENTS = 'http://localhost:8000/events'
 const API_BASE_LOCATION = 'http://localhost:8000/locations'
+
+export const login = async ({username, password}) => {
+    const url = API_BASE + 'login'
+
+    console.log(url)
+
+    const apiRes = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({ username, password }),
+    })
+
+    if (!apiRes.ok) throw new Error(`Error Logging in`);
+    return await apiRes
+}
+
+/////////////////
+// SCHEMA INFO //
+/////////////////
 
 export const getNPCSchema = async () => {
     const url = API_BASE_NPC + '/schema'
@@ -15,7 +37,7 @@ export const getNPCSchema = async () => {
 }
 
 export const getEventSchema = async () => {
-    const url = API_BASE_Events + '/schema'
+    const url = API_BASE_EVENTS + '/schema'
 
     console.log(url)
     const apiRes = await fetch(url, {
@@ -36,15 +58,56 @@ export const getLocationSchema = async () => {
     return await apiRes.json();
 }
 
-export const getAllNpcs = async () => {
-    const url = API_BASE_NPC + '/all'
+/////////////////
+/// NPC GETS ///
+///////////////
 
-    console.log(url)
+export const getAllNpcs = async ({ fields, expand }) => {
+    let url = new URL(API_BASE_NPC + '/all')
+
+    const params = new URLSearchParams();
+
+    if (fields?.length > 0) {
+       params.set('fields', fields.join(','));
+    }
+
+    if (expand?.length > 0) {
+        params.set('expand', expand.join(','));
+    }
+
+    if ([...params].length) {
+        url.search = params.toString();
+    }
+
+    console.log(url.toString())
     const apiRes = await fetch(url, {
         method: 'GET'
     })
 
     if (!apiRes.ok) throw new Error("Error getting all NPCs");
+    return await apiRes.json()
+}
+
+export const getNpc = async ( { fields, expand, _id, reason} ) => {
+    let url = new URL(API_BASE_NPC + `/single/${_id}`)
+    console.log(url.toString())
+
+    const params = new URLSearchParams();
+
+    if (fields?.length > 0) params.set('fields', fields.join(','));
+    if (expand?.length > 0) params.set('expand', expand.join(','));
+    if (reason) params.set('reason', reason)
+
+    if ([...params].length) {
+        url.search = params.toString();
+    }
+
+    console.log(url.toString())
+    const apiRes = await fetch(url, {
+        method: 'GET'
+    })
+     
+    if (!apiRes.ok) throw new Error(`Error getting npc`);
     return await apiRes.json()
 }
 
@@ -59,35 +122,6 @@ export const getAllNpcsForm = async () => {
     if (!apiRes.ok) throw new Error("Error getting all NPCs for from");
     return await apiRes.json()
 
-}
-
-export const login = async ({username, password}) => {
-    const url = API_BASE + 'login'
-
-    console.log(url)
-
-    const apiRes = await fetch(url, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify({ username, password }),
-    })
-
-    if (!apiRes.ok) throw new Error(`Error Logging in`);
-    return await apiRes
-}
-
-export const getNpc = async (npcSlug) => {
-    const url = API_BASE_NPC + `/single/${npcSlug}`
-
-    console.log(url)
-    const apiRes = await fetch(url, {
-        method: 'GET'
-    })
-     if (!apiRes.ok) throw new Error(`Error getting npc ${npcSlug}`);
-    return await apiRes.json()
 }
 
 export const getNpcsForEvents = async (npcFilter) => {
@@ -106,8 +140,12 @@ export const getNpcsForEvents = async (npcFilter) => {
     
 }
 
+///////////////////
+/// EVENT GETS ///
+/////////////////
+
 export const getEvents = async (filters) => {
-    const url = API_BASE_Events + `/filtered`
+    const url = API_BASE_EVENTS + `/filtered`
 
     console.log(url)
     const apiRes = await fetch(url, {
@@ -121,8 +159,28 @@ export const getEvents = async (filters) => {
     return await apiRes.json()
 }
 
+export const getAllEvents = async ({ fields, expand }) => {
+    const url = new URL(API_BASE_EVENTS + `/all`)
+
+    const params = new URLSearchParams();
+
+    if (fields?.length > 0) params.set('fields', fields.join(','));
+    if (expand?.length > 0) params.set('expand', expand.join(','));
+
+    if ([...params].length) url.search = params.toString();
+
+    console.log(url.toString())
+    const apiRes = await fetch(url, {
+        method: 'GET'
+    })
+
+    if (!apiRes.ok) throw new Error("Error getting all NPCs");
+    return await apiRes.json()
+
+}
+
 export const getEventsForm = async (filters) => {
-    const url = API_BASE_Events + `/form`
+    const url = API_BASE_EVENTS + `/form`
 
     console.log(url)
     const apiRes = await fetch(url, {
@@ -136,6 +194,10 @@ export const getEventsForm = async (filters) => {
     return await apiRes.json()
 }
 
+//////////////////////
+/// LOCATION GETS ///
+////////////////////
+
 export const getLocationInfo = async (location) => {
     const url = API_BASE + 'locations/single/' + location
 
@@ -147,6 +209,20 @@ export const getLocationInfo = async (location) => {
     if (!apiRes.ok) throw new Error(`Error getting location`);
     return await apiRes.json()
 }
+
+//only for the threeJs Map
+export const getLocationMapInfo = async (location) => {
+    const url = API_BASE + 'locations/map/' + location
+
+    console.log(url)
+    const apiRes = await fetch(url, {
+        method: 'GET'
+    })
+
+    if (!apiRes.ok) throw new Error(`Error getting location`);
+    return await apiRes.json()
+}
+
 
 export const getLocationsForm = async () => {
     const url = API_BASE_LOCATION + `/form`
@@ -163,7 +239,7 @@ export const getLocationsForm = async () => {
 }
 
 //////////////////////////////////////////////////////////////
-//POST FROM FORM//
+                  //POST FROM FORM//
 //////////////////////////////////////////////////////////////
 
 export const postNPC = async (formInfo, formFunc) => {
@@ -199,4 +275,38 @@ export const postNPC = async (formInfo, formFunc) => {
 
     }
 
+}
+
+export const postEvent = async (formInfo, formFunc) => {
+    if (formFunc === 'ADD') {
+        const url = API_BASE_EVENTS + '/'
+        console.log(url)
+
+        const apiRes = await fetch(url, {
+            method: 'POST', 
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(formInfo)
+        })
+
+        if (!apiRes.ok) throw new Error(`Error posting new Event`);
+        return await apiRes.json()
+    } else if (formFunc === 'UPDATE') {
+        const url = API_BASE_EVENTS + '/update'
+        console.log(url)
+
+        //console.log(formFunc)
+        const apiRes = await fetch(url, {
+            method: 'POST', 
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body:  JSON.stringify(formInfo)
+        })
+
+        if (!apiRes.ok) throw new Error(`Error posting updating Event`);
+        return await apiRes.json()
+
+    }
 }

@@ -3,9 +3,8 @@ import { useEffect, useState } from 'react';
 import EventTimeline from './event/event'
 import EventMenu from './eventMenu/eventMenu';
 
-import { getEvents, getNpcsForEvents } from '../../backendCalls/api'
+import { getEvents, getNpcsForEvents, getAllEvents } from '../../backendCalls/api'
 import './timeline.css'
-import { all } from 'three/tsl';
 
 // const events = [
 //     {   
@@ -38,44 +37,27 @@ import { all } from 'three/tsl';
 const Timeline = () => {
   const [events, setEvents] = useState([]);
   const [eventFilter, setFilter] = useState(null);
-  const [npcsMap, setNpcsMap] = useState({});  // <-- object, not array
 
   useEffect(() => {
     const filters = {};
 
     const fetchEvents = async () => {
-      const allEvents = await getEvents(filters);
+      const allEvents = await getAllEvents({
+        fields: [],
+        expand: ['location:name', 'npcs:name']
+      });
       setEvents(allEvents);
     };
 
     fetchEvents();
   }, [eventFilter]);
 
-  useEffect(() => {
-    const getNpcs = async () => {
-      if (events.length > 0) {
-        const npcIds = [...new Set(events.flatMap(event => event.npcs))];
-        const npcs = await getNpcsForEvents(npcIds);
-
-        const npcsMap = {};
-        npcs.forEach(npc => {
-          npcsMap[npc._id] = npc;
-        });
-
-        setNpcsMap(npcsMap);
-      }
-    };
-
-    getNpcs();
-  }, [events]);
-
   if (events.length === 0) return <div><h1>Getting Events</h1></div>;
-  if (Object.keys(npcsMap).length === 0) return <div><h1>Getting NPCs</h1></div>;
 
   return (
     <div className="timeline">
       <EventMenu events={events} />
-      <EventTimeline events={events} npcsMap={npcsMap} />
+      <EventTimeline events={events}/>
     </div>
   );
 };

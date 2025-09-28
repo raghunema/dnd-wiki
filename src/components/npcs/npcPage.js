@@ -1,9 +1,9 @@
-import { useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { useEffect, useState } from 'react';
 import { getNpc } from '../../backendCalls/api'
 import './npcPage.css'
 
-const NpcBaseInfo = ({name, race, birthDate, location}) => {
+const NpcBaseInfo = ({name, race, birthDate, deathDate}) => {
     return(
         <div className="npc-base-info">
             <table className="base-info-grid">
@@ -18,15 +18,14 @@ const NpcBaseInfo = ({name, race, birthDate, location}) => {
                 </tr>
                 <tr>
                     <td className="label">DOB</td>
-                    <td className="value">{birthDate}</td>
+                    <td className="value">{birthDate.toString().substring(0,10)}</td>
                 </tr>
-                </tbody>
-                {location && 
                 <tr>
-                    <td className="label">Location</td>
-                    <td className="value">{location}</td>
+                    <td className="label">DOD</td>
+                    <td className="value">{deathDate.toString().substring(0,10)}</td>
                 </tr>
-                }
+
+                </tbody>
             </table>
         </div>
     )
@@ -34,6 +33,7 @@ const NpcBaseInfo = ({name, race, birthDate, location}) => {
 
 const NpcNav = ({npcInfo}) => {
     const entries = Object.keys(npcInfo || {});
+    entries.unshift("description")
     entries.push("events")
 
     return(
@@ -95,28 +95,38 @@ const NpcLore = ({ npcLore }) => {
 
 const NpcPage = () => {
 
-    const { npcSlug } = useParams();
+    const react_location = useLocation();
+    const npcId  = react_location.state?._id
+
     const [npc, setNpc] = useState(null);
     const [events, setEvents] = useState(null);
     const [error, setError] = useState(null);
 
     useEffect (() => {
         console.log("Getting npc info")
+        console.log(npcId)
 
         const getAndSetNPCs = async () => {
-            const npc = await getNpc(npcSlug);
+            const npc = await getNpc({
+                fields: [],
+                expand: ['events:-npcs -createdAt -updatedAt -__v'],
+                _id: npcId,
+                reason: 'npc_detail'
+            });
+
+
             if (!npc) {
                 setError("No NPC Defined"); 
                 throw new Error("NPC not defined") 
             }
-            setNpc(npc.npcInfo)
-            setEvents(npc.npcEvents)
+            setNpc(npc)
+            setEvents(npc.events)
             
             console.log(npc.npcEvents)
         }
         getAndSetNPCs()
         
-    }, [npcSlug]);
+    }, [npcId]);
 
     if (error) return <p>Error: {error}</p>;
     if (!npc) return <p>Getting your beloved npc!</p>;
@@ -129,20 +139,21 @@ const NpcPage = () => {
                     name={npc.name} 
                     race={npc.race} 
                     birthDate={npc.dateOfBirth}
-                    location={npc.location}
+                    deathDate={npc.dateOfDeath}
                 />
             </div>
             <div className="npc-lore-part">
+                <div className="npc-desc-obj" id="description">{npc.description}</div>
                 <NpcLore npcLore={npc.information}/>
                 <div className="npc-events" id="events">
                     <h1>Events</h1>
-                    {events && 
+                    {events.length > 0 &&
                         events.map(event => {
                             return (
                             <div> 
                                 <h2>{event.name}</h2>
+                                <h3>{event.locationName}</h3>
                                 <p>{event.description}</p>
-                                <p>{event.location}</p>
                             </div>
                             )
 

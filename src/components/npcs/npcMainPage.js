@@ -21,7 +21,10 @@ const NpcMainPage = () => {
 
     useEffect (() => {
         const getAndSetNPCs = async () => {
-            const npcs = await getAllNpcs()
+            const npcs = await getAllNpcs({
+               fields: ['slug', 'name', 'description'],
+               expand: []
+            })
             if (!npcs) throw new Error("NPCs not defined") 
             setNpcs(npcs)
         }
@@ -29,9 +32,9 @@ const NpcMainPage = () => {
         getAndSetNPCs();
     }, [])
 
-    const handleCardClick = (npcSlug) => {
-        console.log(`Clicking ${npcSlug}`);
-        navigate(`/npcs/${npcSlug}`);
+    const handleCardClick = (npc) => {
+        //console.log(`Clicking ${npc._id}`);
+        navigate(`/npcs/${npc.slug}`, { state: { _id: npc._id} });
     };
     
     if (!Npcs) return <p>Getting your beloved NPCs!</p>;
@@ -43,7 +46,7 @@ const NpcMainPage = () => {
                     key={index} 
                     name={npc.name}
                     description={npc.description} 
-                    onClick={() => handleCardClick(npc.slug)}
+                    onClick={() => handleCardClick(npc)}
                 />
             ))}
         </div>
