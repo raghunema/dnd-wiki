@@ -10,7 +10,7 @@
     width: 80%;
     margin: 0 auto;
     align-content: flex-start;
-    height: 100vh;
+    min-height: 100vh;
 }
 
 .npc-description {
@@ -119,6 +119,7 @@
     padding: 1rem;
     max-width: 800px;
     margin: 0 auto;
+    margin-bottom: 20px;
 }
 
 .npc-events div {

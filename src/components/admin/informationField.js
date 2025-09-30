@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 
 const InformationField = (props) => {
-  console.log("InformationField props:", props); // Debug log
+  //console.log("InformationField props:", props); // Debug log
   const { formData, onChange, schema, uiSchema, name } = props;
   const [text, setText] = useState("");
   const [error, setError] = useState(null);

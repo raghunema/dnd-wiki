@@ -32,7 +32,8 @@ const LocationInfo = ({newLocation}) => {
 
     return (
         <div className="curr-location-info">
-            {location.description}
+            <div><h3>{location.name}</h3></div>
+            <div><p>{location.description}</p></div>
         </div>
     )
 

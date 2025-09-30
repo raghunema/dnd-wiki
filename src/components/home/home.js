@@ -1,4 +1,4 @@
-import { useEffect, React, use, useState} from "react";
+import { useEffect, useState} from "react";
 import Slider from 'rc-slider'
 import 'rc-slider/assets/index.css';
 import Map from "./locationModel/map";
@@ -66,7 +66,7 @@ const Home = () => {
                 marks={sliderMarks}
                 onChange={handleSliderChange}
                 styles={{
-                    rail:{ backgroundColor: "transparent" },
+                    rail:{ backgroundColor: "#e49b08", height: "1.5px"},
                     track: { backgroundColor: "transparent" },
                     handle: { 
                         backgroundColor: "#1890ff",
@@ -78,9 +78,9 @@ const Home = () => {
             />
 
             <div style={{ marginTop: "60px" }}>
-                {currentEvent.name}
+                <h2>{currentEvent.name}</h2>
                 <div style={{margin: "20px", marginbottom: "40px"}}>
-                    {currentEvent.description}
+                    <p>{currentEvent.description}</p>
                 </div>
             </div>
 

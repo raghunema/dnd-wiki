@@ -90,7 +90,6 @@ export const getAllNpcs = async ({ fields, expand }) => {
 
 export const getNpc = async ( { fields, expand, _id, reason} ) => {
     let url = new URL(API_BASE_NPC + `/single/${_id}`)
-    console.log(url.toString())
 
     const params = new URLSearchParams();
 
@@ -198,10 +197,19 @@ export const getEventsForm = async (filters) => {
 /// LOCATION GETS ///
 ////////////////////
 
-export const getLocationInfo = async (location) => {
-    const url = API_BASE + 'locations/single/' + location
+export const getLocationInfo = async ({fields, expand, _id}) => {
+    const url = new URL(API_BASE + `locations/single/${_id}`)
 
-    console.log(url)
+    const params = new URLSearchParams();
+
+    if (fields?.length > 0) params.set('fields', fields.join(','));
+    if (expand?.length > 0) params.set('expand', expand.join(','));
+
+    if ([...params].length) {
+        url.search = params.toString();
+    }
+
+    //console.log(url)
     const apiRes = await fetch(url, {
         method: 'GET'
     })
@@ -279,7 +287,7 @@ export const postNPC = async (formInfo, formFunc) => {
 
 export const postEvent = async (formInfo, formFunc) => {
     if (formFunc === 'ADD') {
-        const url = API_BASE_EVENTS + '/'
+        const url = API_BASE_EVENTS + '/new'
         console.log(url)
 
         const apiRes = await fetch(url, {
@@ -297,6 +305,39 @@ export const postEvent = async (formInfo, formFunc) => {
         console.log(url)
 
         //console.log(formFunc)
+        const apiRes = await fetch(url, {
+            method: 'POST', 
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body:  JSON.stringify(formInfo)
+        })
+
+        if (!apiRes.ok) throw new Error(`Error posting updating Event`);
+        return await apiRes.json()
+
+    }
+}
+
+export const postLocation = async (formInfo, formFunc) => {
+    if (formFunc === 'ADD') {
+        const url = new URL(API_BASE_LOCATION + '/new')
+        console.log(url)
+
+        const apiRes = await fetch(url, {
+            method: 'POST', 
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(formInfo)
+        })
+
+        if (!apiRes.ok) throw new Error(`Error posting new Event`);
+        return await apiRes.json()
+    } else if (formFunc === 'UPDATE') {
+        const url = new URL(API_BASE_LOCATION + '/update')
+        console.log(url)
+
         const apiRes = await fetch(url, {
             method: 'POST', 
             headers: {

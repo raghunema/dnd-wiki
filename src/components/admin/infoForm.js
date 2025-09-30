@@ -3,7 +3,8 @@ import { useEffect, useState } from 'react';
 import Form from '@rjsf/core';
 import InformationField from "./informationField";
 
-import { getNPCSchema, 
+import { 
+  getNPCSchema, 
   getEventSchema, 
   getLocationSchema,
   getAllEvents, 
@@ -13,7 +14,8 @@ import { getNPCSchema,
   postNPC,
   postEvent,
   getLocationInfo,
-  getAllNpcs
+  getAllNpcs,
+  postLocation
 } from '../../backendCalls/api'
 
 import validator from '@rjsf/validator-ajv8';
@@ -226,7 +228,7 @@ const uiLocationSchema = {
       "className": "submit-button"
     }
   },
-  "ui:order": ["_id", "slug", "name", "type", "description", "parentId", "information", "toDate", "fromDate", "events", "children"]
+  "ui:order": ["_id", "slug", "name", "type", "description", "parentId", "toDate", "fromDate", "events", "children"]
 }
 
 //const formFuncs = ['ADD', 'UPDATE', 'DELETE']
@@ -319,7 +321,6 @@ export default function EntryForm({ onCreated }) {
               enumNames: locationLabels,
               uniqueItems: true
             }
-
           }
 
           setSchema(eventSchema)
@@ -328,8 +329,40 @@ export default function EntryForm({ onCreated }) {
 
         case 'LOCATION': 
           const locationSchema = await getLocationSchema();
-          setSchema(locationSchema)
 
+          if (allEvents) {
+            const eventOptions = allEvents.map(npc => npc._id);
+            const eventLabels = allEvents.map(npc => npc.name);
+
+            locationSchema.properties.events.items = {
+              type: "string",
+              enum: eventOptions,
+              enumNames: eventLabels,
+              uniqueItems: true
+            }
+          }
+
+          if (allLocations) {
+            const locationOptions = allLocations.map(loc => loc._id);
+            const locationLabels = allLocations.map(loc => loc.name);
+
+            locationSchema.properties.parentId = {
+              type: "string",
+              enum: locationOptions,
+              enumNames: locationLabels,
+              uniqueItems: true
+            }
+
+            locationSchema.properties.children.items = {
+              type: "string",
+              enum: locationOptions,
+              enumNames: locationLabels,
+              uniqueItems: true
+            }
+          }
+
+
+          setSchema(locationSchema)
           setUiSchema(uiLocationSchema)
           break
 
@@ -342,7 +375,7 @@ export default function EntryForm({ onCreated }) {
   
   //prepops the current form if you select an existing object
   useEffect(() => {
-    console.log(`Current object: ${currObj}`)
+    //console.log(`Current object: ${currObj}`)
     if (!currObj || formFunc === "ADD"){
       setFormData({});
       return;
@@ -351,48 +384,66 @@ export default function EntryForm({ onCreated }) {
     }
 
     async function setObjectPrepop () {
-      switch (type) {
-      case "NPC": 
-        const selectedNpc = allNpcs.find(ev => ev._id === currObj);
+      try {
+         switch (type) {
+          case "NPC": 
+            const selectedNpc = allNpcs.find(ev => ev._id === currObj);
 
-        if (selectedNpc) {
-          const npcInfo = await getNpc(selectedNpc.slug)
+            if (selectedNpc) {
+              const npcInfo = await getNpc({
+                fields: [],
+                expand: [],
+                _id: selectedNpc._id,
+                reason: ''
+              })
 
-          //console.log(npcInfo)
-          if (npcInfo) {
-            setFormData(npcInfo.npcInfo);
-          }
-        }
-        
-        break
+              //console.log(npcInfo)
+              if (npcInfo) {
+                setFormData(npcInfo);
+              }
+            }
+            
+          break
       
-      case "EVENT":
-        const selectedEvent = allEvents.find(ev => ev._id === currObj);
-        if (selectedEvent) {
+          case "EVENT":
+            const selectedEvent = allEvents.find(ev => ev._id === currObj);
+            if (selectedEvent) {
 
-          const eventInfo = await getEvents({"_id": currObj})
-          console.log(eventInfo)
+              const eventInfo = await getEvents({"_id": currObj})
+              //console.log(eventInfo)
 
-          if (eventInfo) {
-            setFormData(eventInfo[0]);
-          }
+              if (eventInfo) {
+                setFormData(eventInfo[0]);
+              }
+            }
+          break
+
+          case "LOCATION":
+            console.log('gettign location')
+
+            //console.log(currObj)
+            const locationInfo = await getLocationInfo({
+                fields: [],
+                expand: [],
+                _id: currObj,
+              })
+
+              //console.log(locationInfo)
+              if (locationInfo) {
+                setFormData(locationInfo);
+              }
+
+          break 
+
+          default:
+            setFormData({})
         }
-        break
-
-      case "LOCATION":
-        const selectedLocation = allLocations.find(loc => loc.id === currObj);
-
-        if (selectedLocation) {
-          const locationInfo = await getLocationInfo
-        }
-
-        break 
-
-      default:
-        setFormData({})
+      } catch (error) {
+        console.error('Error fetching object data:', error);
+        setFormData({});
       }
+
     }
-    
     
   }, [currObj, allNpcs, allEvents, allLocations, type, formFunc])
 
@@ -407,13 +458,18 @@ export default function EntryForm({ onCreated }) {
 
         await postNPC(formData, formFunc);
         await setBaseInfo();
-        break
+      break
 
       case "EVENT":
         await postEvent(formData, formFunc);
         await setBaseInfo();
-        break
+      break
       
+      case "LOCATION":
+        await postLocation(formData, formFunc)
+        await setBaseInfo();
+      break
+
       default:
         console.log('Handling Sumbit')
     } 
@@ -424,7 +480,12 @@ export default function EntryForm({ onCreated }) {
   return (
       <div>
         <div>
-            <select value={type} onChange={e => setType(e.target.value)}>
+            <select value={type} onChange={e => 
+              {
+                setType(e.target.value)
+                setCurrObj(null)
+                setFormData({})
+              }}>
               <option value=""></option>
               <option value="NPC">NPC</option>
               <option value="EVENT">Event</option>
