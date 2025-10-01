@@ -52,18 +52,7 @@ const worldData = {
                 }
             }, 
             info: "Kalith is the sister southern continent, filled with dwarves, gnomes, and humans. Many of the people that make their homes in cities that scale the mountains of the mountain range of Porsithi, however there are tribes of people scattered throughout the swamp of Ellistauge Bay and some even dwell further down in the land of dinosaurs."
-        },
-        "Continent 3": {
-            type: "Continent",
-            children: {
-                "Endless Dessert": {
-                    type: "Country"
-                }
-            }
-        },
-        "Continent 4": {
-            type: "Continent"
-        },
+        }
     } 
 }
 

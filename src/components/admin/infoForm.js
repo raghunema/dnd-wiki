@@ -217,7 +217,7 @@ const uiLocationSchema = {
   },
   parentId: {
       "ui:title": "Parent Location:",
-      "ui:widget": "select"
+      "ui:widget": "select",
   },
   children: {
     "ui:title": "Sub-Locations"
@@ -285,7 +285,7 @@ export default function EntryForm({ onCreated }) {
             const eventLabels = allEvents.map(npc => npc.name);
 
             npcSchema.properties.events.items = {
-              type: "string",
+              type: ["string"],
               enum: eventOptions,
               enumNames: eventLabels,
               uniqueItems: true
@@ -304,7 +304,7 @@ export default function EntryForm({ onCreated }) {
             const npcLabels = allNpcs.map(npc => npc.name);
 
             eventSchema.properties.npcs.items = {
-              type: "string",
+              type: ["string", "null"],
               enum: npcOptions,
               enumNames: npcLabels,
               uniqueItems: true
@@ -312,11 +312,11 @@ export default function EntryForm({ onCreated }) {
           }
 
           if (allLocations) {
-            const locationOptions = allLocations.map(loc => loc._id);
-            const locationLabels = allLocations.map(loc => loc.name);
+            const locationOptions = [null, ...allLocations.map(loc => loc._id)];
+            const locationLabels = ["NONE", ...allLocations.map(loc => loc.name)];
 
             eventSchema.properties.location = {
-              type: "string",
+              type: ["string", "null"],
               enum: locationOptions,
               enumNames: locationLabels,
               uniqueItems: true
@@ -343,11 +343,11 @@ export default function EntryForm({ onCreated }) {
           }
 
           if (allLocations) {
-            const locationOptions = allLocations.map(loc => loc._id);
-            const locationLabels = allLocations.map(loc => loc.name);
+            const locationOptions = [null, ...allLocations.map(loc => loc._id)];
+            const locationLabels = ["NONE", ...allLocations.map(loc => loc.name)];
 
             locationSchema.properties.parentId = {
-              type: "string",
+              type: ["string", "null"],
               enum: locationOptions,
               enumNames: locationLabels,
               uniqueItems: true
