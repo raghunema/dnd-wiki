@@ -1,7 +1,7 @@
-const API_BASE = 'http://localhost:8000/'
-const API_BASE_NPC = 'http://localhost:8000/npcs'
-const API_BASE_EVENTS = 'http://localhost:8000/events'
-const API_BASE_LOCATION = 'http://localhost:8000/locations'
+const API_BASE = 'https://dnd-backend-y1zk.onrender.com/'
+const API_BASE_NPC = 'https://dnd-backend-y1zk.onrender.com/npcs'
+const API_BASE_EVENTS = 'https://dnd-backend-y1zk.onrender.com/events'
+const API_BASE_LOCATION = 'https://dnd-backend-y1zk.onrender.com/locations'
 
 export const login = async ({username, password}) => {
     const url = API_BASE + 'login'

@@ -179,7 +179,7 @@ const uiLocationSchema = {
     "ui:classNames": "form-field-wrapper"
   },
   name: {
-    "ui:title": "Event Name",
+    "ui:title": "Location Name",
     "ui:widget": "textarea", 
     "ui:classNames": "form-field-wrapper"
   },
