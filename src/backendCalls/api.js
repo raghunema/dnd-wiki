@@ -4,9 +4,9 @@
 // const API_BASE_LOCATION = 'https://dnd-backend-y1zk.onrender.com/locations'
 
 const API_BASE = '/api/'
-const API_BASE_NPC = '/api/npcs'
-const API_BASE_EVENTS = '/api/events'
-const API_BASE_LOCATION = '/api/locations'
+const API_BASE_NPC = '/api/npcs/'
+const API_BASE_EVENTS = '/api/events/'
+const API_BASE_LOCATION = '/api/locations/'
 
 export const login = async ({username, password}) => {
     const url = API_BASE + 'login'
