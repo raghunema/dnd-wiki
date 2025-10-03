@@ -94,7 +94,7 @@ export const getAllNpcs = async ({ fields, expand }) => {
 }
 
 export const getNpc = async ( { fields, expand, _id, reason} ) => {
-    let url = new URL(API_BASE_NPC + `single/${_id}`, window.location.origin)
+    let url = PI_BASE_NPC + `single/${_id}`
 
     const params = new URLSearchParams();
 
@@ -103,12 +103,13 @@ export const getNpc = async ( { fields, expand, _id, reason} ) => {
     if (reason) params.set('reason', reason)
 
     if ([...params].length) {
-        url.search = params.toString();
+        url += '?' + params.toString();
     }
 
-    console.log(url.toString())
+    console.log(url)
     const apiRes = await fetch(url, {
-        method: 'GET'
+        method: 'GET',
+        credentials: 'include'
     })
      
     if (!apiRes.ok) throw new Error(`Error getting npc`);
