@@ -94,7 +94,7 @@ export const getAllNpcs = async ({ fields, expand }) => {
 }
 
 export const getNpc = async ( { fields, expand, _id, reason} ) => {
-    let url = PI_BASE_NPC + `single/${_id}`
+    let url = API_BASE_NPC + `single/${_id}`
 
     const params = new URLSearchParams();
 
