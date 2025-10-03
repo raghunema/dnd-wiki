@@ -96,6 +96,7 @@ export const getAllNpcs = async ({ fields, expand }) => {
 export const getNpc = async ( { fields, expand, _id, reason} ) => {
     let url = API_BASE_NPC + `single/${_id}`
 
+    console.log('npc/single/:id endpoint')
     const params = new URLSearchParams();
 
     if (fields?.length > 0) params.set('fields', fields.join(','));
