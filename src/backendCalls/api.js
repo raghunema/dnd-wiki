@@ -94,7 +94,7 @@ export const getAllNpcs = async ({ fields, expand }) => {
 }
 
 export const getNpc = async ( { fields, expand, _id, reason} ) => {
-    let url = new URL(API_BASE_NPC + `single/${_id}`)
+    let url = new URL(API_BASE_NPC + `single/${_id}`, window.location.origin)
 
     const params = new URLSearchParams();
 
@@ -164,7 +164,7 @@ export const getEvents = async (filters) => {
 }
 
 export const getAllEvents = async ({ fields, expand }) => {
-    const url = new URL(API_BASE_EVENTS + `all`)
+    const url = new URL(API_BASE_EVENTS + `all`, window.location.origin)
 
     const params = new URLSearchParams();
 
@@ -203,7 +203,7 @@ export const getEventsForm = async (filters) => {
 ////////////////////
 
 export const getLocationInfo = async ({fields, expand, _id}) => {
-    const url = new URL(API_BASE + `locations/single/${_id}`)
+    const url = new URL(API_BASE + `locations/single/${_id}`, window.location.origin)
 
     const params = new URLSearchParams();
 
@@ -326,7 +326,7 @@ export const postEvent = async (formInfo, formFunc) => {
 
 export const postLocation = async (formInfo, formFunc) => {
     if (formFunc === 'ADD') {
-        const url = new URL(API_BASE_LOCATION + 'new')
+        const url = new URL(API_BASE_LOCATION + 'new', window.location.origin)
         console.log(url)
 
         const apiRes = await fetch(url, {
@@ -340,7 +340,7 @@ export const postLocation = async (formInfo, formFunc) => {
         if (!apiRes.ok) throw new Error(`Error posting new Event`);
         return await apiRes.json()
     } else if (formFunc === 'UPDATE') {
-        const url = new URL(API_BASE_LOCATION + '/update')
+        const url = new URL(API_BASE_LOCATION + '/update', window.location.origin)
         console.log(url)
 
         const apiRes = await fetch(url, {
