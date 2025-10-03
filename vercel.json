@@ -2,7 +2,7 @@
   "rewrites": [
     {
       "source": "/api/:path*",
-      "destination": "https://your-backend-domain.com/:path*"
+      "destination": "https://dnd-backend-y1zk.onrender.com/:path*"
     }
   ]
 }
