@@ -68,7 +68,7 @@ export const getLocationSchema = async () => {
 ///////////////
 
 export const getAllNpcs = async ({ fields, expand }) => {
-    let url = new URL(API_BASE_NPC + 'all')
+    let url = new URL(API_BASE_NPC + 'all',  window.location.origin)
 
     const params = new URLSearchParams();
 
