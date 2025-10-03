@@ -3,7 +3,7 @@
 // const API_BASE_EVENTS = 'https://dnd-backend-y1zk.onrender.com/events'
 // const API_BASE_LOCATION = 'https://dnd-backend-y1zk.onrender.com/locations'
 
-const API_BASE = '/api'
+const API_BASE = '/api/'
 const API_BASE_NPC = '/api/npcs'
 const API_BASE_EVENTS = '/api/events'
 const API_BASE_LOCATION = '/api/locations'
