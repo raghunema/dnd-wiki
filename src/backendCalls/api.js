@@ -31,7 +31,7 @@ export const login = async ({username, password}) => {
 /////////////////
 
 export const getNPCSchema = async () => {
-    const url = API_BASE_NPC + '/schema'
+    const url = API_BASE_NPC + 'schema'
 
     console.log(url)
     const apiRes = await fetch(url, {
@@ -42,7 +42,7 @@ export const getNPCSchema = async () => {
 }
 
 export const getEventSchema = async () => {
-    const url = API_BASE_EVENTS + '/schema'
+    const url = API_BASE_EVENTS + 'schema'
 
     console.log(url)
     const apiRes = await fetch(url, {
@@ -53,7 +53,7 @@ export const getEventSchema = async () => {
 }
 
 export const getLocationSchema = async () => {
-    const url = API_BASE_LOCATION+ '/schema'
+    const url = API_BASE_LOCATION + 'schema'
 
     console.log(url)
     const apiRes = await fetch(url, {
@@ -68,7 +68,7 @@ export const getLocationSchema = async () => {
 ///////////////
 
 export const getAllNpcs = async ({ fields, expand }) => {
-    let url = new URL(API_BASE_NPC + '/all')
+    let url = new URL(API_BASE_NPC + 'all')
 
     const params = new URLSearchParams();
 
@@ -94,7 +94,7 @@ export const getAllNpcs = async ({ fields, expand }) => {
 }
 
 export const getNpc = async ( { fields, expand, _id, reason} ) => {
-    let url = new URL(API_BASE_NPC + `/single/${_id}`)
+    let url = new URL(API_BASE_NPC + `single/${_id}`)
 
     const params = new URLSearchParams();
 
@@ -116,7 +116,7 @@ export const getNpc = async ( { fields, expand, _id, reason} ) => {
 }
 
 export const getAllNpcsForm = async () => {
-    const url = API_BASE_NPC + '/form'
+    const url = API_BASE_NPC + 'form'
 
     console.log(url)
     const apiRes = await fetch(url, {
@@ -129,7 +129,7 @@ export const getAllNpcsForm = async () => {
 }
 
 export const getNpcsForEvents = async (npcFilter) => {
-    const url = API_BASE_NPC + '/events'
+    const url = API_BASE_NPC + 'events'
 
     console.log(url)
         const apiRes = await fetch(url, {
@@ -149,7 +149,7 @@ export const getNpcsForEvents = async (npcFilter) => {
 /////////////////
 
 export const getEvents = async (filters) => {
-    const url = API_BASE_EVENTS + `/filtered`
+    const url = API_BASE_EVENTS + `filtered`
 
     console.log(url)
     const apiRes = await fetch(url, {
@@ -164,7 +164,7 @@ export const getEvents = async (filters) => {
 }
 
 export const getAllEvents = async ({ fields, expand }) => {
-    const url = new URL(API_BASE_EVENTS + `/all`)
+    const url = new URL(API_BASE_EVENTS + `all`)
 
     const params = new URLSearchParams();
 
@@ -184,7 +184,7 @@ export const getAllEvents = async ({ fields, expand }) => {
 }
 
 export const getEventsForm = async (filters) => {
-    const url = API_BASE_EVENTS + `/form`
+    const url = API_BASE_EVENTS + `form`
 
     console.log(url)
     const apiRes = await fetch(url, {
@@ -238,7 +238,7 @@ export const getLocationMapInfo = async (location) => {
 
 
 export const getLocationsForm = async () => {
-    const url = API_BASE_LOCATION + `/form`
+    const url = API_BASE_LOCATION + `form`
 
     console.log(url)
     const apiRes = await fetch(url, {
@@ -257,7 +257,7 @@ export const getLocationsForm = async () => {
 
 export const postNPC = async (formInfo, formFunc) => {
     if (formFunc === 'ADD') {
-        const url = API_BASE_NPC + '/'
+        const url = API_BASE_NPC + ''
         console.log(url)
 
         const apiRes = await fetch(url, {
@@ -292,7 +292,7 @@ export const postNPC = async (formInfo, formFunc) => {
 
 export const postEvent = async (formInfo, formFunc) => {
     if (formFunc === 'ADD') {
-        const url = API_BASE_EVENTS + '/new'
+        const url = API_BASE_EVENTS + 'new'
         console.log(url)
 
         const apiRes = await fetch(url, {
@@ -326,7 +326,7 @@ export const postEvent = async (formInfo, formFunc) => {
 
 export const postLocation = async (formInfo, formFunc) => {
     if (formFunc === 'ADD') {
-        const url = new URL(API_BASE_LOCATION + '/new')
+        const url = new URL(API_BASE_LOCATION + 'new')
         console.log(url)
 
         const apiRes = await fetch(url, {
