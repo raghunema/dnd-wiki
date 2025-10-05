@@ -1,12 +1,13 @@
-// const API_BASE = 'https://dnd-backend-y1zk.onrender.com/'
-// const API_BASE_NPC = 'https://dnd-backend-y1zk.onrender.com/npcs'
-// const API_BASE_EVENTS = 'https://dnd-backend-y1zk.onrender.com/events'
-// const API_BASE_LOCATION = 'https://dnd-backend-y1zk.onrender.com/locations'
+//let API_BASE = 'https://dnd-backend-y1zk.onrender.com/'
 
-const API_BASE = '/api/'
-const API_BASE_NPC = '/api/npcs/'
-const API_BASE_EVENTS = '/api/events/'
-const API_BASE_LOCATION = '/api/locations/'
+let API_BASE = '/api/';
+if (process.env.NODE_ENV === 'development') {
+  API_BASE = 'http://localhost:8000/';
+}
+
+const API_BASE_NPC = `${API_BASE}npcs/`;
+const API_BASE_EVENTS = `${API_BASE}events/`;
+const API_BASE_LOCATION = `${API_BASE}locations/`;
 
 export const login = async ({username, password}) => {
     const url = API_BASE + 'login'
