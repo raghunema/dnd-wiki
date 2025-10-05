@@ -3,10 +3,10 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 import Header from './components/header/header';
-import CharacterPage from '/Users/raghunema/dndWikiProject/dnd-wiki/src/components/characterPage/characterPage.js'
-import Home from '/Users/raghunema/dndWikiProject/dnd-wiki/src/components/home/home.js';
-import WorldPage from '/Users/raghunema/dndWikiProject/dnd-wiki/src/components/worldPage/worldPage';
-import Timeline from '/Users/raghunema/dndWikiProject/dnd-wiki/src/components/timeline/timeline';
+import CharacterPage from './components/characterPage/characterPage'
+import Home from './components/home/home'
+import WorldPage from './components/worldPage/worldPage';
+import Timeline from './components/timeline/timeline';
 import NpcMainPage from './components/npcs/npcMainPage';
 import NpcPage from './components/npcs/npcPage';
 import AdminPage from './components/admin/adminPage';

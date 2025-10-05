@@ -103,8 +103,8 @@ const NpcPage = () => {
     const [error, setError] = useState(null);
 
     useEffect (() => {
-        console.log("Getting npc info")
-        console.log(npcId)
+        //console.log("Getting npc info")
+        //console.log(npcId)
 
         const getAndSetNPCs = async () => {
             const npc = await getNpc({

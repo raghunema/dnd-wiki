@@ -1,7 +1,12 @@
-const API_BASE = 'https://localhost:8000'
-const API_BASE_NPC = 'https://localhost:8000/npcs'
-const API_BASE_EVENTS = 'https://localhost:8000/events'
-const API_BASE_LOCATION = 'https://localhost:8000/locations'
+// const API_BASE = 'https://dnd-backend-y1zk.onrender.com/'
+// const API_BASE_NPC = 'https://dnd-backend-y1zk.onrender.com/npcs'
+// const API_BASE_EVENTS = 'https://dnd-backend-y1zk.onrender.com/events'
+// const API_BASE_LOCATION = 'https://dnd-backend-y1zk.onrender.com/locations'
+
+const API_BASE = '/api/'
+const API_BASE_NPC = '/api/npcs/'
+const API_BASE_EVENTS = '/api/events/'
+const API_BASE_LOCATION = '/api/locations/'
 
 export const login = async ({username, password}) => {
     const url = API_BASE + 'login'
@@ -26,7 +31,7 @@ export const login = async ({username, password}) => {
 /////////////////
 
 export const getNPCSchema = async () => {
-    const url = API_BASE_NPC + '/schema'
+    const url = API_BASE_NPC + 'schema'
 
     console.log(url)
     const apiRes = await fetch(url, {
@@ -37,7 +42,7 @@ export const getNPCSchema = async () => {
 }
 
 export const getEventSchema = async () => {
-    const url = API_BASE_EVENTS + '/schema'
+    const url = API_BASE_EVENTS + 'schema'
 
     console.log(url)
     const apiRes = await fetch(url, {
@@ -48,7 +53,7 @@ export const getEventSchema = async () => {
 }
 
 export const getLocationSchema = async () => {
-    const url = API_BASE_LOCATION+ '/schema'
+    const url = API_BASE_LOCATION + 'schema'
 
     console.log(url)
     const apiRes = await fetch(url, {
@@ -63,7 +68,7 @@ export const getLocationSchema = async () => {
 ///////////////
 
 export const getAllNpcs = async ({ fields, expand }) => {
-    let url = new URL(API_BASE_NPC + '/all')
+    let url = new URL(API_BASE_NPC + 'all',  window.location.origin)
 
     const params = new URLSearchParams();
 
@@ -89,8 +94,9 @@ export const getAllNpcs = async ({ fields, expand }) => {
 }
 
 export const getNpc = async ( { fields, expand, _id, reason} ) => {
-    let url = new URL(API_BASE_NPC + `/single/${_id}`)
+    let url = API_BASE_NPC + `single/${_id}`
 
+    console.log('npc/single/:id endpoint')
     const params = new URLSearchParams();
 
     if (fields?.length > 0) params.set('fields', fields.join(','));
@@ -98,12 +104,13 @@ export const getNpc = async ( { fields, expand, _id, reason} ) => {
     if (reason) params.set('reason', reason)
 
     if ([...params].length) {
-        url.search = params.toString();
+        url += '?' + params.toString();
     }
 
-    console.log(url.toString())
+    console.log(url)
     const apiRes = await fetch(url, {
-        method: 'GET'
+        method: 'GET',
+        credentials: 'include'
     })
      
     if (!apiRes.ok) throw new Error(`Error getting npc`);
@@ -111,7 +118,7 @@ export const getNpc = async ( { fields, expand, _id, reason} ) => {
 }
 
 export const getAllNpcsForm = async () => {
-    const url = API_BASE_NPC + '/form'
+    const url = API_BASE_NPC + 'form'
 
     console.log(url)
     const apiRes = await fetch(url, {
@@ -124,7 +131,7 @@ export const getAllNpcsForm = async () => {
 }
 
 export const getNpcsForEvents = async (npcFilter) => {
-    const url = API_BASE_NPC + '/events'
+    const url = API_BASE_NPC + 'events'
 
     console.log(url)
         const apiRes = await fetch(url, {
@@ -144,7 +151,7 @@ export const getNpcsForEvents = async (npcFilter) => {
 /////////////////
 
 export const getEvents = async (filters) => {
-    const url = API_BASE_EVENTS + `/filtered`
+    const url = API_BASE_EVENTS + `filtered`
 
     console.log(url)
     const apiRes = await fetch(url, {
@@ -159,7 +166,7 @@ export const getEvents = async (filters) => {
 }
 
 export const getAllEvents = async ({ fields, expand }) => {
-    const url = new URL(API_BASE_EVENTS + `/all`)
+    const url = new URL(API_BASE_EVENTS + `all`, window.location.origin)
 
     const params = new URLSearchParams();
 
@@ -179,7 +186,7 @@ export const getAllEvents = async ({ fields, expand }) => {
 }
 
 export const getEventsForm = async (filters) => {
-    const url = API_BASE_EVENTS + `/form`
+    const url = API_BASE_EVENTS + `form`
 
     console.log(url)
     const apiRes = await fetch(url, {
@@ -198,7 +205,7 @@ export const getEventsForm = async (filters) => {
 ////////////////////
 
 export const getLocationInfo = async ({fields, expand, _id}) => {
-    const url = new URL(API_BASE + `locations/single/${_id}`)
+    const url = new URL(API_BASE + `locations/single/${_id}`, window.location.origin)
 
     const params = new URLSearchParams();
 
@@ -233,7 +240,7 @@ export const getLocationMapInfo = async (location) => {
 
 
 export const getLocationsForm = async () => {
-    const url = API_BASE_LOCATION + `/form`
+    const url = API_BASE_LOCATION + `form`
 
     console.log(url)
     const apiRes = await fetch(url, {
@@ -252,7 +259,7 @@ export const getLocationsForm = async () => {
 
 export const postNPC = async (formInfo, formFunc) => {
     if (formFunc === 'ADD') {
-        const url = API_BASE_NPC + '/'
+        const url = API_BASE_NPC + ''
         console.log(url)
 
         const apiRes = await fetch(url, {
@@ -287,7 +294,7 @@ export const postNPC = async (formInfo, formFunc) => {
 
 export const postEvent = async (formInfo, formFunc) => {
     if (formFunc === 'ADD') {
-        const url = API_BASE_EVENTS + '/new'
+        const url = API_BASE_EVENTS + 'new'
         console.log(url)
 
         const apiRes = await fetch(url, {
@@ -321,7 +328,7 @@ export const postEvent = async (formInfo, formFunc) => {
 
 export const postLocation = async (formInfo, formFunc) => {
     if (formFunc === 'ADD') {
-        const url = new URL(API_BASE_LOCATION + '/new')
+        const url = new URL(API_BASE_LOCATION + 'new', window.location.origin)
         console.log(url)
 
         const apiRes = await fetch(url, {
@@ -335,7 +342,7 @@ export const postLocation = async (formInfo, formFunc) => {
         if (!apiRes.ok) throw new Error(`Error posting new Event`);
         return await apiRes.json()
     } else if (formFunc === 'UPDATE') {
-        const url = new URL(API_BASE_LOCATION + '/update')
+        const url = new URL(API_BASE_LOCATION + '/update', window.location.origin)
         console.log(url)
 
         const apiRes = await fetch(url, {
