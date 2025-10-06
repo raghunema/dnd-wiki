@@ -218,7 +218,7 @@ export const getLocationInfo = async ({fields, expand, _id}) => {
         url.search = params.toString();
     }
 
-    //console.log(url)
+    console.log(url.toString())
     const apiRes = await fetch(url, {
         method: 'GET'
     })
@@ -240,6 +240,31 @@ export const getLocationMapInfo = async (location) => {
     return await apiRes.json()
 }
 
+export const getAllLocations = async ({fields, expand}) => {
+    let url = new URL(API_BASE_LOCATION + 'all',  window.location.origin)
+
+    const params = new URLSearchParams();
+
+    if (fields?.length > 0) {
+       params.set('fields', fields.join(','));
+    }
+
+    if (expand?.length > 0) {
+        params.set('expand', expand.join(','));
+    }
+
+    if ([...params].length) {
+        url.search = params.toString();
+    }
+
+    console.log(url.toString())
+    const apiRes = await fetch(url, {
+        method: 'GET'
+    })
+
+    if (!apiRes.ok) throw new Error("Error getting all Locations");
+    return await apiRes.json()
+}
 
 export const getLocationsForm = async () => {
     const url = API_BASE_LOCATION + `form`

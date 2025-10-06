@@ -1,10 +1,12 @@
 .world-page {
     display: flex;
-    flex-direction: row;
+    flex-wrap: wrap;
     justify-content: center;
+    padding: 5px;
+    width: 75%;
+    margin: 0 auto;
+    align-content: flex-start;
     height: 100vh;
-    width: 100%;
-    background-color: rgb(240, 224, 193);
 }   
 
 .world-menu {
@@ -23,3 +25,21 @@
     height: 100%;
 }
 
+.npc-card:hover {
+    box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+    border-color: #888;
+}
+
+.loc-card {
+    text-align: center;
+    border-style: 1px solid #2d2929;
+    border-radius: 10px;
+    width: 300px;
+    height: 145px;
+    margin: 15px;
+    padding: 15px;
+    box-shadow: 0 2px 8px rgba(35, 32, 32, 0.12);
+    display: inline-block;
+    vertical-align: top;
+    transition: box-shadow 0.2s;
+}

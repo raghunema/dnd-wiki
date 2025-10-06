@@ -1,6 +1,9 @@
-import React from 'react'
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import WorldLore from './worldLore/worldLore'
 import WorldMenu from './worldMenu/worldMenu'
+import { getAllLocations } from '../../backendCalls/api';
+
 import './worldPage.css'
 
 const worldData = {
@@ -56,16 +59,52 @@ const worldData = {
     } 
 }
 
-const WorldPage = () => {
+const LocationCard = ({name, type, onClick}) => {
     return (
-        <div className='world-page'>
-            <div className='world-menu'>
-                <WorldMenu worldData={worldData}/>
-            </div>
-            <div className='world-page-lore'>
-                <WorldLore worldData={worldData}/>
-            </div>
+        <div className='loc-card' onClick={onClick}>
+            <h3>{name}</h3>
+            <p>{type}</p>
         </div>
+    )
+}
+
+const WorldPage = () => {
+    const [Locs, setLocs] = useState(null);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+
+        const getAndSetLocs = async () => {
+            const locs = await getAllLocations({
+                fields: ['slug', 'name', 'type'],
+                expand: []
+            })
+
+            setLocs(locs);
+        }
+        
+        getAndSetLocs();
+
+    }, [])
+
+    const handleCardClick = (loc) => {
+        navigate(`/world-page/${loc.slug}`, { state: { _id: loc._id } });
+    }
+
+    if (!Locs) return <p>Getting World Locations!</p>;
+
+    return (
+        <div className='world-page'> 
+            {Locs.map((loc, index) => (
+                <LocationCard
+                    key={index}
+                    name={loc.name}
+                    type={loc.type}
+                    onClick={() => handleCardClick(loc)}
+                />
+            ))}
+        </div>
+
     )
 }
 

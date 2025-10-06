@@ -52,7 +52,7 @@ const Timeline = () => {
     fetchEvents();
   }, [eventFilter]);
 
-  if (events.length === 0) return <div><h1>Getting Events</h1></div>;
+  if (events.length === 0) return <div><p>Getting Events</p></div>;
 
   return (
     <div className="timeline">
