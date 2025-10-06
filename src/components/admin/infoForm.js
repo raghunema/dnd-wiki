@@ -453,20 +453,20 @@ export default function EntryForm({ onCreated }) {
     //handleing submit
     switch (type) {
       case "NPC":
-        console.log('Adding NPC!')
-        console.log(formData)
-
         await postNPC(formData, formFunc);
+        setFormData({});
         await setBaseInfo();
       break
 
       case "EVENT":
         await postEvent(formData, formFunc);
+        setFormData({});
         await setBaseInfo();
       break
       
       case "LOCATION":
         await postLocation(formData, formFunc)
+        setFormData({});
         await setBaseInfo();
       break
 
