@@ -204,6 +204,10 @@ const uiLocationSchema = {
         yearsRange: [0, 100000]
     }
   },
+  information: {
+    "ui:title": "Information",
+    "ui:field": InformationField,
+  },
   events: {
     "ui:title": "Events",
     "ui:options": {
@@ -228,7 +232,7 @@ const uiLocationSchema = {
       "className": "submit-button"
     }
   },
-  "ui:order": ["_id", "slug", "name", "type", "description", "parentId", "toDate", "fromDate", "events", "children"]
+  "ui:order": ["_id", "slug", "name", "type", "description", "parentId", "toDate", "fromDate", "information", "events", "children"]
 }
 
 //const formFuncs = ['ADD', 'UPDATE', 'DELETE']
@@ -453,20 +457,20 @@ export default function EntryForm({ onCreated }) {
     //handleing submit
     switch (type) {
       case "NPC":
-        console.log('Adding NPC!')
-        console.log(formData)
-
         await postNPC(formData, formFunc);
+        setFormData({});
         await setBaseInfo();
       break
 
       case "EVENT":
         await postEvent(formData, formFunc);
+        setFormData({});
         await setBaseInfo();
       break
       
       case "LOCATION":
         await postLocation(formData, formFunc)
+        setFormData({});
         await setBaseInfo();
       break
 

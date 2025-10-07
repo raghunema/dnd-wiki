@@ -11,6 +11,7 @@ import NpcMainPage from './components/npcs/npcMainPage';
 import NpcPage from './components/npcs/npcPage';
 import AdminPage from './components/admin/adminPage';
 import LoginPage from './components/admin/login';
+import LocationPage from './components/worldPage/worldLore/locationPage';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
                 <Route path="/" element={<Home />} />
                 <Route path="/characters" element={<CharacterPage />} />
                 <Route path="/world-page" element={<WorldPage />} />
+                <Route path="/world-page/:locationSlug" element={<LocationPage/>} />
                 <Route path="/timeline" element={<Timeline />} />
                 <Route path="/npcs/" element={<NpcMainPage />}/> 
                 <Route path="/npcs/:npcSlug" element={<NpcPage />} />

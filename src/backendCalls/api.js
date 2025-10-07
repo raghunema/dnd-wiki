@@ -1,12 +1,14 @@
-// const API_BASE = 'https://dnd-backend-y1zk.onrender.com/'
-// const API_BASE_NPC = 'https://dnd-backend-y1zk.onrender.com/npcs'
-// const API_BASE_EVENTS = 'https://dnd-backend-y1zk.onrender.com/events'
-// const API_BASE_LOCATION = 'https://dnd-backend-y1zk.onrender.com/locations'
+// let API_BASE = 'https://dnd-backend-y1zk.onrender.com/'
 
-const API_BASE = '/api/'
-const API_BASE_NPC = '/api/npcs/'
-const API_BASE_EVENTS = '/api/events/'
-const API_BASE_LOCATION = '/api/locations/'
+
+let API_BASE = '/api/';
+if (process.env.NODE_ENV === 'development') {
+  API_BASE = 'http://localhost:8000/';
+}
+
+const API_BASE_NPC = `${API_BASE}npcs/`;
+const API_BASE_EVENTS = `${API_BASE}events/`;
+const API_BASE_LOCATION = `${API_BASE}locations/`;
 
 export const login = async ({username, password}) => {
     const url = API_BASE + 'login'
@@ -96,7 +98,7 @@ export const getAllNpcs = async ({ fields, expand }) => {
 export const getNpc = async ( { fields, expand, _id, reason} ) => {
     let url = API_BASE_NPC + `single/${_id}`
 
-    console.log('npc/single/:id endpoint')
+    console.log('npc/single/:id')
     const params = new URLSearchParams();
 
     if (fields?.length > 0) params.set('fields', fields.join(','));
@@ -216,7 +218,7 @@ export const getLocationInfo = async ({fields, expand, _id}) => {
         url.search = params.toString();
     }
 
-    //console.log(url)
+    console.log(url.toString())
     const apiRes = await fetch(url, {
         method: 'GET'
     })
@@ -238,6 +240,31 @@ export const getLocationMapInfo = async (location) => {
     return await apiRes.json()
 }
 
+export const getAllLocations = async ({fields, expand}) => {
+    let url = new URL(API_BASE_LOCATION + 'all',  window.location.origin)
+
+    const params = new URLSearchParams();
+
+    if (fields?.length > 0) {
+       params.set('fields', fields.join(','));
+    }
+
+    if (expand?.length > 0) {
+        params.set('expand', expand.join(','));
+    }
+
+    if ([...params].length) {
+        url.search = params.toString();
+    }
+
+    console.log(url.toString())
+    const apiRes = await fetch(url, {
+        method: 'GET'
+    })
+
+    if (!apiRes.ok) throw new Error("Error getting all Locations");
+    return await apiRes.json()
+}
 
 export const getLocationsForm = async () => {
     const url = API_BASE_LOCATION + `form`
@@ -254,7 +281,7 @@ export const getLocationsForm = async () => {
 }
 
 //////////////////////////////////////////////////////////////
-                  //POST FROM FORM//
+            //POST FROM FORM - NEW, UPDATE, DEELTE//
 //////////////////////////////////////////////////////////////
 
 export const postNPC = async (formInfo, formFunc) => {
@@ -273,10 +300,10 @@ export const postNPC = async (formInfo, formFunc) => {
         if (!apiRes.ok) throw new Error(`Error posting new NPC`);
         return await apiRes.json()
     } else if (formFunc === 'UPDATE') {
-        const url = API_BASE_NPC + '/update'
+        const url = API_BASE_NPC + 'update'
         console.log(url)
 
-        console.log(formFunc)
+        //console.log(formFunc)
         const apiRes = await fetch(url, {
             method: 'POST', 
             headers: {
@@ -287,7 +314,21 @@ export const postNPC = async (formInfo, formFunc) => {
 
         if (!apiRes.ok) throw new Error(`Error posting updating NPC`);
         return await apiRes.json()
+    } else if (formFunc === 'DELETE') {
+        const url = API_BASE_NPC + 'delete'
+        console.log(url)
 
+        //console.log(formFunc)
+        const apiRes = await fetch(url, {
+            method: 'DELETE', 
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body:  JSON.stringify(formInfo)
+        })
+
+        if (!apiRes.ok) throw new Error(`Error posting deleting NPC`);
+        return await apiRes.json()
     }
 
 }
@@ -308,7 +349,7 @@ export const postEvent = async (formInfo, formFunc) => {
         if (!apiRes.ok) throw new Error(`Error posting new Event`);
         return await apiRes.json()
     } else if (formFunc === 'UPDATE') {
-        const url = API_BASE_EVENTS + '/update'
+        const url = API_BASE_EVENTS + 'update'
         console.log(url)
 
         //console.log(formFunc)
@@ -323,6 +364,21 @@ export const postEvent = async (formInfo, formFunc) => {
         if (!apiRes.ok) throw new Error(`Error posting updating Event`);
         return await apiRes.json()
 
+    } else if (formFunc === 'DELETE') {
+       const url = API_BASE_EVENTS + 'delete'
+        console.log(url)
+
+        //console.log(formFunc)
+        const apiRes = await fetch(url, {
+            method: 'DELETE', 
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body:  JSON.stringify(formInfo)
+        })
+
+        if (!apiRes.ok) throw new Error(`Error delete Event`);
+        return await apiRes.json() 
     }
 }
 
@@ -342,8 +398,8 @@ export const postLocation = async (formInfo, formFunc) => {
         if (!apiRes.ok) throw new Error(`Error posting new Event`);
         return await apiRes.json()
     } else if (formFunc === 'UPDATE') {
-        const url = new URL(API_BASE_LOCATION + '/update', window.location.origin)
-        console.log(url)
+        const url = API_BASE_LOCATION + 'update'
+        //console.log(url)
 
         const apiRes = await fetch(url, {
             method: 'POST', 
@@ -354,6 +410,21 @@ export const postLocation = async (formInfo, formFunc) => {
         })
 
         if (!apiRes.ok) throw new Error(`Error posting updating Event`);
+        return await apiRes.json()
+
+    } else if (formFunc === 'DELETE') {
+        const url = API_BASE_LOCATION + 'delete'
+        //console.log(url)
+
+        const apiRes = await fetch(url, {
+            method: 'DELETE', 
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body:  JSON.stringify(formInfo)
+        })
+
+        if (!apiRes.ok) throw new Error(`Error delete Event`);
         return await apiRes.json()
 
     }
