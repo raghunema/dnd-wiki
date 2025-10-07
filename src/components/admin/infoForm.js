@@ -204,6 +204,10 @@ const uiLocationSchema = {
         yearsRange: [0, 100000]
     }
   },
+  information: {
+    "ui:title": "Information",
+    "ui:field": InformationField,
+  },
   events: {
     "ui:title": "Events",
     "ui:options": {
@@ -228,7 +232,7 @@ const uiLocationSchema = {
       "className": "submit-button"
     }
   },
-  "ui:order": ["_id", "slug", "name", "type", "description", "parentId", "toDate", "fromDate", "events", "children"]
+  "ui:order": ["_id", "slug", "name", "type", "description", "parentId", "toDate", "fromDate", "information", "events", "children"]
 }
 
 //const formFuncs = ['ADD', 'UPDATE', 'DELETE']

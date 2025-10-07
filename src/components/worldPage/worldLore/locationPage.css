@@ -1,0 +1,55 @@
+.location-container {
+    min-height: 100vh;
+    justify-content: center;
+    margin: 10px auto;
+    margin-bottom: 0px;
+    width: 80%;
+    padding-bottom: 20px;
+}
+
+
+.location-name {
+    font-weight: 300;
+}
+
+.location-description, 
+.location-events,
+.loc-lore {
+    margin: 5px 15px 15px 20px;
+}
+
+.location-description {
+    border: solid;
+    border-width: 2px 2px 2px 2px;
+    border-color: rgb(228, 154, 8);
+    padding: 15px 15px;
+    text-align: center;
+}
+
+.loc-lore {
+    padding: 1rem;
+    border: solid;
+    border-width: 2px 2px 2px 2px;
+    border-color: rgb(228, 154, 8);
+}
+
+.loc-lore-obj {
+    justify-content: start;
+    border: solid;
+    border-width: 1px 0px 1px 0px;
+    border-color: rgb(238, 184, 74);
+    text-align: left;
+    padding: 1rem;
+    margin: 0 auto;
+}
+
+
+.location-events  {
+    justify-content: start;
+    border: solid;
+    border-width: 2px 2px 2px 2px;
+    border-color: rgb(228, 154, 8);
+    /* border-color: rgb(238, 184, 74); */
+    text-align: left;
+    padding: 1rem;
+}
