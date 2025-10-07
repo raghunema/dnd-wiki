@@ -10,6 +10,11 @@
 
 .location-name {
     font-weight: 300;
+    /* Colored underline using text-decoration properties */
+    text-decoration: underline;
+    text-decoration-color: rgb(228, 154, 8); /* change to any custom color */
+    text-decoration-thickness: 2px; /* controls line weight */
+    text-underline-offset: 2px; /* space between text and underline */
 }
 
 .location-description, 
