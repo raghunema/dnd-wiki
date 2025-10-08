@@ -70,6 +70,10 @@ const uiNpcSchema = {
         format: 'MDY'
     }
   },
+  placeOfBirth: {
+    "ui:title": "Place of Birth",
+    "ui:widget": "select"
+  },
   related: {
     "ui:title": "Related"
   },
@@ -89,7 +93,7 @@ const uiNpcSchema = {
       "className": "submit-button"
     }
   },
-  "ui:order": ["_id", "slug", "name", "race", "description", "dateOfBirth", "dateOfDeath", "information", "related", "events"]
+  "ui:order": ["_id", "slug", "name", "race", "description", "dateOfBirth", "dateOfDeath", "placeOfBirth", "information", "related", "events"]
 }
 
 const customFields = {
@@ -292,6 +296,18 @@ export default function EntryForm({ onCreated }) {
               type: ["string"],
               enum: eventOptions,
               enumNames: eventLabels,
+              uniqueItems: true
+            }
+          }
+
+          if (allLocations) {
+            const locationOptions = [null, ...allLocations.map(loc => loc._id)];
+            const locationLabels = ["NONE", ...allLocations.map(loc => loc.name)];
+
+            npcSchema.properties.placeOfBirth = {
+              type: ["string", "null"],
+              enum: locationOptions,
+              enumNames: locationLabels,
               uniqueItems: true
             }
           }
