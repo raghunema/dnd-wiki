@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { getNpc } from '../../backendCalls/api'
 import './npcPage.css'
 
-const NpcBaseInfo = ({name, race, birthDate, deathDate}) => {
+const NpcBaseInfo = ({name, race, birthDate, deathDate, placeOfBirth}) => {
     return(
         <div className="npc-base-info">
             <table className="base-info-grid">
@@ -24,7 +24,10 @@ const NpcBaseInfo = ({name, race, birthDate, deathDate}) => {
                     <td className="label">DOD</td>
                     <td className="value">{deathDate.toString().substring(0,10)}</td>
                 </tr>
-
+                <tr>
+                    <td className="label">Birth Place</td>
+                    <td className="value">{placeOfBirth}</td>
+                </tr>
                 </tbody>
             </table>
         </div>
@@ -109,7 +112,7 @@ const NpcPage = () => {
         const getAndSetNPCs = async () => {
             const npc = await getNpc({
                 fields: [],
-                expand: ['events:-npcs -createdAt -updatedAt -__v'],
+                expand: ['events:-npcs -createdAt -updatedAt -__v', 'placeOfBirth:name'],
                 _id: npcId,
                 reason: 'npc_detail'
             });
@@ -140,6 +143,7 @@ const NpcPage = () => {
                     race={npc.race} 
                     birthDate={npc.dateOfBirth}
                     deathDate={npc.dateOfDeath}
+                    placeOfBirth={npc.placeOfBirth ? npc.placeOfBirth.name : ""}
                 />
             </div>
             <div className="npc-lore-part">
