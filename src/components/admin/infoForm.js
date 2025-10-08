@@ -236,7 +236,7 @@ const uiLocationSchema = {
       "className": "submit-button"
     }
   },
-  "ui:order": ["_id", "slug", "name", "type", "description", "parentId", "toDate", "fromDate", "information", "events", "children"]
+  "ui:order": ["_id", "slug", "name", "type", "description", "parentId", "toDate", "fromDate", "placeOfBirth", "information", "events", "children"]
 }
 
 //const formFuncs = ['ADD', 'UPDATE', 'DELETE']
