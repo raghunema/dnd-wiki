@@ -129,3 +129,23 @@
 .npc-events h2 {
     margin: 4px 2px 2px 2px;
 }
+
+.npc-relationships {
+    justify-content: start;
+    border: solid;
+    border-width: 2px 1px 2px 1px;
+    border-color: rgb(238, 184, 74);
+    text-align: left;
+    padding: 1rem;
+    max-width: 800px;
+    margin: 0 auto;
+    margin-bottom: 20px;
+}
+
+.npc-relationships div {
+    margin: 10px;
+}
+
+.npc-relationships h2 {
+    margin: 4px 2px 2px 2px;
+}

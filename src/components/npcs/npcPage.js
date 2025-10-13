@@ -38,6 +38,7 @@ const NpcNav = ({npcInfo}) => {
     const entries = Object.keys(npcInfo || {});
     entries.unshift("description")
     entries.push("events")
+    entries.push("relationships")
 
     return(
         <div className="npc-nav">
@@ -103,6 +104,7 @@ const NpcPage = () => {
 
     const [npc, setNpc] = useState(null);
     const [events, setEvents] = useState(null);
+    const [relationships, setRelationships] = useState(null)
     const [error, setError] = useState(null);
 
     useEffect (() => {
@@ -112,7 +114,7 @@ const NpcPage = () => {
         const getAndSetNPCs = async () => {
             const npc = await getNpc({
                 fields: [],
-                expand: ['events:-npcs -createdAt -updatedAt -__v', 'placeOfBirth:name'],
+                expand: ['events:-npcs -createdAt -updatedAt -__v', 'placeOfBirth:name', 'relationships.relationshipId:-createdAt -updatedAt -__v'],
                 _id: npcId,
                 reason: 'npc_detail'
             });
@@ -124,6 +126,7 @@ const NpcPage = () => {
             }
             setNpc(npc)
             setEvents(npc.events)
+            setRelationships(npc.relationships)
             
             console.log(npc.npcEvents)
         }
@@ -161,6 +164,25 @@ const NpcPage = () => {
                             </div>
                             )
 
+                        })
+                    }
+                </div>
+                <div className="npc-relationships" id="relationships">
+                    <h1>Relationships</h1>
+                    {relationships.length > 0 && 
+                        relationships.map(rel => {
+                            const isNpcA = rel.relationshipId.npcA === npc._id
+                            const otherNpc =  isNpcA ? rel.npcBName : rel.npcAName
+                            const relationToOther = isNpcA ? rel.relationshipId.relBtoA : rel.relationshipId.relAtoB
+
+                            return(
+                            <div>
+                                <h2>{otherNpc}</h2>
+                                <h3>{relationToOther}</h3>
+                                <h2>{rel.relationshipId.description}</h2>
+                                <h2>{rel.relationshipId.strength}</h2>
+                            </div>
+                            )
                         })
                     }
                 </div>

@@ -1,7 +1,6 @@
 // src/components/EntryForm.jsx
 import { useEffect, useState } from 'react';
 import Form from '@rjsf/core';
-import InformationField from "./informationField";
 
 import { 
   getNPCSchema, 
@@ -18,226 +17,16 @@ import {
   postLocation
 } from '../../backendCalls/api'
 
-import validator from '@rjsf/validator-ajv8';
+import {
+  customFields, 
+  uiNpcSchema,
+  uiEventSchema,
+  uiLocationSchema
+} from './formUiSchemas'
 
+import validator from '@rjsf/validator-ajv8';
 import './infoForm.css'
 
-const uiNpcSchema = {
-  _id: {
-    "ui:title": "Id",
-    "ui:widget": "textarea", 
-    "ui:classNames": "form-field-wrapper",
-    "ui:readonly": "true",
-    "ui:options": {
-      "readonly": "true"
-    }
-  },
-  slug: {
-    "ui:title": "SLUG",
-    "ui:widget": "textarea", 
-    "ui:classNames": "form-field-wrapper"
-  },
-  name: {
-    "ui:title": "NPC Name",
-    "ui:widget": "textarea", 
-    "ui:classNames": "form-field-wrapper"
-  },
-  description: {
-    "ui:title": "Description",
-    "ui:widget": "textarea", 
-    "ui:classNames": "form-field-wrapper"
-  },
-  race: {
-    "ui:title": "Race",
-    "ui:widget": "textarea", 
-    "ui:classNames": "form-field-wrapper"
-  },
-  dateOfBirth: {
-    "ui:title": "Date of Birth:",
-    "ui:widget": "date-time", 
-    "ui:classNames": "form-field-wrapper",
-    "ui:options": {
-        yearsRange: [0, 10000],
-        format: 'MDY'
-    }
-  },
-  dateOfDeath: {
-    "ui:title": "Date of Death:",
-    "ui:widget": "date-time", 
-    "ui:classNames": "form-field-wrapper",
-    "ui:options": {
-        yearsRange: [0, 10000],
-        format: 'MDY'
-    }
-  },
-  placeOfBirth: {
-    "ui:title": "Place of Birth",
-    "ui:widget": "select"
-  },
-  related: {
-    "ui:title": "Related"
-  },
-  information: {
-    "ui:title": "Information",
-    "ui:field": InformationField,
-  },
-  events: {
-    "ui:title": "Events",
-    "ui:options": {
-      orderable: false,
-    },
-  },
-  "ui:submitButtonOptions": {
-    "submitText": "Submit",
-    "props": {
-      "className": "submit-button"
-    }
-  },
-  "ui:order": ["_id", "slug", "name", "race", "description", "dateOfBirth", "dateOfDeath", "placeOfBirth", "information", "related", "events"]
-}
-
-const customFields = {
-  "information": InformationField
-};
-
-const uiEventSchema = {
-  _id: {
-    "ui:title": "Id",
-    "ui:widget": "textarea", 
-    "ui:classNames": "form-field-wrapper",
-    "ui:readonly": "true",
-    "ui:options": {
-      "readonly": "true"
-    }
-  },
-  slug: {
-    "ui:title": "SLUG",
-    "ui:widget": "textarea", 
-    "ui:classNames": "form-field-wrapper"
-  },
-  name: {
-    "ui:title": "Event Name",
-    "ui:widget": "textarea", 
-    "ui:classNames": "form-field-wrapper"
-  },
-  description: {
-    "ui:title": "Description",
-    "ui:widget": "textarea", 
-    "ui:classNames": "form-field-wrapper"
-  },
-  fromDate: {
-    "ui:title": "From Date:",
-    "ui:widget": "date-time", 
-    "ui:classNames": "form-field-wrapper",
-    "ui:options": {
-        yearsRange: [0, 10000]
-    }
-  },
-  toDate: {
-    "ui:title": "To Date:",
-    "ui:widget": "date-time", 
-    "ui:classNames": "form-field-wrapper",
-    "ui:options": {
-        yearsRange: [0, 100000]
-    }
-  },
-  npcs: {
-    "ui:title": "NPCS",
-    items: {
-      "ui:widget": "select"
-    },
-    "ui:options": {
-      orderable: false,
-    },
-  },
-  information: {
-    "ui:title": "Information",
-    "ui:field": InformationField,
-  },
-  location: {
-    "ui:title": "Location:",
-    "ui:widget": "select"
-  },
-  "ui:submitButtonOptions": {
-    "submitText": "Submit",
-    "props": {
-      "className": "submit-button"
-    }
-  },
-  "ui:order": ["_id", "slug", "name", "description", "information", "toDate", "fromDate", "npcs", "location"]
-};
-
-const uiLocationSchema = {
-  _id: {
-    "ui:title": "Id",
-    "ui:widget": "textarea", 
-    "ui:classNames": "form-field-wrapper",
-    "ui:readonly": "true",
-    "ui:options": {
-      "readonly": "true"
-    }
-  },
-  slug: {
-    "ui:title": "SLUG",
-    "ui:widget": "textarea", 
-    "ui:classNames": "form-field-wrapper"
-  },
-  name: {
-    "ui:title": "Location Name",
-    "ui:widget": "textarea", 
-    "ui:classNames": "form-field-wrapper"
-  },
-  description: {
-    "ui:title": "Description",
-    "ui:widget": "textarea", 
-    "ui:classNames": "form-field-wrapper"
-  },
-  fromDate: {
-    "ui:title": "From Date:",
-    "ui:widget": "date-time", 
-    "ui:classNames": "form-field-wrapper",
-    "ui:options": {
-        yearsRange: [0, 10000]
-    }
-  },
-  toDate: {
-    "ui:title": "To Date:",
-    "ui:widget": "date-time", 
-    "ui:classNames": "form-field-wrapper",
-    "ui:options": {
-        yearsRange: [0, 100000]
-    }
-  },
-  information: {
-    "ui:title": "Information",
-    "ui:field": InformationField,
-  },
-  events: {
-    "ui:title": "Events",
-    "ui:options": {
-      orderable: false,
-    },
-  },
-  type: {
-    "ui:title": "Type", 
-    "ui:widget": "textarea",
-    "ui:classNames": "form-field-wrapper"
-  },
-  parentId: {
-      "ui:title": "Parent Location:",
-      "ui:widget": "select",
-  },
-  children: {
-    "ui:title": "Sub-Locations"
-  },
-  "ui:submitButtonOptions": {
-    "submitText": "Submit",
-    "props": {
-      "className": "submit-button"
-    }
-  },
-  "ui:order": ["_id", "slug", "name", "type", "description", "parentId", "toDate", "fromDate", "placeOfBirth", "information", "events", "children"]
-}
 
 //const formFuncs = ['ADD', 'UPDATE', 'DELETE']
 
@@ -282,6 +71,7 @@ export default function EntryForm({ onCreated }) {
   //sets the actual form type when you switch events
   useEffect(() => {
     async function getAndSetSchema () {
+      
       //gets and sets information for  
       switch(type) {
         case "NPC":
@@ -561,6 +351,7 @@ export default function EntryForm({ onCreated }) {
             formData={formData}  
             onChange={({ formData }) => setFormData(formData)} 
             fields={customFields} 
+            formContext={{ allNpcs: allNpcs }}
             onSubmit={handleSubmit} 
             validator={validator}/>
         </div>
