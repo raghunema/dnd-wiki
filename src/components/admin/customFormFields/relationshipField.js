@@ -11,14 +11,90 @@ const RelationshipItemField = (props) => {
     const [ error, setError ] = useState(null);
 
     useEffect(() => {
+        if (formData?.relationshipId !== undefined && formData !== null) {
+            //for each item in relationship - how to set that item
+            const isNpcA = formData?.relationshipIndex === 'npcA'
+            const isNpcB = !isNpcA 
 
-    })
+            if (formData.relationshipIndex === 'npcA') {
+                setSecondaryNpc(formData.relationshipId.npcB)
+                setRelationTo(formData.relationshipId.relAtoB)
+                setRelationFrom(formData.relationshipId.relBtoA)
+            } else {
+                setSecondaryNpc(formData.relationshipId.npcA)
+                setRelationTo(formData.relationshipId.relBtoA)
+                setRelationFrom(formData.relationshipId.relAtoB)
+            }
+            
+            setDescription(formData.relationshipId.description)
+        }
+    }, [formData])
+
+    const handleUpdate = (field, value) => {
+        const updateData = {
+            ...formData, //copy over the item
+            relationshipId: { //this overwrites our relationshipId info
+                ...formData.relationshipId,
+                [field]: value //overwrite our specific field
+            }
+        }
+        onChange(updateData)
+    }
+    
+    const handleSecondaryNpcChange = (e) => {
+        const value = e.target.value;
+        setSecondaryNpc(value);
+
+        const isNpcA = formData.relationshipIndex === 'npcA'
+        if (isNpcA) {
+            //if i am npc A, i am changing npc B
+            handleUpdate('npcB', value)
+        } else {
+            //if i am npc B, i am changing npc A
+            handleUpdate('npcA', value)
+        }
+    }
+
+    const handleRelationFromChange = (e) => {
+        const value = e.target.value;
+        setRelationFrom(value)
+
+        const isNpcA = formData.relationshipIndex === 'npcA'
+        if (isNpcA) {
+            //if i am npc A, i am changing npc B
+            handleUpdate('relBtoA', value)
+        } else {
+            //if i am npc B, i am changing npc A
+            handleUpdate('relAtoB', value)
+        }
+    }
+
+    const handleRelationToChange = (e) => {
+        const value = e.target.value;
+        setRelationTo(value)
+
+        const isNpcA = formData.relationshipIndex === 'npcA'
+        if (isNpcA) {
+            //if i am npc A, change relationship a to b
+            handleUpdate('relAtoB', value)
+        } else {
+            //if i am npc B, i am change relationship b to a
+            handleUpdate('relBtoA', value)
+        }
+    }
+
+    const handleDescrptionChannge = (e) => {
+        const value = e.target.value
+
+        setDescription(value)
+        handleUpdate('description', value)
+    }
 
     return (
         <div className="relation-form-field-wrapper">
             <select
                 value={secondaryNpc || ''}
-                onChange={e => setSecondaryNpc(e.target.value)}
+                onChange={handleSecondaryNpcChange}
                 style={{width: '100%'}}
             >
                 <option value=""> Select Npc</option>
@@ -28,21 +104,21 @@ const RelationshipItemField = (props) => {
             </select>
             <textarea
                 value={relationFrom}
-                onChange={e => setRelationFrom(e.target.value)}
+                onChange={handleRelationFromChange}
                 rows={1}
                 style={{width: '100%', height: '40px'}}
                 placeholder="Relationship From"
             ></textarea>
             <textarea
                 value={relationTo}
-                onChange={e => setRelationTo(e.target.value)}
+                onChange={handleRelationToChange}
                 rows={1}
                 style={{width: '100%', height: '40px'}}
                 placeholder="Relationship To"
             ></textarea>
             <textarea
                 value={description}
-                onChange={e => setDescription(e.target.value)}
+                onChange={handleDescrptionChannge}
                 rows={5}
                 style={{width: '100%', height: '60px'}}
                 placeholder="Description"

@@ -202,7 +202,7 @@ export default function EntryForm({ onCreated }) {
             if (selectedNpc) {
               const npcInfo = await getNpc({
                 fields: [],
-                expand: [],
+                expand: ['relationships.relationshipId:'],
                 _id: selectedNpc._id,
                 reason: ''
               })
