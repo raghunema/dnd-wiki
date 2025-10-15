@@ -263,6 +263,7 @@ export default function EntryForm({ onCreated }) {
     //handleing submit
     switch (type) {
       case "NPC":
+        console.log(formData)
         await postNPC(formData, formFunc);
         setFormData({});
         await setBaseInfo();

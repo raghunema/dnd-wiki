@@ -4,19 +4,23 @@ const RelationshipItemField = (props) => {
     const { formData, onChange, schema, uiSchema, formContext } = props;
 
     const allNpcs = formContext?.allNpcs || [] // selectable npcs
+    const currNpc = formContext?._id //current Npc
+
+    const [ isNpcA, setIsNpcA ] = useState(true) //if its a new relationship then we assume we are npcA
     const [ secondaryNpc, setSecondaryNpc ] = useState(null)
     const [ relationTo, setRelationTo ] = useState("")
     const [ relationFrom, setRelationFrom ] = useState("");
     const [ description, setDescription ] = useState("");
+    const [ strength, setStrength ] = useState(0);
     const [ error, setError ] = useState(null);
 
     useEffect(() => {
-        if (formData?.relationshipId !== undefined && formData !== null) {
+        if (formData?.relationshipId?._id) {
             //for each item in relationship - how to set that item
-            const isNpcA = formData?.relationshipIndex === 'npcA'
-            const isNpcB = !isNpcA 
+            const isA = formData?.relationshipIndex === 'npcA'
+            setIsNpcA(isA)
 
-            if (formData.relationshipIndex === 'npcA') {
+            if (isA) {
                 setSecondaryNpc(formData.relationshipId.npcB)
                 setRelationTo(formData.relationshipId.relAtoB)
                 setRelationFrom(formData.relationshipId.relBtoA)
@@ -27,8 +31,22 @@ const RelationshipItemField = (props) => {
             }
             
             setDescription(formData.relationshipId.description)
+            setStrength(formData.relationshipId.strength)
+        } else if (formData?.relationshipId && !formData.relationshipId.npcA) { // a whole new relationship
+            console.log('no npc form data')
+            onChange({
+                relationshipId: {
+                    npcA: currNpc,
+                    relAtoB: "",
+                    npcB: "",
+                    relBtoA: "",
+                    description: "",
+                    strength: 0
+                },
+                relationshipIndex: "npcA"
+            });
         }
-    }, [formData])
+    }, [formData?.relationshipId?._id])
 
     const handleUpdate = (field, value) => {
         const updateData = {
@@ -45,7 +63,6 @@ const RelationshipItemField = (props) => {
         const value = e.target.value;
         setSecondaryNpc(value);
 
-        const isNpcA = formData.relationshipIndex === 'npcA'
         if (isNpcA) {
             //if i am npc A, i am changing npc B
             handleUpdate('npcB', value)
@@ -59,7 +76,6 @@ const RelationshipItemField = (props) => {
         const value = e.target.value;
         setRelationFrom(value)
 
-        const isNpcA = formData.relationshipIndex === 'npcA'
         if (isNpcA) {
             //if i am npc A, i am changing npc B
             handleUpdate('relBtoA', value)
@@ -73,7 +89,6 @@ const RelationshipItemField = (props) => {
         const value = e.target.value;
         setRelationTo(value)
 
-        const isNpcA = formData.relationshipIndex === 'npcA'
         if (isNpcA) {
             //if i am npc A, change relationship a to b
             handleUpdate('relAtoB', value)
@@ -88,6 +103,13 @@ const RelationshipItemField = (props) => {
 
         setDescription(value)
         handleUpdate('description', value)
+    }
+
+    const handleStrengthChange = (e) => {
+        const value = e.target.value
+
+        setStrength(value)
+        handleUpdate('strength', value)
     }
 
     return (
@@ -122,6 +144,14 @@ const RelationshipItemField = (props) => {
                 rows={5}
                 style={{width: '100%', height: '60px'}}
                 placeholder="Description"
+            >
+            </textarea>
+            <textarea
+                value={strength}
+                onChange={handleStrengthChange}
+                rows={1}
+                style={{width: '30%', height: '20px'}}
+                placeholder="Relationship Strength"
             >
             </textarea>
         </div>
