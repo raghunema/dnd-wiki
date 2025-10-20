@@ -352,7 +352,7 @@ export default function EntryForm({ onCreated }) {
             formData={formData}  
             onChange={({ formData }) => setFormData(formData)} 
             fields={customFields} 
-            formContext={{ allNpcs: allNpcs }}
+            formContext={{ allNpcs: allNpcs, currObj: currObj}}
             onSubmit={handleSubmit} 
             validator={validator}/>
         </div>

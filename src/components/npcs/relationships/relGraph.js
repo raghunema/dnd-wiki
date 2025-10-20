@@ -1,8 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef} from 'react';
 import { getRelations } from '../../../backendCalls/api';
-
+import * as d3 from "d3"
 
 const RelationGraph = () => {
+    
+    const svgRef = useRef();
     
     const [allRelations, setAllRelations] = useState([])
 
@@ -22,6 +24,19 @@ const RelationGraph = () => {
         getAndSetAllRelations();
 
     }, []);
+
+
+    function forcePlot({
+        data, 
+        width =  640,
+        height = 400,
+        marginTop = 20,
+        marginRight = 20,
+        marginBottom = 20,
+        marginLeft = 20
+    }) {
+
+    }
 
     return (
         <div>

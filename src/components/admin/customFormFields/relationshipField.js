@@ -4,9 +4,10 @@ const RelationshipItemField = (props) => {
     const { formData, onChange, schema, uiSchema, formContext } = props;
 
     const allNpcs = formContext?.allNpcs || [] // selectable npcs
-    const currNpc = formContext?._id //current Npc
+    const currNpc = formContext?.currObj //current Npc
 
-    const [ isNpcA, setIsNpcA ] = useState(true) //if its a new relationship then we assume we are npcA
+    const [ isNpcA, setIsNpcA ] = useState(true); //if its a new relationship then we assume we are npcA
+    const [ isNewRel, setIsNewRel ] = useState(false); //if it is a new relationship
     const [ secondaryNpc, setSecondaryNpc ] = useState(null)
     const [ relationTo, setRelationTo ] = useState("")
     const [ relationFrom, setRelationFrom ] = useState("");
@@ -15,9 +16,13 @@ const RelationshipItemField = (props) => {
     const [ error, setError ] = useState(null);
 
     useEffect(() => {
+        // console.log(formData)
+        // console.log(currNpc)
+
         if (formData?.relationshipId?._id) {
             //for each item in relationship - how to set that item
             const isA = formData?.relationshipIndex === 'npcA'
+            console.log('updating isNpcA')
             setIsNpcA(isA)
 
             if (isA) {
@@ -32,19 +37,11 @@ const RelationshipItemField = (props) => {
             
             setDescription(formData.relationshipId.description)
             setStrength(formData.relationshipId.strength)
-        } else if (formData?.relationshipId && !formData.relationshipId.npcA) { // a whole new relationship
+        
+        } else  { // a whole new relationship --> else if (formData?.relationshipId && !formData.relationshipId.npcA)
             console.log('no npc form data')
-            onChange({
-                relationshipId: {
-                    npcA: currNpc,
-                    relAtoB: "",
-                    npcB: "",
-                    relBtoA: "",
-                    description: "",
-                    strength: 0
-                },
-                relationshipIndex: "npcA"
-            });
+            setIsNpcA(true); //technically not needed since we default it to true
+            setIsNewRel(true);
         }
     }, [formData?.relationshipId?._id])
 
@@ -53,23 +50,33 @@ const RelationshipItemField = (props) => {
             ...formData, //copy over the item
             relationshipId: { //this overwrites our relationshipId info
                 ...formData.relationshipId,
-                [field]: value //overwrite our specific field
+                [field]: value, //overwrite our specific field,
+                ...(isNewRel && { npcA: currNpc })
             }
         }
         onChange(updateData)
+
+        console.log(updateData)
     }
     
     const handleSecondaryNpcChange = (e) => {
         const value = e.target.value;
         setSecondaryNpc(value);
 
-        if (isNpcA) {
+        if (isNpcA) { //if new rel - this will always be true
             //if i am npc A, i am changing npc B
+            console.log('in is true for set secondary')
             handleUpdate('npcB', value)
         } else {
             //if i am npc B, i am changing npc A
+            console.log('in else for secondary')
             handleUpdate('npcA', value)
         }
+
+        //if new relationship - npcA is not set 
+        // if (isNewRel) {
+        //     handleUpdate('npcA', currNpc)
+        // }
     }
 
     const handleRelationFromChange = (e) => {
