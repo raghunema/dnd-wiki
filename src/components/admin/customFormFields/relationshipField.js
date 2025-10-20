@@ -22,7 +22,9 @@ const RelationshipItemField = (props) => {
         if (formData?.relationshipId?._id) {
             //for each item in relationship - how to set that item
             const isA = formData?.relationshipIndex === 'npcA'
+            console.log(formData)
             console.log('updating isNpcA')
+            console.log(isA)
             setIsNpcA(isA)
 
             if (isA) {
