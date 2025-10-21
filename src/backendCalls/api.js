@@ -148,6 +148,17 @@ export const getNpcsForEvents = async (npcFilter) => {
     
 }
 
+export const getRelations = async () => {
+    const url = API_BASE_NPC + 'relationships'
+
+    const apiRes = await fetch(url, {
+        method: 'GET'
+    })
+
+    if (!apiRes.ok) throw new Error ("Error getting all relationships");
+    return await apiRes.json();
+}
+
 ///////////////////
 /// EVENT GETS ///
 /////////////////
@@ -286,7 +297,7 @@ export const getLocationsForm = async () => {
 
 export const postNPC = async (formInfo, formFunc) => {
     if (formFunc === 'ADD') {
-        const url = API_BASE_NPC + ''
+        const url = API_BASE_NPC + 'new'
         console.log(url)
 
         const apiRes = await fetch(url, {

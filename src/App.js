@@ -12,6 +12,7 @@ import NpcPage from './components/npcs/npcPage';
 import AdminPage from './components/admin/adminPage';
 import LoginPage from './components/admin/login';
 import LocationPage from './components/worldPage/worldLore/locationPage';
+import RelationGraph from './components/npcs/relationships/relGraph';
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
                 <Route path="/timeline" element={<Timeline />} />
                 <Route path="/npcs/" element={<NpcMainPage />}/> 
                 <Route path="/npcs/:npcSlug" element={<NpcPage />} />
+                <Route path="/npcs/graph" element={<RelationGraph/>} />
                 <Route path="/admin" element={<AdminPage/> }/>
                 <Route path="/login" element={<LoginPage/>}/>
             </Routes>
