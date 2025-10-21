@@ -63,7 +63,7 @@ const RelationGraph = () => {
       .enter()
       .append("line")
       .attr("class", "link")
-      .attr("stroke", "#999")
+      .attr("stroke", "#949090ff")
       .attr("stroke-opacity", 0.6)
       .attr("stroke-width", 2);
 
@@ -72,12 +72,33 @@ const RelationGraph = () => {
       .data(nodes)
       .enter()
       .append("g")
-      .attr("class", "node");
+      .attr("class", "node")
+      .call(d3.drag()
+                .on("start", dragStarted)
+                .on("drag", dragged)
+                .on("end", dragEnded));
+
+    function dragStarted(event, d) {
+        if (!event.active) simulation.alphaTarget(0.3).restart();
+        d.fx = d.x;
+        d.fy = d.y;
+    }
+
+    function dragged(event, d) {
+        d.fx = event.x;
+        d.fy = event.y;
+    }
+
+    function dragEnded(event, d) {
+        if (!event.active) simulation.alphaTarget(0);
+        d.fx = null;
+        d.fy = null;
+    }
 
     node.append("circle")
       .attr("r", 20)
-      .attr("fill", "#69b3a2")
-      .attr("stroke", "#fff")
+      .attr("fill", "#e09a0e")
+      .attr("stroke", "#d5a646ff")
       .attr("stroke-width", 2)
       .attr("cursor", "pointer");
 

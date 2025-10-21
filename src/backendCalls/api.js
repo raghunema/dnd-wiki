@@ -297,7 +297,7 @@ export const getLocationsForm = async () => {
 
 export const postNPC = async (formInfo, formFunc) => {
     if (formFunc === 'ADD') {
-        const url = API_BASE_NPC + ''
+        const url = API_BASE_NPC + 'new'
         console.log(url)
 
         const apiRes = await fetch(url, {

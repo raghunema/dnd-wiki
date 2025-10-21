@@ -37,18 +37,31 @@ const NpcMainPage = () => {
         navigate(`/npcs/${npc.slug}`, { state: { _id: npc._id} });
     };
     
+    const handleGraphClick = () => {
+        navigate(`/npcs/graph`)
+    }
+
     if (!Npcs) return <p>Getting your beloved NPCs!</p>;
 
     return (
         <div className="npc-main-page">
-            {Npcs.map((npc, index) => (
-                <NpcCard 
-                    key={index} 
-                    name={npc.name}
-                    description={npc.description} 
-                    onClick={() => handleCardClick(npc)}
-                />
-            ))}
+            <div>
+                <button
+                    onClick={() => handleGraphClick()}
+                >
+                    Check out the graph!
+                </button>
+            </div>
+            <div> 
+                {Npcs.map((npc, index) => (
+                    <NpcCard 
+                        key={index} 
+                        name={npc.name}
+                        description={npc.description} 
+                        onClick={() => handleCardClick(npc)}
+                    />
+                ))}
+             </div>
         </div>
     );
 };
