@@ -1,8 +1,10 @@
 import EntryForm from './infoForm'
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const AdminPage = () => {  
     const [isAdmin, setIsAdmin] = useState(false)
+    const navigate = useNavigate();
 
     useEffect(() => {
         const checkAuth = async () => {
@@ -31,16 +33,26 @@ const AdminPage = () => {
         checkAuth();
     }, []);
 
+    const handleLoginClick = () => {
+        navigate('../login')
+    }
+
     if(!isAdmin) {
         return (
             <div className="tempPage">
                 <h1>Sorry, not allowed!</h1>
+                <button
+                    onClick={() => handleLoginClick()}
+                >Login</button>
             </div>
         )
     }
 
     return (
         <div className="tempPage">
+            <button
+                onClick={() => handleLoginClick()}
+            >Login</button> 
             <EntryForm />
         </div>
     )

@@ -17,6 +17,8 @@ const NpcCard = ({name, description, onClick}) => {
 const NpcMainPage = () => {
 
     const [Npcs, setNpcs] = useState(null);
+    const [SearchTerm, setSearchTerm] = useState('')
+    const [FilteredNpcs, setFilteredNpcs] = useState(null)
     const navigate = useNavigate();
 
     useEffect (() => {
@@ -27,10 +29,28 @@ const NpcMainPage = () => {
             })
             if (!npcs) throw new Error("NPCs not defined") 
             setNpcs(npcs)
+            setFilteredNpcs(npcs)
         }
 
         getAndSetNPCs();
     }, [])
+
+
+    useEffect(() => {
+
+        if (Npcs) {
+            const filteredNpcs = Npcs.filter(npc => {
+                return npc.name.toLowerCase().includes(SearchTerm.toLowerCase()) ||
+                npc.description.toLowerCase().includes(SearchTerm.toLowerCase())
+            })
+
+            setFilteredNpcs(filteredNpcs)
+        }
+        
+    }, [Npcs, SearchTerm])
+
+
+
 
     const handleCardClick = (npc) => {
         //console.log(`Clicking ${npc._id}`);
@@ -44,16 +64,26 @@ const NpcMainPage = () => {
     if (!Npcs) return <p>Getting your beloved NPCs!</p>;
 
     return (
-        <div className="npc-main-page">
-            <div>
+        <div >
+            <div className='npc-graph-button'>
                 <button
                     onClick={() => handleGraphClick()}
                 >
                     Check out the graph!
                 </button>
             </div>
-            <div> 
-                {Npcs.map((npc, index) => (
+
+            <div className="npc-search-field">
+                <input
+                    type='text'
+                    value={SearchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    placeholder='Search an Npc...'
+                />
+            </div>
+
+            <div className="npc-main-page"> 
+                {FilteredNpcs.map((npc, index) => (
                     <NpcCard 
                         key={index} 
                         name={npc.name}

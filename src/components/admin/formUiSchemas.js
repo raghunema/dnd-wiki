@@ -76,7 +76,7 @@ const uiNpcSchema = {
     "ui:title": "Events",
     "ui:options": {
       orderable: false,
-    },
+    }
   },
   "ui:submitButtonOptions": {
     "submitText": "Submit",

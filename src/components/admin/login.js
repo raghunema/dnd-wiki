@@ -1,12 +1,15 @@
 import React, { useState } from "react";
 import "./login.css"; // import the CSS styles
 import { login } from '../../backendCalls/api'
+import { useNavigate } from 'react-router-dom';
 
 export default function LoginPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -20,6 +23,8 @@ export default function LoginPage() {
       if (!res.ok) throw new Error(res.message || "Login failed");
       // success logic here (e.g., redirect)
       console.log("Login success:", res);
+      navigate('../admin')
+
     } catch (err) {
       setError(err.message);
     } finally {
