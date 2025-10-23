@@ -122,13 +122,22 @@
     margin-bottom: 20px;
 }
 
+
 .npc-events div {
     margin: 10px;
 }
 
 .npc-events h2 {
     margin: 4px 2px 2px 2px;
+    text-decoration: underline;
+    text-decoration-color: rgb(228, 154, 8); 
+    text-decoration-thickness: 2px; 
+    text-underline-offset: 2px; 
 }
+
+/* .npc-event-block {
+
+} */
 
 .npc-relationships {
     justify-content: start;
@@ -148,4 +157,12 @@
 
 .npc-relationships h2 {
     margin: 4px 2px 2px 2px;
+    text-decoration: underline;
+    text-decoration-color: rgb(228, 154, 8); 
+    text-decoration-thickness: 2px; 
+    text-underline-offset: 2px; 
+}
+
+.npc-relationships h3 {
+    margin: 10px 5px 25px 15px;
 }

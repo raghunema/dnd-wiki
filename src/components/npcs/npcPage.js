@@ -157,8 +157,8 @@ const NpcPage = () => {
                     {events.length > 0 &&
                         events.map(event => {
                             return (
-                            <div> 
-                                <h2>{event.name}</h2>
+                            <div className="npc-event-block"> 
+                                <h2 text>{event.name}</h2>
                                 <h3>{event.locationName}</h3>
                                 <p>{event.description}</p>
                             </div>
@@ -177,10 +177,10 @@ const NpcPage = () => {
 
                             return(
                             <div>
-                                <h2>{otherNpc}</h2>
-                                <h3>{relationToOther}</h3>
-                                <h2>{rel.relationshipId.description}</h2>
-                                <h2>{rel.relationshipId.strength}</h2>
+                                <span><h2>{otherNpc}</h2> ({relationToOther}: {rel.relationshipId.strength})</span>
+                                {/* <h3>{relationToOther}</h3> */}
+                                <p>{rel.relationshipId.description}</p>
+                                {/* <h4>{rel.relationshipId.strength}</h4> */}
                             </div>
                             )
                         })

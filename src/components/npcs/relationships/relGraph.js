@@ -31,9 +31,14 @@ const RelationGraph = () => {
   useEffect(() => {
     if (!allNpcs.length || !allRelations.length || !svgRef.current) return;
 
+    const width = 1000;
+    const height = 1000;
+    const nodeRadius = 20;
+    const padding = 30;
+
     const svg = d3.select(svgRef.current)
-      .attr("width", 800)
-      .attr("height", 800);
+      .attr("width", width)
+      .attr("height", height);
 
     // Clear previous content
     svg.selectAll("*").remove();
@@ -52,10 +57,10 @@ const RelationGraph = () => {
     }));
 
     const simulation = d3.forceSimulation(nodes)
-      .force("link", d3.forceLink(links).id(d => d.id).distance(150))
-      .force("charge", d3.forceManyBody().strength(-400))
+      .force("link", d3.forceLink(links).id(d => d.id).distance(50))
+      .force("charge", d3.forceManyBody().strength(-100))
       .force("center", d3.forceCenter(800 / 2, 800 / 2))
-      .force("collision", d3.forceCollide().radius(50));
+      .force("collision", d3.forceCollide().radius(30));
 
     const link = svg.append("g")
       .selectAll("line")
@@ -96,29 +101,34 @@ const RelationGraph = () => {
     }
 
     node.append("circle")
-      .attr("r", 20)
+      .attr("r", 10)
       .attr("fill", "#e09a0e")
       .attr("stroke", "#d5a646ff")
       .attr("stroke-width", 2)
       .attr("cursor", "pointer");
 
     node.append("text")
-      .attr("dy", 35)
+      .attr("dy", 20)
       .attr("text-anchor", "middle")
-      .attr("font-size", "12px")
+      .attr("font-size", "8px")
       .attr("fill", "#333")
       .attr("pointer-events", "none")
       .style("text-shadow", "1px 1px 2px rgba(255,255,255,0.8)")
       .text(d => d.name);
 
     simulation.on("tick", () => {
-      link
-        .attr("x1", d => d.source.x)
-        .attr("y1", d => d.source.y)
-        .attr("x2", d => d.target.x)
-        .attr("y2", d => d.target.y);
+        link
+            .attr("x1", d => d.source.x)
+            .attr("y1", d => d.source.y)
+            .attr("x2", d => d.target.x)
+            .attr("y2", d => d.target.y);
 
-      node.attr("transform", d => `translate(${d.x},${d.y})`);
+        nodes.forEach(d => {
+            d.x = Math.max(nodeRadius, Math.min(width - nodeRadius - padding, d.x));
+            d.y = Math.max(nodeRadius, Math.min(height - nodeRadius - padding, d.y));
+        });
+
+        node.attr("transform", d => `translate(${d.x},${d.y})`);
     });
 
     return () => {
