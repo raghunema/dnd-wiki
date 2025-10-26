@@ -296,147 +296,109 @@ export const getLocationsForm = async () => {
 //////////////////////////////////////////////////////////////
 
 export const postNPC = async (formInfo, formFunc) => {
+    let method = ''
+    let url = API_BASE_NPC
+
     if (formFunc === 'ADD') {
-        const url = API_BASE_NPC + 'new'
-        console.log(url)
-
-        const apiRes = await fetch(url, {
-            method: 'POST', 
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(formInfo)
-        })
-
-        if (!apiRes.ok) throw new Error(`Error posting new NPC`);
-        return await apiRes.json()
+        url += 'new'
+        method = 'POST'
     } else if (formFunc === 'UPDATE') {
-        const url = API_BASE_NPC + 'update'
-        console.log(url)
-
-        //console.log(formFunc)
-        const apiRes = await fetch(url, {
-            method: 'POST', 
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body:  JSON.stringify(formInfo)
-        })
-
-        if (!apiRes.ok) throw new Error(`Error posting updating NPC`);
-        return await apiRes.json()
+        url += 'update'
+        method = 'POST'
     } else if (formFunc === 'DELETE') {
-        const url = API_BASE_NPC + 'delete'
-        console.log(url)
-
-        //console.log(formFunc)
-        const apiRes = await fetch(url, {
-            method: 'DELETE', 
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body:  JSON.stringify(formInfo)
-        })
-
-        if (!apiRes.ok) throw new Error(`Error posting deleting NPC`);
-        return await apiRes.json()
+        url += 'delete'
+        method = 'DELETE'
+    } else {
+        throw new Error({error: 'Form Function not recognized'})
     }
+    console.log(url)
 
+    const token = localStorage.getItem('token')
+
+    //console.log(formFunc)
+    const apiRes = await fetch(url, {
+        method: method, 
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+        },
+        credentials: process.env.NODE_ENV === 'production' ? 'same-origin' : 'include',
+        body:  JSON.stringify(formInfo)
+    })
+
+    const apiResMessage = await apiRes.json();
+    //console.log(apiResMessage)
+    if (!apiRes.ok) throw new Error(apiResMessage.error);
+    return apiResMessage;
 }
 
 export const postEvent = async (formInfo, formFunc) => {
+    let url = API_BASE_EVENTS
+    let method = ''
+
     if (formFunc === 'ADD') {
-        const url = API_BASE_EVENTS + 'new'
-        console.log(url)
-
-        const apiRes = await fetch(url, {
-            method: 'POST', 
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(formInfo)
-        })
-
-        if (!apiRes.ok) throw new Error(`Error posting new Event`);
-        return await apiRes.json()
+        url += 'new';
+        method = 'POST';
     } else if (formFunc === 'UPDATE') {
-        const url = API_BASE_EVENTS + 'update'
-        console.log(url)
-
-        //console.log(formFunc)
-        const apiRes = await fetch(url, {
-            method: 'POST', 
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body:  JSON.stringify(formInfo)
-        })
-
-        if (!apiRes.ok) throw new Error(`Error posting updating Event`);
-        return await apiRes.json()
-
+        url += 'update';
+        method = 'POST';
     } else if (formFunc === 'DELETE') {
-       const url = API_BASE_EVENTS + 'delete'
-        console.log(url)
-
-        //console.log(formFunc)
-        const apiRes = await fetch(url, {
-            method: 'DELETE', 
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body:  JSON.stringify(formInfo)
-        })
-
-        if (!apiRes.ok) throw new Error(`Error delete Event`);
-        return await apiRes.json() 
+        url += 'delete';
+        method =  'DELETE'; 
+    } else {
+        throw new Error({error: 'Form Function not recognized'})
     }
+    console.log(url)
+
+    const token = localStorage.getItem('token')
+
+    const apiRes = await fetch(url, {
+        method: method, 
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+        },
+        credentials: process.env.NODE_ENV === 'production' ? 'same-origin' : 'include',
+        body: JSON.stringify(formInfo)
+    })
+
+    const apiResMessage = await apiRes.json();
+    if (!apiRes.ok) throw new Error(apiResMessage.error);
+    return apiResMessage
 }
 
 export const postLocation = async (formInfo, formFunc) => {
+    let url = API_BASE_LOCATION
+    let method = ''
+
     if (formFunc === 'ADD') {
-        const url = new URL(API_BASE_LOCATION + 'new', window.location.origin)
-        console.log(url)
-
-        const apiRes = await fetch(url, {
-            method: 'POST', 
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(formInfo)
-        })
-
-        if (!apiRes.ok) throw new Error(`Error posting new Event`);
-        return await apiRes.json()
+        url += 'new';
+        method = 'POST';
     } else if (formFunc === 'UPDATE') {
-        const url = API_BASE_LOCATION + 'update'
-        //console.log(url)
-
-        const apiRes = await fetch(url, {
-            method: 'POST', 
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body:  JSON.stringify(formInfo)
-        })
-
-        if (!apiRes.ok) throw new Error(`Error posting updating Event`);
-        return await apiRes.json()
-
+        url += 'update';
+        method = 'POST';
     } else if (formFunc === 'DELETE') {
-        const url = API_BASE_LOCATION + 'delete'
-        //console.log(url)
-
-        const apiRes = await fetch(url, {
-            method: 'DELETE', 
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body:  JSON.stringify(formInfo)
-        })
-
-        if (!apiRes.ok) throw new Error(`Error delete Event`);
-        return await apiRes.json()
-
+        url += 'delete';
+        method =  'DELETE'; 
+    } else {
+        throw new Error({error: 'Form Function not recognized'})
     }
+
+    console.log(url)
+
+    const token = localStorage.getItem('token')
+
+    const apiRes = await fetch(url, {
+        method: method, 
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+        },
+        credentials: process.env.NODE_ENV === 'production' ? 'same-origin' : 'include',
+        body: JSON.stringify(formInfo)
+    })
+
+    const apiResMessage = await apiRes.json();
+    if (!apiRes.ok) throw new Error(apiResMessage.error);
+    return apiResMessage
 }

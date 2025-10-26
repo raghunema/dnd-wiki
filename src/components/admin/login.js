@@ -21,6 +21,13 @@ export default function LoginPage() {
       console.log(res)
 
       if (!res.ok) throw new Error(res.message || "Login failed");
+
+      const data = await res.json();
+      console.log('in login page')
+      console.log(data)
+      localStorage.setItem('token', data.token)
+      localStorage.setItem('user', JSON.stringify(data.user))
+
       // success logic here (e.g., redirect)
       console.log("Login success:", res);
       navigate('../admin')
@@ -32,9 +39,15 @@ export default function LoginPage() {
     }
   };
 
+  const handleLogout = async (e) => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    navigate('./')
+  }
+
   return (
-    <div className="login-container">
-      <form className="login-form" onSubmit={handleSubmit}>
+    <div style={{minHeight: '100vh'}}>
+      <form onSubmit={handleSubmit}>
         <h2>Login</h2>
 
         <input
@@ -57,6 +70,9 @@ export default function LoginPage() {
 
         <button type="submit" disabled={loading}>
           {loading ? "Logging in..." : "Login"}
+        </button>
+        <button type='button' onClick={handleLogout}>
+          LogOut
         </button>
       </form>
     </div>
