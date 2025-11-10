@@ -21,7 +21,7 @@ const AdminPage = () => {
     }, []);
 
     const handleLoginClick = () => {
-        navigate('../login')
+        navigate('./login')
     }
 
     if(!isAdmin) {

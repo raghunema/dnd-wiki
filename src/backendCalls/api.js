@@ -24,8 +24,44 @@ export const login = async ({username, password}) => {
         body: JSON.stringify({ username, password }),
     })
 
+    const apiResMessage = await apiRes.json();
     if (!apiRes.ok) throw new Error(`Error Logging in`);
-    return await apiRes
+    return apiResMessage
+}
+
+export const requestMagicLink = async ({ email }) => {
+    const url = API_BASE + 'login/magic-link'
+    console.log(url)
+
+    const apiRes = await fetch(url, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        credentials: "include",
+        body: JSON.stringify({email})
+    })
+
+    if (!apiRes.ok) throw new Error("Error getting magic-link")
+    return await apiRes.json();
+}
+
+export const verifyMagicLink = async ({token}) => {
+    const url  = API_BASE + 'login/verify-magic-link'
+
+    const apiRes = await fetch(url, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        credentials: "include",
+        body: JSON.stringify({magicToken: token})
+    })
+
+    const apiResMessage = await apiRes.json();
+    if (!apiRes.ok) throw new Error(apiResMessage.error)
+    
+    return await apiResMessage
 }
 
 /////////////////
@@ -309,11 +345,14 @@ export const postNPC = async (formInfo, formFunc) => {
         url += 'delete'
         method = 'DELETE'
     } else {
-        throw new Error({error: 'Form Function not recognized'})
+        throw new Error('Form Function not recognized')
     }
     console.log(url)
 
     const token = localStorage.getItem('token')
+    if (!token) {
+        throw new Error('No token found  - please login in again')
+    }
 
     //console.log(formFunc)
     const apiRes = await fetch(url, {
@@ -346,11 +385,14 @@ export const postEvent = async (formInfo, formFunc) => {
         url += 'delete';
         method =  'DELETE'; 
     } else {
-        throw new Error({error: 'Form Function not recognized'})
+        throw new Error('Form Function not recognized')
     }
     console.log(url)
 
     const token = localStorage.getItem('token')
+    if (!token) {
+        throw new Error('No token found - please login in again')
+    }
 
     const apiRes = await fetch(url, {
         method: method, 
@@ -381,12 +423,15 @@ export const postLocation = async (formInfo, formFunc) => {
         url += 'delete';
         method =  'DELETE'; 
     } else {
-        throw new Error({error: 'Form Function not recognized'})
+        throw new Error('Form Function not recognized')
     }
 
     console.log(url)
 
     const token = localStorage.getItem('token')
+    if (!token) {
+        throw new Error('No token found - please login in again')
+    }
 
     const apiRes = await fetch(url, {
         method: method, 
