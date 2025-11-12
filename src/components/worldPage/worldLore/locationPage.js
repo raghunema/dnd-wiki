@@ -65,8 +65,7 @@ const LocationPage = () => {
         }
 
         getAndSetLoc();
-        console.log()
-    }, [])
+    }, [locId])
     
     if (!loc) return <p>Getting Location</p>
 

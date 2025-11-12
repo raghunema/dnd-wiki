@@ -28,7 +28,7 @@ const Home = () => {
 
             setSliderMarks(marks);
             setCurrentEvent(allEvents[0])
-            console.log(currentEvent)
+            //console.log(currentEvent)
         };
 
         fetchEvents();

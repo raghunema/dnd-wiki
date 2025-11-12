@@ -163,7 +163,7 @@ const Character = ({setSelectedCharacter}) => {
       window.removeEventListener("mouseleave", clearPickPosition);
       window.removeEventListener("click", setPickObject)
     };
-  }, [setSelectedCharacter]);
+  }, [setSelectedCharacter, currObject]);
 
   return (
     <div style={{ textAlign: "center", margin: "20px" }}>
