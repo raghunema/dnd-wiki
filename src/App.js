@@ -30,7 +30,8 @@ function App() {
                 <Route path="/npcs/:npcSlug" element={<NpcPage />} />
                 <Route path="/npcs/graph" element={<RelationGraph/>} />
                 <Route path="/admin" element={<AdminPage/> }/>
-                <Route path="/login" element={<LoginPage/>}/>
+                <Route path="/admin/login" element={<LoginPage/>}/>
+                <Route path="/admin/login/magic-link" element={<LoginPage/>}/>
             </Routes>
           </div>
         </Router>
