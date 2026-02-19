@@ -42,7 +42,7 @@ const Home = () => {
     }
 
     if (worldEvents.length === 0 || !Object.keys(sliderMarks).length) {
-        return (<div><h1>Getting marks</h1></div>)
+        return (<div style={{minHeight: '100vh'}}><h1>Please wait for the backend to spin up (~1min)</h1></div>)
     }
 
     return (

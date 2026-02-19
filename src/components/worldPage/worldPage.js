@@ -91,7 +91,7 @@ const WorldPage = () => {
         navigate(`/world-page/${loc.slug}`, { state: { _id: loc._id } });
     }
 
-    if (!Locs) return <p>Getting World Locations!</p>;
+    if (!Locs) return <p style={{minHeight: '100vh'}}>Getting World Locations!</p>;
 
     return (
         <div className='world-page'> 

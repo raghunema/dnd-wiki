@@ -286,7 +286,7 @@ export default function EntryForm({ onCreated }) {
     } 
   }
 
-  if (!schema) return <p>Loading form...</p>;
+  if (!schema) return <p style={{minHeight: '100vh'}}>Loading form...</p>;
 
   return (
       <div>
