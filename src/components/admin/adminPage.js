@@ -39,7 +39,9 @@ const AdminPage = () => {
 
     if(!isAdmin) {
         return (
-            <div className="tempPage">
+            <div className="tempPage" 
+                 style={{minHeight: '100vh'}}
+                >
                 <h1>Sorry, not allowed!</h1>
                 <button
                     onClick={() => handleLoginClick()}
