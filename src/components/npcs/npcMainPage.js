@@ -61,7 +61,7 @@ const NpcMainPage = () => {
         navigate(`/npcs/graph`)
     }
 
-    if (!Npcs) return <p>Getting your beloved NPCs!</p>;
+    if (!Npcs) return <p style={{minHeight: '100vh'}}>Getting your beloved NPCs!</p>;
 
     return (
         <div >

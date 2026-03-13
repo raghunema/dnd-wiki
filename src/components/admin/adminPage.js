@@ -8,38 +8,25 @@ const AdminPage = () => {
 
     useEffect(() => {
         const checkAuth = async () => {
-            const cookieStr = document.cookie;
-            const cookies = Object.fromEntries(cookieStr.split('; ').map(c => c.split('=')));
-
-            console.log("Cookies:")
-            console.log(cookies)
-
-            if(cookies.userInfo) {
-                console.log("in here")
-                try {
-                    const userInfo = JSON.parse(decodeURIComponent(cookies.userInfo))
-                    console.log(userInfo)
-
-                    if (userInfo.privileges === 'all') {
-                        setIsAdmin(true)
-                    } 
-    
-                } catch (e) {
-                    throw new Error("Can't parse cookie")
-                }
-            }
+            const userInfo = JSON.parse(localStorage.getItem('user'));
+            if (!userInfo) {
+                setIsAdmin(false)
+            } else if (userInfo || userInfo.privileges === 'all') {
+                setIsAdmin(true)
+            } 
+            
         }
 
         checkAuth();
     }, []);
 
     const handleLoginClick = () => {
-        navigate('../login')
+        navigate('./login')
     }
 
     if(!isAdmin) {
         return (
-            <div className="tempPage">
+            <div className="tempPage" style={{minHeight: '100vh'}}>
                 <h1>Sorry, not allowed!</h1>
                 <button
                     onClick={() => handleLoginClick()}
@@ -52,7 +39,7 @@ const AdminPage = () => {
         <div className="tempPage">
             <button
                 onClick={() => handleLoginClick()}
-            >Login</button> 
+            >Login/Out</button> 
             <EntryForm />
         </div>
     )
